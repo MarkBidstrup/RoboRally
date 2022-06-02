@@ -317,9 +317,15 @@ public class Board extends Subject {
 
     // @author Xiao Chen
     public void replacePlayerAtPositionIndex(int index, Player player) {
-        if (players.get(index) != player) {
-            players.remove(index);
-            players.add(index, player);
+        players.remove(index);
+        players.add(index, player);
+    }
+
+    public Player getPlayer(String playerName) {
+        for (int i = 0; i < players.size(); i++) {
+            if (playerName.equals(players.get(i).getName()))
+                return players.get(i);
         }
+        return null;
     }
 }

@@ -26,13 +26,16 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
+import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -233,9 +236,9 @@ public class LoadBoard {
     }
 
     // @author Xiao Chen
-    public static void saveGame(Board board, String name) {
+    public static void saveGame(Board board, String boardname) {
         GameStateTemplate template = new GameStateTemplate();
-        template.board = createBoardTemplate(board, name);
+        template.board = createBoardTemplate(board, boardname);
         template.gameId = board.getGameId();
         template.step = board.getStep();
         template.phase = board.getPhase();
@@ -278,7 +281,7 @@ public class LoadBoard {
 //        String filename =
 //                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
 
-        String filename = "src\\main\\resources\\"+SAVEDGAMESFOLDER+"\\" + name + "." + JSON_EXT;
+        String filename = "src\\main\\resources\\"+SAVEDGAMESFOLDER+"\\" + (boardname+"_"+board.getGameId()) + "." + JSON_EXT;
 
 
         // In simple cases, we can create a Gson object with new:
@@ -300,7 +303,7 @@ public class LoadBoard {
             writer = gson.newJsonWriter(fileWriter);
             gson.toJson(template, template.getClass(), writer);
             writer.close();
-            filename = "target\\classes\\"+SAVEDGAMESFOLDER+"\\" + name + "." + JSON_EXT;
+            filename = "target\\classes\\"+SAVEDGAMESFOLDER+"\\" + (boardname+"_"+board.getGameId()) + "." + JSON_EXT;
             fileWriter = new FileWriter(filename);
             writer = gson.newJsonWriter(fileWriter);
             gson.toJson(template, template.getClass(), writer);
@@ -355,5 +358,68 @@ public class LoadBoard {
             }
         }
         return template;
+    }
+
+    // following method only adds/updates game state information, but does not reload the board itself
+    public static Board loadGameStateOnly(@NotNull Board board) { // @author Xiao Chen
+        ClassLoader classLoader = LoadBoard.class.getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(SAVEDGAMESFOLDER + "/" + (board.boardName+"_"+board.getGameId()) + "." + JSON_EXT);
+        if (inputStream == null) {
+            return null;
+        }
+
+        // In simple cases, we can create a Gson object with new Gson():
+        GsonBuilder simpleBuilder = new GsonBuilder().
+                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        Gson gson = simpleBuilder.create();
+
+        // FileReader fileReader = null;
+        JsonReader reader = null;
+        try {
+            // fileReader = new FileReader(filename);
+            reader = gson.newJsonReader(new InputStreamReader(inputStream));
+            GameStateTemplate template = gson.fromJson(reader, GameStateTemplate.class);
+            reader.close();
+            // update the player information
+            List<Player> temp = new ArrayList<>();
+            for (PlayerTemplate playerTemplate: template.players) {
+                Player player = board.getPlayer(playerTemplate.playerName);
+                player.setCheckPointReached(playerTemplate.checkPointTokenReached);
+                player.setSpace(board.getSpace(playerTemplate.x, playerTemplate.y));
+                player.setHeading(playerTemplate.heading);
+                for (int i = 0; i < Player.NO_REGISTERS; i++) {
+                    CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
+                    if (commandCardFieldTemplate.command != null)
+                        player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                    player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
+                }
+                for (int i = 0; i < Player.NO_CARDS; i++) {
+                    CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
+                    if (commandCardFieldTemplate.command != null)
+                        player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                    player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+                }
+                temp.add(player);
+            }
+            for (int i = 0; i < temp.size(); i++) // following loop puts the players in the correct order (according to loaded data)
+                board.replacePlayerAtPositionIndex(i, temp.get(i));
+            board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
+            board.setPhase(template.phase);
+            board.setStep(template.step);
+            return board;
+        } catch (IOException e1) {
+            if (reader != null) {
+                try {
+                    reader.close();
+                    inputStream = null;
+                } catch (IOException e2) {}
+            }
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e2) {}
+            }
+        }
+        return null;
     }
 }
