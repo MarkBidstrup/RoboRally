@@ -1,0 +1,22 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+left to right direction
+actor "Player" as player
+rectangle RoboRally {
+  usecase "Setup new game" as UC1
+  usecase "Join new online game" as UC5
+  usecase "Play game" as UC2
+  usecase "Save game" as UC3
+  usecase "Load game" as UC4
+  usecase "Join loaded online game" as UC6
+}
+
+player --> UC1
+player --> UC2
+player --> UC3
+player --> UC4
+player --> UC5
+player --> UC6
+
+@enduml

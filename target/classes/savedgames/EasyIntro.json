@@ -1,0 +1,644 @@
+{
+  "board": {
+    "width": 8,
+    "height": 6,
+    "antenna": {
+      "x": 0,
+      "y": 4,
+      "heading": "EAST"
+    },
+    "checkPoints": [
+      {
+        "checkPointNumber": 1,
+        "x": 7,
+        "y": 5
+      },
+      {
+        "checkPointNumber": 2,
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "spaces": [
+      {
+        "walls": [
+          "NORTH",
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 0
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 1
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 2
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 3
+      },
+      {
+        "walls": [
+          "NORTH",
+          "SOUTH",
+          "EAST",
+          "WEST",
+          "NORTH",
+          "SOUTH",
+          "EAST",
+          "WEST",
+          "NORTH",
+          "SOUTH",
+          "EAST",
+          "WEST",
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 4
+      },
+      {
+        "walls": [
+          "WEST",
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 1,
+        "y": 0
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+            "INSTANCE": {
+              "heading": "EAST"
+            }
+          }
+        ],
+        "x": 1,
+        "y": 3
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 1,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 2,
+        "y": 0
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "INSTANCE": {
+              "heading": "EAST",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 2,
+        "y": 1
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 2,
+        "y": 2
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "INSTANCE": {
+              "heading": "NORTH",
+              "color": "BLUE"
+            }
+          }
+        ],
+        "x": 2,
+        "y": 4
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 2,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 3,
+        "y": 0
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "INSTANCE": {
+              "heading": "NORTH",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 3,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 4,
+        "y": 0
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 4,
+        "y": 3
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 4,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 5,
+        "y": 0
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+            "INSTANCE": {
+              "heading": "WEST"
+            }
+          }
+        ],
+        "x": 5,
+        "y": 1
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 5,
+        "y": 3
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 5,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 6,
+        "y": 0
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "INSTANCE": {
+              "heading": "WEST",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 6,
+        "y": 3
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 6,
+        "y": 5
+      },
+      {
+        "walls": [
+          "NORTH",
+          "EAST"
+        ],
+        "actions": [],
+        "x": 7,
+        "y": 0
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [
+          {
+            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "INSTANCE": {
+              "heading": "SOUTH",
+              "color": "BLUE"
+            }
+          }
+        ],
+        "x": 7,
+        "y": 1
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [],
+        "x": 7,
+        "y": 2
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [],
+        "x": 7,
+        "y": 3
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [],
+        "x": 7,
+        "y": 4
+      },
+      {
+        "walls": [
+          "EAST",
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 7,
+        "y": 5
+      }
+    ],
+    "boardName": "EasyIntro"
+  },
+  "players": [
+    {
+      "playerName": "Player 1",
+      "playerColor": "red",
+      "checkPointTokenReached": 0,
+      "x": 0,
+      "y": 2,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "command": "U_TURN",
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "command": "U_TURN",
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_WEASEL_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "playerName": "Player 2",
+      "playerColor": "green",
+      "checkPointTokenReached": 0,
+      "x": 1,
+      "y": 1,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "command": "FORWARD",
+          "visible": true
+        },
+        {
+          "command": "BACKWARD",
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "BACKWARD",
+          "visible": true
+        },
+        {
+          "command": "LEFT",
+          "visible": true
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "playerName": "Player 3",
+      "playerColor": "blue",
+      "checkPointTokenReached": 0,
+      "x": 2,
+      "y": 2,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "command": "RIGHT",
+          "visible": true
+        },
+        {
+          "command": "LEFT",
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "command": "OPTION_WEASEL_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        },
+        {
+          "command": "BACKWARD",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "playerName": "Player 4",
+      "playerColor": "orange",
+      "checkPointTokenReached": 0,
+      "x": 3,
+      "y": 3,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "visible": true
+        },
+        {
+          "command": "LEFT",
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "command": "OPTION_WEASEL_ROUTINE",
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "command": "LEFT",
+          "visible": true
+        },
+        {
+          "command": "U_TURN",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        },
+        {
+          "command": "U_TURN",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "playerName": "Player 5",
+      "playerColor": "grey",
+      "checkPointTokenReached": 0,
+      "x": 4,
+      "y": 4,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "command": "FORWARD",
+          "visible": true
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "command": "LEFT",
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_WEASEL_ROUTINE",
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "currentPlayerIndex": 1,
+  "phase": "ACTIVATION",
+  "step": 0
+}

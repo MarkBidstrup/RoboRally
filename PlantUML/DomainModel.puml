@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+object Player {
+    CheckPointToken
+}
+
+object Player_Mat {
+
+}
+
+object Register {
+
+}
+
+object Robot {
+
+}
+
+object Board {
+    RacingCourse
+    Phase (programming or activasion)
+}
+
+object Programming_Card {
+
+}
+
+object Special_Programming_Card {
+
+}
+
+object Space {
+    Elements
+}
+
+abstract Card {
+
+}
+
+Board"1" *-- "1..*"Space : has
+Space"1" -- "0..1"Robot : has
+Player"1" -L- "1"Robot : has
+Player_Mat"1" -L- "1"Player : has
+Board"1" - "1..*"Card : has
+Board"1" -- "2..6"Player_Mat : has
+Card <|-- Programming_Card
+Card <|-R- Special_Programming_Card
+Card"0..1" -- "1"Register : has
+Player_Mat"1" - "5"Register : has
+
+@enduml

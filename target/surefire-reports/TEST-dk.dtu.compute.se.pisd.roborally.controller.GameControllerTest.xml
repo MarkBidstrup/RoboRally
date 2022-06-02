@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="dk.dtu.compute.se.pisd.roborally.controller.GameControllerTest" time="0.012" tests="1" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="17"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.class.path" value="C:\Users\golba\Desktop\DTU\2nd_semester\AdvancedProgramming\git\Gruppe-10-RoboRally\roborally\target\test-classes;C:\Users\golba\Desktop\DTU\2nd_semester\AdvancedProgramming\git\Gruppe-10-RoboRally\roborally\target\classes;C:\Users\golba\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\golba\.m2\repository\mysql\mysql-connector-java\8.0.11\mysql-connector-java-8.0.11.jar;C:\Users\golba\.m2\repository\com\google\protobuf\protobuf-java\2.6.0\protobuf-java-2.6.0.jar;C:\Users\golba\.m2\repository\com\google\code\gson\gson\2.8.2\gson-2.8.2.jar;C:\Users\golba\.m2\repository\com\google\guava\guava\19.0\guava-19.0.jar;C:\Users\golba\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\golba\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\golba\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\golba\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\golba\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\golba\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-controls\17\javafx-controls-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-controls\17\javafx-controls-17-win.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-graphics\17\javafx-graphics-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-graphics\17\javafx-graphics-17-win.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-base\17\javafx-base-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-base\17\javafx-base-17-win.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-fxml\17\javafx-fxml-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-fxml\17\javafx-fxml-17-win.jar;"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="Europe/Copenhagen"/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="java.vm.specification.version" value="17"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-17.0.2\bin"/>
+    <property name="sun.java.command" value="C:\Users\golba\AppData\Local\Temp\surefire2750667723715431383\surefirebooter16318226447017367408.jar C:\Users\golba\AppData\Local\Temp\surefire2750667723715431383 2022-05-04T09-03-52_720-jvmRun1 surefire13200348059939112930tmp surefire_05806104232798986975tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="C:\Users\golba\Desktop\DTU\2nd_semester\AdvancedProgramming\git\Gruppe-10-RoboRally\roborally\target\test-classes;C:\Users\golba\Desktop\DTU\2nd_semester\AdvancedProgramming\git\Gruppe-10-RoboRally\roborally\target\classes;C:\Users\golba\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar;C:\Users\golba\.m2\repository\mysql\mysql-connector-java\8.0.11\mysql-connector-java-8.0.11.jar;C:\Users\golba\.m2\repository\com\google\protobuf\protobuf-java\2.6.0\protobuf-java-2.6.0.jar;C:\Users\golba\.m2\repository\com\google\code\gson\gson\2.8.2\gson-2.8.2.jar;C:\Users\golba\.m2\repository\com\google\guava\guava\19.0\guava-19.0.jar;C:\Users\golba\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.4.2\junit-jupiter-api-5.4.2.jar;C:\Users\golba\.m2\repository\org\apiguardian\apiguardian-api\1.0.0\apiguardian-api-1.0.0.jar;C:\Users\golba\.m2\repository\org\opentest4j\opentest4j\1.1.1\opentest4j-1.1.1.jar;C:\Users\golba\.m2\repository\org\junit\platform\junit-platform-commons\1.4.2\junit-platform-commons-1.4.2.jar;C:\Users\golba\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.4.2\junit-jupiter-engine-5.4.2.jar;C:\Users\golba\.m2\repository\org\junit\platform\junit-platform-engine\1.4.2\junit-platform-engine-1.4.2.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-controls\17\javafx-controls-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-controls\17\javafx-controls-17-win.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-graphics\17\javafx-graphics-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-graphics\17\javafx-graphics-17-win.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-base\17\javafx-base-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-base\17\javafx-base-17-win.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-fxml\17\javafx-fxml-17.jar;C:\Users\golba\.m2\repository\org\openjfx\javafx-fxml\17\javafx-fxml-17-win.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\golba"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2022-01-18"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-17.0.2"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\golba\Desktop\DTU\2nd_semester\AdvancedProgramming\git\Gruppe-10-RoboRally\roborally"/>
+    <property name="java.vm.compressedOopsMode" value="32-bit"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="surefire.real.class.path" value="C:\Users\golba\AppData\Local\Temp\surefire2750667723715431383\surefirebooter16318226447017367408.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="17.0.2+8-86"/>
+    <property name="user.name" value="golba"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.version" value="10.0"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="localRepository" value="C:\Users\golba\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\golba\AppData\Local\Temp\"/>
+    <property name="idea.version" value="2021.3.2"/>
+    <property name="java.version" value="17.0.2"/>
+    <property name="user.dir" value="C:\Users\golba\Desktop\DTU\2nd_semester\AdvancedProgramming\git\Gruppe-10-RoboRally\roborally"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-17.0.2\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;%Java_Home%\bin;%Maven_Home%\bin;C:\Users\golba\AppData\Local\Microsoft\WindowsApps;C:\Users\golba\AppData\Local\JetBrains\IntelliJ IDEA 2021.3.1\bin;;C:\Program Files\Java\jdk-17.0.2\bin;C:\Program Files\apache-maven-3.8.4\bin;;C:\Program Files\JetBrains\IntelliJ IDEA Educational Edition 2021.3.2\bin;;C:\Program Files\JetBrains\CLion 2021.3.4\bin;;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="17.0.2+8-86"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="61.0"/>
+  </properties>
+  <testcase name="moveForward" classname="dk.dtu.compute.se.pisd.roborally.controller.GameControllerTest" time="0.012"/>
+</testsuite>

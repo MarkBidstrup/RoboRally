@@ -1,0 +1,26 @@
+-classpath
+'C:/Users/golba/.m2/repository/org/jetbrains/annotations/13.0/annotations-13.0.jar;C:/Users/golba/.m2/repository/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar;C:/Users/golba/.m2/repository/com/google/code/gson/gson/2.8.2/gson-2.8.2.jar;C:/Users/golba/.m2/repository/com/google/guava/guava/19.0/guava-19.0.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-controls/17/javafx-controls-17.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-controls/17/javafx-controls-17-win.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-graphics/17/javafx-graphics-17.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-graphics/17/javafx-graphics-17-win.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-base/17/javafx-base-17.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-base/17/javafx-base-17-win.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-fxml/17/javafx-fxml-17.jar;C:/Users/golba/.m2/repository/org/openjfx/javafx-fxml/17/javafx-fxml-17-win.jar'
+-encoding
+'UTF-8'
+-overview
+'C:/Users/golba/Desktop/DTU/2nd_semester/Advanced Programming/tttttttt/Gruppe-10-RoboRally/roborally/src/main/java/dk/dtu/compute/se/pisd/overview.html'
+-public
+--release
+17
+-sourcepath
+'C:/Users/golba/Desktop/DTU/2nd_semester/Advanced Programming/tttttttt/Gruppe-10-RoboRally/roborally/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2022. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/golba/Desktop/DTU/2nd_semester/Advanced Programming/tttttttt/Gruppe-10-RoboRally/roborally/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'roborally 1.0.0-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'roborally 1.0.0-SNAPSHOT API'
