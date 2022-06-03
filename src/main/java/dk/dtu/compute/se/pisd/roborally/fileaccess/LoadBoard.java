@@ -361,8 +361,9 @@ public class LoadBoard {
     }
 
     // following method only adds/updates game state information, but does not reload the board itself
-    public static Board loadGameStateOnly(@NotNull Board board) { // @author Xiao Chen
+    public static Board updateGameState(@NotNull Board board) { // @author Xiao Chen
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
+        // TODO - update file location/ file name
         InputStream inputStream = classLoader.getResourceAsStream(SAVEDGAMESFOLDER + "/" + (board.boardName+"_"+board.getGameId()) + "." + JSON_EXT);
         if (inputStream == null) {
             return null;
