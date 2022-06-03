@@ -160,8 +160,10 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
             //TODO - replace getCurrentPlayer with connectedPlayer
-            if (player != player.board.getCurrentPlayer())
+            if (player != player.board.getCurrentPlayer()) {
+                programPane.getChildren().remove(buttonPanel);
                 return;
+            }
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
