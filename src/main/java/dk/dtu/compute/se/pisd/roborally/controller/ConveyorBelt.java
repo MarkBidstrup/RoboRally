@@ -24,16 +24,21 @@ public class ConveyorBelt extends FieldAction {
         this.heading = heading;
     }
 
+    //@author Golbas Haidari
     @Override
     public boolean doAction(@NotNull GameController gameController, @NotNull Space space) {
+        // create fa object from FieldAction class, and if space has conveyorBelt assign it to fa, otherwise assign null to the fa
         FieldAction fa = space.getActions().stream().filter((FieldAction obj)-> obj.getClass().getSimpleName().equals("ConveyorBelt")).findAny().orElse(null);
         ConveyorBelt cb= (ConveyorBelt) fa;
         if(cb != null ){
             try {
+                // find the space's neighbour and assign it to the target
                 Space target= gameController.board.getNeighbour(space, cb.getHeading());
                 if(cb.getColor().equals("BLUE")){
+                    // find the target's neighbour and assign it to the target
                     target=gameController.board.getNeighbour(target, cb.getHeading());
                 }
+                //move the space's player to the target
                 gameController.moveToSpace(space.getPlayer(), target, cb.getHeading());
                 return true;
             }catch (Exception ex){
