@@ -1,0 +1,68 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+hide footbox
+actor Player as player #Lightyellow
+participant ":System" as system
+activate player #Lightgreen
+
+player -> system: StartRoboRally
+system <-- player: Display menue
+player -> system: Click on the File
+system <-- player: Show options
+player-> system: click on option
+alt "NewGame" option
+    player <-- system: select the number of players
+    player -> system: player number is selected
+    player <-- system: select a game board
+    player -> system: game board is selected
+    player <-- system: display the board
+    loop for all players until win== false
+        player -> system: program the cards
+        player -> system: clicks on the "finish programming" button
+        player-> system: clicks on the button
+        alt  "Execute program" button
+            player <-- system: execute all registers, update position and game info
+        else "Execute current register" button
+             player <-- system: execute the current register, update robot position and game info
+        else "Stop Game" button
+            player <-- system: close the board window
+        else "Exit" button
+            player <-- system: close the Game
+        end
+
+        alt winner == true
+           player <-- system: announce winner and win= true
+        end
+
+    end
+else "LoadGame" option
+    player <-- system: select a game board
+    player -> system: game board is selected
+    player <-- system: display the board
+    loop for all players until win== false
+        player -> system: program the cards
+        player -> system: clicks on the "finish programming" button
+        player-> system: clicks on the button
+        alt  "Execute program" button
+            player <-- system: execute all registers, update position and game info
+        else "Execute current register" button
+             player <-- system: execute the current register, update robot position and game info
+        else "Stop Game" button
+            player <-- system: close the board window
+        else "Exit" button
+            player <-- system: close the Game
+        end
+
+        alt winner == true
+           player <-- system: announce winner and win= true
+        end
+
+    end
+else "Exit" option
+    player <-- system: close the Game
+end
+
+
+@enduml
