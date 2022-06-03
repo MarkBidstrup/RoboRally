@@ -93,20 +93,11 @@ public class BoardView extends VBox implements ViewObserver {
     private void drawConveyorBelt(Space space, SpaceView spaceView){
         ConveyorBelt cb = (ConveyorBelt) space.getActions().stream().filter((FieldAction fa)-> fa.getClass().getSimpleName().equals("ConveyorBelt")).findAny().orElse(null);
         if(cb != null){
-            String imgURL, repeat,size, position, beltColor;
+            String imgURL, beltColor;
             String path= this.getClass().getResource("../../../../../../../image/").toString();
-            if (cb.getColor().equals("BLUE")) {
-                repeat="repeat-x";
-                size="32 32";
-                position="left center";
-                beltColor="Blue";
-            }
-            else{
-                repeat="no-repeat";
-                size="42 42";
-                position="center center";
-                beltColor="Green";
-            }
+
+            if (cb.getColor().equals("BLUE")) { beltColor="Blue"; }
+            else{ beltColor="Green"; }
 
             if (cb.getHeading() == Heading.NORTH) { imgURL = path + beltColor +"Up.png"; }
             else if (cb.getHeading() == Heading.SOUTH) { imgURL = path + beltColor + "Down.png"; }
@@ -115,64 +106,27 @@ public class BoardView extends VBox implements ViewObserver {
 
             String bgColor= "black";
             if((space.x + space.y) % 2 == 0){ bgColor= "white";}
-            spaceView.setStyle("-fx-background-image: url("+imgURL+"); -fx-background-color: "+bgColor+";-fx-background-repeat: "+repeat+"; -fx-background-size: "+SpaceView.SPACE_HEIGHT+"; -fx-background-position:"+position+";");
+            spaceView.setStyle("-fx-background-image: url("+imgURL+"); -fx-background-color: "+bgColor+";-fx-background-repeat: no-repeat; -fx-background-size: "+SpaceView.SPACE_HEIGHT+"; -fx-background-position: center center;");
         }
     }
 
     // @author Golbas Haidari
     private void drawObstacle(Space space, SpaceView spaceView){
 
-        // old code that draw lines on the spaces for walls
         BorderStrokeStyle top, right, down, left;
         top= BorderStrokeStyle.NONE;
         right= BorderStrokeStyle.NONE;
         down= BorderStrokeStyle.NONE;
         left= BorderStrokeStyle.NONE;
 
-        // new code that makes the actual walls (doesn't work yet)
-//        String path= Objects.requireNonNull(this.getClass().getResource("../../../../../../../image/")).toString();
-//        StackPane stackPane = new StackPane();
+        if(space.getWalls().contains(Heading.NORTH)){ top= BorderStrokeStyle.SOLID;  }
+        if(space.getWalls().contains(Heading.SOUTH)){ down= BorderStrokeStyle.SOLID; }
+        if(space.getWalls().contains(Heading.EAST)) { right= BorderStrokeStyle.SOLID;}
+        if(space.getWalls().contains(Heading.WEST)) { left=BorderStrokeStyle.SOLID;  }
 
-        if(space.getWalls().contains(Heading.NORTH)){
-            // old code that draw lines on the spaces for walls
-            top= BorderStrokeStyle.SOLID;
-
-            // new code that makes the actual walls (doesn't work yet)
-//            String imgURL = path + "wallnorth.png";
-//            stackPane.setStyle("-fx-background-image: url("+imgURL+");-fx-background-size: "+SpaceView.SPACE_HEIGHT+";");
-        }
-        if(space.getWalls().contains(Heading.SOUTH)){
-            // old code that draw lines on the spaces for walls
-            down= BorderStrokeStyle.SOLID;
-
-            // new code that makes the actual walls (doesn't work yet)
-//            String imgURL = path + "wallsouth.png";
-//            stackPane.setStyle("-fx-background-image: url("+imgURL+");-fx-background-size: "+SpaceView.SPACE_HEIGHT+";");
-        }
-        if(space.getWalls().contains(Heading.EAST)){
-            // old code that draw lines on the spaces for walls
-            right= BorderStrokeStyle.SOLID;
-
-            // new code that makes the actual walls (doesn't work yet)
-//            String imgURL = path + "walleast.png";
-//            stackPane.setStyle("-fx-background-image: url("+imgURL+");-fx-background-size: "+SpaceView.SPACE_HEIGHT+";");
-        }
-        if(space.getWalls().contains(Heading.WEST)){
-            // old code that draw lines on the spaces for walls
-            left=BorderStrokeStyle.SOLID;
-
-            // new code that makes the actual walls (doesn't work yet)
-//            String imgURL = path + "wallwest.png";
-//            stackPane.setStyle("-fx-background-image: url("+imgURL+");-fx-background-size: "+SpaceView.SPACE_HEIGHT+";");
-        }
-
-        // old code that draw lines on the spaces for walls
         spaceView.setBorder(new Border(new BorderStroke(Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW,
-                top, right, down, left,
-                CornerRadii.EMPTY, new BorderWidths(7), Insets.EMPTY)));
-
-        // new code that makes the actual walls (doesn't work yet)
-//        spaceView.getChildren().add(stackPane);
+                                                        top, right, down, left,
+                                                        CornerRadii.EMPTY, new BorderWidths(7), Insets.EMPTY)));
     }
 
     // @author Golbas Haidari & Mark Bidstrup
