@@ -10,6 +10,7 @@ rectangle RoboRally {
   usecase "Save game" as UC3
   usecase "Load game" as UC4
   usecase "Join loaded online game" as UC6
+  usecase "Exit game" as UC7
 }
 
 player --> UC1
@@ -18,5 +19,6 @@ player --> UC3
 player --> UC4
 player --> UC5
 player --> UC6
+player --> UC7
 
 @enduml
