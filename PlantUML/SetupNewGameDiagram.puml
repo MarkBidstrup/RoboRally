@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+title Setup new game
+
+Client -> Server: Post (board name, game ID, list of players)
+loop Player list not full
+Client -> Server: Get list of players
+Server --> Client: Return player list
+end
+
+Client -> Server: Post (game state template)
+@enduml

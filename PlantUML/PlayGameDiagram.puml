@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+title Play game
+
+loop until winner found
+alt programming phase
+Client -> Server: Patch (player mat)
+Client -> Server: Get game state
+Server --> Client: Return game state
+alt programming complete
+Client -> Server: Patch (phase status)
+end
+end
+
+alt activation phase & \nafter current players turn
+Client -> Server: Put (game state)
+end
+end
+
+note left
+Client sends a get request
+to refresh game state
+based on a timed interval
+end note
+@enduml
