@@ -50,7 +50,7 @@ public class Adapter<E> implements JsonSerializer<E>, JsonDeserializer<E>{
                                  JsonSerializationContext context) {
 
         JsonObject retValue = new JsonObject();
-        String className = src.getClass().getName();
+        String className = src.getClass().getSimpleName();
         retValue.addProperty(CLASSNAME, className);
         JsonElement elem = context.serialize(src);
         retValue.add(INSTANCE, elem);
@@ -63,10 +63,12 @@ public class Adapter<E> implements JsonSerializer<E>, JsonDeserializer<E>{
         JsonObject jsonObject = json.getAsJsonObject();
         JsonPrimitive prim = (JsonPrimitive) jsonObject.get(CLASSNAME);
         String className = prim.getAsString();
+        className = "dk.dtu.compute.se.pisd.roborally.model." + className;
 
         Class<?> klass;
         try {
             klass = Class.forName(className);
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new JsonParseException(e.getMessage());

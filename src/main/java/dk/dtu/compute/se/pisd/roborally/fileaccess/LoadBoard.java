@@ -25,8 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
-import dk.dtu.compute.se.pisd.roborally.controller.GameController;
+import dk.dtu.compute.se.pisd.roborally.model.FieldAction;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
@@ -106,8 +105,8 @@ public class LoadBoard {
     }
 
     // @author Xiao Chen
-    public static void saveBoard(Board board, String name) {
-        BoardTemplate template = LoadBoard.createBoardTemplate(board, name);
+    public static void saveBoard(Board board) {
+        BoardTemplate template = LoadBoard.createBoardTemplate(board, board.boardName);
         ClassLoader classLoader = LoadBoard.class.getClassLoader();
         // TODO: this is not very defensive, and will result in a NullPointerException
         //       when the folder "resources" does not exist! But, it does not need
@@ -115,7 +114,7 @@ public class LoadBoard {
 //        String filename =
 //                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
 
-        String filename = "src\\main\\resources\\"+BOARDSFOLDER+"\\" + name + "." + JSON_EXT;
+        String filename = "src\\main\\resources\\"+BOARDSFOLDER+"\\" + board.boardName + "." + JSON_EXT;
 
         // In simple cases, we can create a Gson object with new:
         //
@@ -136,7 +135,7 @@ public class LoadBoard {
             writer = gson.newJsonWriter(fileWriter);
             gson.toJson(template, template.getClass(), writer);
             writer.close();
-            filename = "target\\classes\\"+BOARDSFOLDER+"\\" + name + "." + JSON_EXT;
+            filename = "target\\classes\\"+BOARDSFOLDER+"\\" + board.boardName + "." + JSON_EXT;
             fileWriter = new FileWriter(filename);
             writer = gson.newJsonWriter(fileWriter);
             gson.toJson(template, template.getClass(), writer);
@@ -236,9 +235,17 @@ public class LoadBoard {
     }
 
     // @author Xiao Chen
-    public static void saveGame(Board board, String boardname) {
+    public static void saveGame(Board board) {
+        GameStateTemplate template = createGameStateTemplate(board);
+        // use a client to save the game to the server
+        SavedGamesClient client = new SavedGamesClient();
+        client.addGameStateTemplate(template);
+    }
+
+    // @author Xiao Chen
+    private static GameStateTemplate createGameStateTemplate(Board board) {
         GameStateTemplate template = new GameStateTemplate();
-        template.board = createBoardTemplate(board, boardname);
+        template.board = createBoardTemplate(board, board.boardName);
         template.gameId = board.getGameId();
         template.step = board.getStep();
         template.phase = board.getPhase();
@@ -273,54 +280,7 @@ public class LoadBoard {
             }
             template.players.add(playerTemplate);
         }
-
-        ClassLoader classLoader = LoadBoard.class.getClassLoader();
-        // TODO: this is not very defensive, and will result in a NullPointerException
-        //       when the folder "resources" does not exist! But, it does not need
-        //       the file "simpleCards.json" to exist!
-//        String filename =
-//                classLoader.getResource(BOARDSFOLDER).getPath() + "/" + name + "." + JSON_EXT;
-
-        String filename = "src\\main\\resources\\"+SAVEDGAMESFOLDER+"\\" + (boardname+"_"+board.getGameId()) + "." + JSON_EXT;
-
-
-        // In simple cases, we can create a Gson object with new:
-        //
-        //   Gson gson = new Gson();
-        //
-        // But, if you need to configure it, it is better to create it from
-        // a builder (here, we want to configure the JSON serialisation with
-        // a pretty printer):
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>()).
-                setPrettyPrinting();
-        Gson gson = simpleBuilder.create();
-
-        FileWriter fileWriter = null;
-        JsonWriter writer = null;
-        try {
-            fileWriter = new FileWriter(filename);
-            writer = gson.newJsonWriter(fileWriter);
-            gson.toJson(template, template.getClass(), writer);
-            writer.close();
-            filename = "target\\classes\\"+SAVEDGAMESFOLDER+"\\" + (boardname+"_"+board.getGameId()) + "." + JSON_EXT;
-            fileWriter = new FileWriter(filename);
-            writer = gson.newJsonWriter(fileWriter);
-            gson.toJson(template, template.getClass(), writer);
-            writer.close();
-        } catch (IOException e1) {
-            if (writer != null) {
-                try {
-                    writer.close();
-                    fileWriter = null;
-                } catch (IOException e2) {}
-            }
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e2) {}
-            }
-        }
+        return template;
     }
 
     // @author Xiao Chen

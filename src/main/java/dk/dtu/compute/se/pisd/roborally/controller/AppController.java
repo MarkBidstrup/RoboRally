@@ -105,8 +105,7 @@ public class AppController implements Observer {
      * this methode should provide the player to save the game
      */
     public void saveGame() {
-        // use saveBoard() if only the board and not the game state is to be saved
-        LoadBoard.saveGame(gameController.board,gameController.board.boardName);
+        LoadBoard.saveGame(gameController.board);
     }
 
     /**

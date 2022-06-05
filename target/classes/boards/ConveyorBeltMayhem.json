@@ -25,7 +25,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST",
             "color": "GREEN"
@@ -52,7 +52,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST",
             "color": "GREEN"
@@ -68,7 +68,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -82,7 +82,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -96,13 +96,13 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "EAST"
           }
         },
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -116,7 +116,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -130,7 +130,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -144,7 +144,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -160,7 +160,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST",
             "color": "GREEN"
@@ -176,7 +176,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
             "color": "GREEN"
@@ -192,7 +192,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST",
             "color": "GREEN"
@@ -206,7 +206,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -221,7 +221,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "GREEN"
@@ -235,7 +235,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -250,7 +250,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST",
             "color": "GREEN"
@@ -266,7 +266,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
             "color": "GREEN"

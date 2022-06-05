@@ -94,7 +94,7 @@
         "walls": [],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+            "CLASSNAME": "Gear",
             "INSTANCE": {
               "heading": "EAST"
             }
@@ -123,7 +123,7 @@
         "walls": [],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "CLASSNAME": "ConveyorBelt",
             "INSTANCE": {
               "heading": "EAST",
               "color": "GREEN"
@@ -147,7 +147,7 @@
         ],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "CLASSNAME": "ConveyorBelt",
             "INSTANCE": {
               "heading": "NORTH",
               "color": "BLUE"
@@ -179,7 +179,7 @@
         ],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "CLASSNAME": "ConveyorBelt",
             "INSTANCE": {
               "heading": "NORTH",
               "color": "GREEN"
@@ -225,7 +225,7 @@
         "walls": [],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+            "CLASSNAME": "Gear",
             "INSTANCE": {
               "heading": "WEST"
             }
@@ -262,7 +262,7 @@
         "walls": [],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "CLASSNAME": "ConveyorBelt",
             "INSTANCE": {
               "heading": "WEST",
               "color": "GREEN"
@@ -295,7 +295,7 @@
         ],
         "actions": [
           {
-            "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+            "CLASSNAME": "ConveyorBelt",
             "INSTANCE": {
               "heading": "SOUTH",
               "color": "BLUE"
@@ -341,6 +341,7 @@
     ],
     "boardName": "EasyIntro"
   },
+  "gameId": "3",
   "players": [
     {
       "playerName": "Player 1",
