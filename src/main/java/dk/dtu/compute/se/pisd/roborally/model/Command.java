@@ -42,10 +42,10 @@ public enum Command {
     FAST_FORWARD("Fast Fwd"),
     U_TURN("U-turn"),
     SPEED_ROUTINE("Fwd 3x"),
-
     OPTION_LEFT_RIGHT("Left OR Right", LEFT, RIGHT),
     OPTION_WEASEL_ROUTINE("Left, Right OR U-Turn", LEFT, RIGHT, U_TURN),
-    OPTION_SANDBOX_ROUTINE("Move 1-3, Back, Left, Right, U-Turn", FORWARD, FAST_FORWARD, SPEED_ROUTINE, BACKWARD, LEFT, RIGHT, U_TURN);
+    OPTION_SANDBOX_ROUTINE("Move 1-3, Back, Left, Right, U-Turn", FORWARD, FAST_FORWARD, SPEED_ROUTINE, BACKWARD, LEFT, RIGHT, U_TURN),
+    SPAM_DAMAGE("SPAM Damage");
 
     final public String displayName;
 

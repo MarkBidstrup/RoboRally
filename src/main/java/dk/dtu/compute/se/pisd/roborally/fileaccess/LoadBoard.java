@@ -200,6 +200,7 @@ public class LoadBoard {
                 player.setCheckPointReached(playerTemplate.checkPointTokenReached);
                 player.setSpace(result.getSpace(playerTemplate.x, playerTemplate.y));
                 player.setHeading(playerTemplate.heading);
+                player.setSPAMDamageCount(playerTemplate.SPAMDamageCards);
                 for (int i = 0; i < Player.NO_REGISTERS; i++) {
                     CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
                     if (commandCardFieldTemplate.command != null)
@@ -278,6 +279,7 @@ public class LoadBoard {
                 commandCardFieldTemplate.visible = player.getCardField(j).isVisible();
                 playerTemplate.cards.add(commandCardFieldTemplate);
             }
+            playerTemplate.SPAMDamageCards = player.getSPAMDamageCount();
             template.players.add(playerTemplate);
         }
         return template;

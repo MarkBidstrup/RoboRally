@@ -47,6 +47,7 @@ public class Player extends Subject {
 
     private CommandCardField[] program;
     private CommandCardField[] cards;
+    private int damageCards = 0;
 
     private int checkPointTokenReached;
 
@@ -133,6 +134,10 @@ public class Player extends Subject {
         return program[i];
     }
 
+    public void setProgram(int i, CommandCard command) {
+        program[i].setCard(command);
+    }
+
     public CommandCardField getCardField(int i) {
         return cards[i];
     }
@@ -143,5 +148,14 @@ public class Player extends Subject {
 
     public void setCheckPointReached(int tokenNumber) {
         checkPointTokenReached = tokenNumber;
+    }
+    public void incrementSPAMDamageCount() {
+        damageCards++;
+    }
+    public int getSPAMDamageCount() {
+        return damageCards;
+    }
+    public void setSPAMDamageCount(int count) {
+        damageCards = count;
     }
 }

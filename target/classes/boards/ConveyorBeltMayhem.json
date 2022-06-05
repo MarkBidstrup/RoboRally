@@ -23,15 +23,7 @@
       "walls": [
         "SOUTH"
       ],
-      "actions": [
-        {
-          "CLASSNAME": "ConveyorBelt",
-          "INSTANCE": {
-            "heading": "WEST",
-            "color": "GREEN"
-          }
-        }
-      ],
+      "actions": [],
       "x": 0,
       "y": 0
     },
@@ -47,9 +39,7 @@
       "y": 4
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [
         {
           "CLASSNAME": "ConveyorBelt",
@@ -171,9 +161,7 @@
       "y": 2
     },
     {
-      "walls": [
-        "EAST"
-      ],
+      "walls": [],
       "actions": [
         {
           "CLASSNAME": "ConveyorBelt",
@@ -261,9 +249,7 @@
       "y": 6
     },
     {
-      "walls": [
-        "EAST"
-      ],
+      "walls": [],
       "actions": [
         {
           "CLASSNAME": "ConveyorBelt",

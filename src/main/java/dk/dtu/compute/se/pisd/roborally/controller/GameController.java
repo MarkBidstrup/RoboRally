@@ -26,6 +26,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The GameController is responsible for handling the all
  * game request ,logic ,update the model and returns the view that should be changed.
@@ -36,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 public class GameController {
 
     final public Board board;
+    private List<Player> rebootedThisStep = new ArrayList<>();
 
     /**
      * This constructor takes a board as input.
@@ -82,9 +86,14 @@ public class GameController {
                     field.setCard(null);
                     field.setVisible(true);
                 }
-                for (int j = 0; j < Player.NO_CARDS; j++) {
+                for (int j = player.getSPAMDamageCount() ; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
                     field.setCard(generateRandomCommandCard());
+                    field.setVisible(true);
+                }
+                for (int j = 0; j < player.getSPAMDamageCount(); j++) { // @author Deniz
+                    CommandCardField field = player.getCardField(j);
+                    field.setCard(new CommandCard(Command.SPAM_DAMAGE));
                     field.setVisible(true);
                 }
             }
@@ -94,7 +103,7 @@ public class GameController {
     // XXX: V2
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
+        int random = (int) (Math.random() * (commands.length-1));
         return new CommandCard(commands[random]);
     }
 
@@ -112,6 +121,17 @@ public class GameController {
         board.sortPlayersAccordingToPriority(); // @author Xiao Chen - sorts players according to distance from priority antenna
         board.setCurrentPlayer(board.getPlayer(0));
         board.setStep(0);
+    }
+
+    public void playerFinishProgramming(Player player) { // @author Deniz
+        // if the player programmed any SPAM damage cards, their SPAM-count is reduced
+        int count = 0;
+        for (int i = 0; i < Player.NO_REGISTERS; i++) {
+            if(player.getProgramField(i).getCard() != null && player.getProgramField(i).getCard().command == Command.SPAM_DAMAGE)
+                count++;
+        }
+        player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
+        finishProgrammingPhase(); // TODO - update this for online game version
     }
 
     // XXX: V2
@@ -176,6 +196,10 @@ public class GameController {
                         return;
                     } else {
                         executeCommand(currentPlayer, command);
+                        if (command == Command.SPAM_DAMAGE) {
+                            executeCommand(currentPlayer, command);
+                            return;
+                        }
                     }
                 }
                 switchTurnAndRegister(currentPlayer, step);
@@ -204,6 +228,26 @@ public class GameController {
     // @author Xiao Chen
     public void switchTurnAndRegister(Player currentPlayer, int step) {
         int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+        // put the rebooted robots on the reboot field
+        for (Player p : rebootedThisStep) {
+            while (board.getSpace(0,3).getPlayer() != null) {
+                try {
+                    moveToSpace(board.getSpace(0,3).getPlayer(),board.getNeighbour(board.getSpace(0,3),Heading.EAST),Heading.EAST);
+                } catch (ImpossibleMoveException e) {
+                    try {
+                        Heading[] headings = Heading.values();
+                        int random = (int) (Math.random() * (headings.length));
+                        Heading head = headings[random];
+                        moveToSpace(board.getSpace(0,3).getPlayer(),board.getNeighbour(board.getSpace(0,3),head),head);
+                    } catch (ImpossibleMoveException impossibleMoveException) {
+                        impossibleMoveException.printStackTrace();
+                    }
+                    e.printStackTrace(); }
+            }
+            p.setSpace(board.getSpace(0,3));
+            p.setHeading(Heading.EAST);
+        }
+        rebootedThisStep.clear();
         if (nextPlayerNumber < board.getPlayersNumber()) {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
         } else {
@@ -260,6 +304,9 @@ public class GameController {
                 case BACKWARD:
                     this.moveBackward(player);
                     break;
+                case SPAM_DAMAGE:
+                    this.spamDamage(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
@@ -275,7 +322,10 @@ public class GameController {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
-                moveToSpace(other, target, heading);
+                if (fallOverEdge(other, target, heading)) // checks if the pushed robot would fall over the edge
+                    rebootRobot(other);
+                else
+                    moveToSpace(other, target, heading);
 
                 // Note that we do NOT embed the above statement in a try catch block, since
                 // the thrown exception is supposed to be passed on to the caller
@@ -285,7 +335,30 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-        player.setSpace(space);
+        if (fallOverEdge(player, space, heading)) // checks if the robot falls over the edge
+            rebootRobot(player);
+        else
+            player.setSpace(space);
+    }
+
+    // @author Deniz
+    public boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
+        if (heading == Heading.SOUTH && space.y < player.getSpace().y)
+            return true;
+        else if (heading == Heading.NORTH && space.y > player.getSpace().y)
+            return true;
+        else if (heading == Heading.WEST && space.x > player.getSpace().x)
+            return true;
+        else return heading == Heading.EAST && space.x < player.getSpace().x;
+    }
+
+    public void rebootRobot(@NotNull Player player) { // @author Deniz
+        rebootedThisStep.add(player);
+        player.incrementSPAMDamageCount();
+        player.incrementSPAMDamageCount();
+        // player loses their program and cannot move until the next round
+        for (int i = board.getStep() + 1; i < Player.NO_REGISTERS; i++)
+            player.setProgram(i, null);
     }
 
     class ImpossibleMoveException extends Exception {
@@ -327,7 +400,8 @@ public class GameController {
     public void moveBackward(@NotNull Player player) { // @author Deniz Isikli
         uTurn(player);
         moveForward(player);
-        uTurn(player);
+        if (!rebootedThisStep.contains(player))
+            uTurn(player);
     }
 
     /**
@@ -336,7 +410,8 @@ public class GameController {
      */
     public void fastForward(@NotNull Player player) { // @author Deniz Isikli
         moveForward(player);
-        moveForward(player);
+        if (!rebootedThisStep.contains(player))
+            moveForward(player);
     }
 
     /**
@@ -369,8 +444,18 @@ public class GameController {
     public void speedRoutine(Player player) { // @author Deniz Isikli
         if(player != null && player.board == board) {
             moveForward(player);
-            moveForward(player);
-            moveForward(player);
+            if (!rebootedThisStep.contains(player)) // if a robot rebooted, it should not keep moving
+                moveForward(player);
+            if (!rebootedThisStep.contains(player))
+                moveForward(player);
+        }
+    }
+
+    public void spamDamage(Player player) { // @author Deniz Isikli
+        if(player != null && player.board == board) {
+            int step = board.getStep();
+            CommandCard temp = generateRandomCommandCard();
+            player.setProgram(step, temp);
         }
     }
 
