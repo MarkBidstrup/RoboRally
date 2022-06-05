@@ -1,0 +1,75 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class BoardView{
+    board
+    mainBoardPane
+    spaces
+    playersView
+    statusLabel
+    spaceEventHandler
+
+    drawConveyorBelt()
+    drawObstacle()
+    drawAntenna()
+    drawCheckPoint()
+    drawGear()
+
+}
+
+class CardFieldView {
+    ROBO_RALLY_CARD
+    CARDFIELD_WIDTH
+    CARDFIELD_HEIGHT
+    BORDER
+    BG_DEFAULT
+    BG_DROP
+    BG_ACTIVE
+    BG_DONE
+    field
+    label
+    gameController
+
+    cardFieldRepresentation()
+}
+
+class PlayersView {
+    board
+    playerViews
+}
+
+class PlayerView {
+    player
+    top
+    programLabel
+    programPane
+    cardsLabel
+    cardsPane
+    programCardViews
+    cardViews
+    buttonPanel
+    finishButton
+    executeButton
+    stepButton
+    playerInteractionPanel
+    gameController
+}
+
+class RoboRallyMenuBar {
+    appController
+    saveGame
+    newGame
+    loadGame
+    stopGame
+    exitApp
+}
+
+class SpaceView {
+    SPACE_HEIGHT
+    SPACE_WIDTH
+    space
+
+    updatePlayer()
+}
+
+@enduml
