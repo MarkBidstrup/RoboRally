@@ -99,11 +99,14 @@ public class Space extends Subject {
     }
 
     // @author Xiao Chen
-    public void collectCheckpointToken() {
+    public boolean collectCheckpointToken() {
         if (player != null && checkPoint != null) {
             if ((player.getCheckPointReached() > 0 && checkPoint.getCheckpointNumber() - player.getCheckPointReached() == 1)
-                    || (player.getCheckPointReached() == 0 && checkPoint.getCheckpointNumber() == 1))
+                    || (player.getCheckPointReached() == 0 && checkPoint.getCheckpointNumber() == 1)) {
                 player.setCheckPointReached(checkPoint.getCheckpointNumber());
+                return true;
+            }
         }
+        return false;
     }
 }

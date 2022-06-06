@@ -29,6 +29,14 @@
     },
     {
       "walls": [
+        "WEST"
+      ],
+      "actions": [],
+      "x": 0,
+      "y": 3
+    },
+    {
+      "walls": [
         "NORTH",
         "SOUTH",
         "EAST",

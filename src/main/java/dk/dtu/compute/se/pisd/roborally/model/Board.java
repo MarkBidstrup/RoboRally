@@ -249,12 +249,6 @@ public class Board extends Subject {
         if ((x == 0 || x == spaces.length - 1) || (y == 0 || y == spaces[0].length - 1)) {
             // create the priority-antenna
             antenna = new PriorityAntenna(x, y, faces);
-
-            // a priority antenna acts as if it has 4 walls around it
-            spaces[x][y].setWalls(Heading.NORTH);
-            spaces[x][y].setWalls(Heading.SOUTH);
-            spaces[x][y].setWalls(Heading.EAST);
-            spaces[x][y].setWalls(Heading.WEST);
         }
     }
 
