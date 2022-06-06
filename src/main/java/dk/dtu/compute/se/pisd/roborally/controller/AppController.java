@@ -86,7 +86,6 @@ public class AppController implements Observer {
             // TODO - can make it so that gameId is a user choice
             board.setGameId(gameId);
 
-            gameController = new GameController(board);
             int no = result.get();
             for (int i = 0; i < no; i++) {
                 Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
@@ -94,9 +93,12 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
 
-            gameController.startProgrammingPhase();
 
-            roboRally.createBoardView(gameController);
+            if(LoadBoard.createGame(board) == true) {
+                gameController = new GameController(board);
+                gameController.startProgrammingPhase();
+                roboRally.createBoardView(gameController);
+            }
         }
     }
 

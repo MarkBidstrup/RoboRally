@@ -29,6 +29,7 @@ import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,8 +60,7 @@ public class LoadBoard {
         }
 
         // In simple cases, we can create a Gson object with new Gson():
-        GsonBuilder simpleBuilder = new GsonBuilder().
-                registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+        GsonBuilder simpleBuilder = new GsonBuilder().registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
         Gson gson = simpleBuilder.create();
 
         Board result;
@@ -101,6 +101,11 @@ public class LoadBoard {
         return null;
     }
 
+    public static boolean createGame(Board board){
+        GameStateTemplate newGame= createGameStateTemplate(board);
+        SavedGamesClient client = new SavedGamesClient();
+        return client.createGame(newGame);
+    }
     // @author Xiao Chen
     public static void saveGame(Board board) {
         GameStateTemplate template = createGameStateTemplate(board);
