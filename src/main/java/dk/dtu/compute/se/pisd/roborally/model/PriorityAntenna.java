@@ -1,7 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
-// @author Xiao Chen
-public class PriorityAntenna {
+public class PriorityAntenna { // @author Xiao Chen
     private int priorityAntenna_xcoord;
     private int priorityAntenna_ycoord;
     private Heading priorityAntenna_heading;

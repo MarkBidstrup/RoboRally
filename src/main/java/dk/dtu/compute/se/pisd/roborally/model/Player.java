@@ -149,6 +149,7 @@ public class Player extends Subject {
     public void setCheckPointReached(int tokenNumber) {
         checkPointTokenReached = tokenNumber;
     }
+    // author Deniz Isikli
     public void incrementSPAMDamageCount() {
         damageCards++;
     }

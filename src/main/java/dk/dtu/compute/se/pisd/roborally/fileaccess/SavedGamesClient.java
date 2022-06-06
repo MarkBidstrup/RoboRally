@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-// @author Xiao Chen
+// @author Mark Bidstrup & Xiao Chen
 public class SavedGamesClient implements IGamesService {
     private static final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)

@@ -81,7 +81,6 @@ public class AppController implements Observer {
                 }
             }
 
-            // @author Xiao Chen
             Board board = LoadBoard.loadBoard(boardname);
             int gameId = (int) (Math.random()*10);
             // TODO - can make it so that gameId is a user choice
@@ -163,7 +162,7 @@ public class AppController implements Observer {
         gameBoardResult.ifPresent(s -> userChoice = s);
     }
 
-    private Board setupBoardFromState(GameStateTemplate template) {
+    private Board setupBoardFromState(GameStateTemplate template) { // @author Mark Bidstrup
         Board result;
         result = new Board(template.board.width, template.board.height, template.board.boardName);
         result.setPriorityAntenna(template.board.antenna.x, template.board.antenna.y,template.board.antenna.heading);

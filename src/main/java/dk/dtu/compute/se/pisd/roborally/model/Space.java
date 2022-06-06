@@ -98,8 +98,7 @@ public class Space extends Subject {
         this.checkPoint = checkPoint;
     }
 
-    // @author Xiao Chen
-    public boolean collectCheckpointToken() {
+    public boolean collectCheckpointToken() {     // @author Xiao Chen
         if (player != null && checkPoint != null) {
             if ((player.getCheckPointReached() > 0 && checkPoint.getCheckpointNumber() - player.getCheckPointReached() == 1)
                     || (player.getCheckPointReached() == 0 && checkPoint.getCheckpointNumber() == 1)) {

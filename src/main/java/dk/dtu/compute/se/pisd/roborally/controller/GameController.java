@@ -72,7 +72,6 @@ public class GameController {
     /**
      * This methode allows the player to get some random cammand cards where players can program their robot with.
      */
-    // XXX: V2
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -91,7 +90,7 @@ public class GameController {
                     field.setCard(generateRandomCommandCard());
                     field.setVisible(true);
                 }
-                for (int j = 0; j < player.getSPAMDamageCount(); j++) { // @author Deniz
+                for (int j = 0; j < player.getSPAMDamageCount(); j++) { // @author Deniz Isikli
                     CommandCardField field = player.getCardField(j);
                     field.setCard(new CommandCard(Command.SPAM_DAMAGE));
                     field.setVisible(true);
@@ -100,7 +99,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
         int random = (int) (Math.random() * (commands.length-1));
@@ -111,7 +109,6 @@ public class GameController {
      * This method allows the players to finish the programing phase, and
      * activates the activation phase, "Execute Program" and "Execute Current Register" buttons
      */
-    // XXX: V2
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -123,7 +120,7 @@ public class GameController {
         board.setStep(0);
     }
 
-    public void playerFinishProgramming(Player player) { // @author Deniz
+    public void playerFinishProgramming(Player player) { // @author Deniz Isikli
         // if the player programmed any SPAM damage cards, their SPAM-count is reduced
         int count = 0;
         for (int i = 0; i < Player.NO_REGISTERS; i++) {
@@ -131,10 +128,9 @@ public class GameController {
                 count++;
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
-        finishProgrammingPhase(); // TODO - update this for online game version
+        finishProgrammingPhase(); // TODO - update this for web version - only switch phase after all players done
     }
 
-    // XXX: V2
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -145,7 +141,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -159,7 +154,6 @@ public class GameController {
     /**
      * This methodes  executes the all programs card of all robots.
      */
-    // XXX: V2
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
@@ -169,20 +163,17 @@ public class GameController {
      * This methode executes the current map of the current robot,
      * so in this way the player click step by step throughout the program
      */
-    // XXX: V2
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
     private void continuePrograms() {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
-    // XXX: V2
     public void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -285,7 +276,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -323,6 +313,9 @@ public class GameController {
         }
     }
 
+    /**
+     * This methode moves the player's robot to the specified space
+     */
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
@@ -351,7 +344,7 @@ public class GameController {
             player.setSpace(space);
     }
 
-    // @author Deniz
+    // @author Deniz Isikli
     public boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
         if (heading == Heading.SOUTH && space.y < player.getSpace().y)
             return true;
@@ -362,7 +355,7 @@ public class GameController {
         else return heading == Heading.EAST && space.x < player.getSpace().x;
     }
 
-    public void rebootRobot(@NotNull Player player) { // @author Deniz
+    public void rebootRobot(@NotNull Player player) { // @author Deniz Isikli
         rebootedThisStep.add(player);
         player.incrementSPAMDamageCount();
         player.incrementSPAMDamageCount();

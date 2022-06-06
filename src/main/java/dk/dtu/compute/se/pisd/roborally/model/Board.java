@@ -76,8 +76,7 @@ public class Board extends Subject {
 
     }
 
-    // @author Xiao Chen
-    public void setCheckpoint(int x, int y) {
+    public void setCheckpoint(int x, int y) {     // @author Xiao Chen
         int highestCheckpoint = CheckPoint.getHighestCheckPointNumber();
         CheckPoint cp1 = new CheckPoint(x, y, highestCheckpoint + 1);
         spaces[x][y].setCheckPoint(cp1);
@@ -256,8 +255,7 @@ public class Board extends Subject {
         return x_distance + y_distance;
     }
 
-    // @author Xiao Chen
-    public void sortPlayersAccordingToPriority() {
+    public void sortPlayersAccordingToPriority() {     // @author Xiao Chen
         // sort players according to distance from antenna
         Comparator<Player> c = (o1, o2) -> {
             if (calculateDistanceToPriorityAntenna(o1.getSpace()) < calculateDistanceToPriorityAntenna(o2.getSpace()))
