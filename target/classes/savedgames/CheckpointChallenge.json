@@ -1,1 +1,500 @@
-{"board":{"width":15,"height":6,"antenna":{"x":7,"y":5,"heading":"NORTH"},"checkPoints":[{"checkPointNumber":1,"x":14,"y":5},{"checkPointNumber":2,"x":0,"y":0},{"checkPointNumber":3,"x":14,"y":0},{"checkPointNumber":4,"x":0,"y":5}],"spaces":[{"walls":["WEST"],"actions":[],"x":0,"y":3},{"walls":["WEST"],"actions":[],"x":0,"y":5},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"EAST","color":"BLUE"}}],"x":2,"y":2},{"walls":["NORTH"],"actions":[{"CLASSNAME":"Gear","INSTANCE":{"heading":"EAST"}}],"x":3,"y":3},{"walls":["WEST"],"actions":[],"x":3,"y":4},{"walls":["WEST"],"actions":[],"x":3,"y":5},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"EAST","color":"GREEN"}}],"x":4,"y":1},{"walls":["EAST"],"actions":[],"x":4,"y":2},{"walls":["NORTH"],"actions":[],"x":4,"y":3},{"walls":["EAST"],"actions":[{"CLASSNAME":"Gear","INSTANCE":{"heading":"WEST"}}],"x":5,"y":1},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"WEST","color":"BLUE"}}],"x":5,"y":4},{"walls":[],"actions":[{"CLASSNAME":"Gear","INSTANCE":{"heading":"WEST"}}],"x":6,"y":4},{"walls":["NORTH","SOUTH","EAST","WEST"],"actions":[],"x":7,"y":5},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"SOUTH","color":"BLUE"}}],"x":8,"y":0},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"WEST","color":"GREEN"}}],"x":8,"y":2},{"walls":["WEST"],"actions":[],"x":10,"y":0},{"walls":["WEST"],"actions":[],"x":10,"y":1},{"walls":["WEST","EAST"],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"SOUTH","color":"GREEN"}}],"x":10,"y":2},{"walls":["EAST"],"actions":[],"x":10,"y":3},{"walls":[],"actions":[{"CLASSNAME":"Gear","INSTANCE":{"heading":"EAST"}}],"x":10,"y":4},{"walls":["EAST"],"actions":[],"x":10,"y":5},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"NORTH","color":"BLUE"}}],"x":11,"y":3},{"walls":[],"actions":[{"CLASSNAME":"ConveyorBelt","INSTANCE":{"heading":"WEST","color":"GREEN"}}],"x":12,"y":4},{"walls":["SOUTH"],"actions":[],"x":13,"y":3},{"walls":["SOUTH"],"actions":[],"x":14,"y":3}],"boardName":"CheckpointChallenge"},"gameId":9,"players":[{"playerName":"Player 5","playerColor":"grey","checkPointTokenReached":0,"x":4,"y":4,"heading":"SOUTH","program":[{"visible":true},{"visible":false},{"visible":false},{"visible":false},{"visible":false}],"cards":[{"command":"OPTION_WEASEL_ROUTINE","visible":true},{"command":"FAST_FORWARD","visible":true},{"command":"RIGHT","visible":true},{"command":"RIGHT","visible":true},{"command":"FORWARD","visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true},{"command":"FAST_FORWARD","visible":true},{"command":"OPTION_WEASEL_ROUTINE","visible":true}],"SPAMDamageCards":0},{"playerName":"Player 4","playerColor":"orange","checkPointTokenReached":0,"x":3,"y":3,"heading":"SOUTH","program":[{"visible":true},{"visible":false},{"visible":false},{"visible":false},{"visible":false}],"cards":[{"command":"BACKWARD","visible":true},{"command":"OPTION_SANDBOX_ROUTINE","visible":true},{"command":"LEFT","visible":true},{"command":"RIGHT","visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true},{"command":"FAST_FORWARD","visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true},{"command":"SPEED_ROUTINE","visible":true}],"SPAMDamageCards":0},{"playerName":"Player 3","playerColor":"blue","checkPointTokenReached":0,"x":2,"y":2,"heading":"SOUTH","program":[{"visible":true},{"visible":false},{"visible":false},{"visible":false},{"visible":false}],"cards":[{"command":"FORWARD","visible":true},{"command":"SPEED_ROUTINE","visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true},{"command":"FAST_FORWARD","visible":true},{"command":"LEFT","visible":true},{"command":"SPEED_ROUTINE","visible":true},{"command":"LEFT","visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true}],"SPAMDamageCards":0},{"playerName":"Player 2","playerColor":"green","checkPointTokenReached":0,"x":1,"y":1,"heading":"SOUTH","program":[{"visible":true},{"visible":false},{"visible":false},{"visible":false},{"visible":false}],"cards":[{"command":"SPEED_ROUTINE","visible":true},{"command":"OPTION_SANDBOX_ROUTINE","visible":true},{"command":"BACKWARD","visible":true},{"command":"RIGHT","visible":true},{"command":"OPTION_SANDBOX_ROUTINE","visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true},{"command":"LEFT","visible":true},{"command":"RIGHT","visible":true}],"SPAMDamageCards":0},{"playerName":"Player 1","playerColor":"red","checkPointTokenReached":0,"x":0,"y":0,"heading":"SOUTH","program":[{"command":"FAST_FORWARD","visible":true},{"command":"FORWARD","visible":false},{"command":"RIGHT","visible":false},{"visible":false},{"visible":false}],"cards":[{"visible":true},{"visible":true},{"visible":true},{"command":"OPTION_LEFT_RIGHT","visible":true},{"command":"U_TURN","visible":true},{"command":"BACKWARD","visible":true},{"command":"SPEED_ROUTINE","visible":true},{"command":"SPEED_ROUTINE","visible":true}],"SPAMDamageCards":0}],"currentPlayerIndex":0,"phase":"ACTIVATION","step":0}
+{
+  "board": {
+    "width": 15,
+    "height": 6,
+    "antenna": {
+      "x": 7,
+      "y": 5,
+      "heading": "NORTH"
+    },
+    "checkPoints": [
+      {
+        "checkPointNumber": 1,
+        "x": 14,
+        "y": 5
+      },
+      {
+        "checkPointNumber": 2,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "checkPointNumber": 3,
+        "x": 14,
+        "y": 0
+      },
+      {
+        "checkPointNumber": 4,
+        "x": 0,
+        "y": 5
+      }
+    ],
+    "spaces": [
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 3
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 0,
+        "y": 5
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "EAST",
+              "color": "BLUE"
+            }
+          }
+        ],
+        "x": 2,
+        "y": 2
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [
+          {
+            "CLASSNAME": "Gear",
+            "INSTANCE": {
+              "heading": "EAST"
+            }
+          }
+        ],
+        "x": 3,
+        "y": 3
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 3,
+        "y": 4
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 3,
+        "y": 5
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "EAST",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 4,
+        "y": 1
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [],
+        "x": 4,
+        "y": 2
+      },
+      {
+        "walls": [
+          "NORTH"
+        ],
+        "actions": [],
+        "x": 4,
+        "y": 3
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [
+          {
+            "CLASSNAME": "Gear",
+            "INSTANCE": {
+              "heading": "WEST"
+            }
+          }
+        ],
+        "x": 5,
+        "y": 1
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "WEST",
+              "color": "BLUE"
+            }
+          }
+        ],
+        "x": 5,
+        "y": 4
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "Gear",
+            "INSTANCE": {
+              "heading": "WEST"
+            }
+          }
+        ],
+        "x": 6,
+        "y": 4
+      },
+      {
+        "walls": [
+          "NORTH",
+          "SOUTH",
+          "EAST",
+          "WEST"
+        ],
+        "actions": [],
+        "x": 7,
+        "y": 5
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "SOUTH",
+              "color": "BLUE"
+            }
+          }
+        ],
+        "x": 8,
+        "y": 0
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "WEST",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 8,
+        "y": 2
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 10,
+        "y": 0
+      },
+      {
+        "walls": [
+          "WEST"
+        ],
+        "actions": [],
+        "x": 10,
+        "y": 1
+      },
+      {
+        "walls": [
+          "WEST",
+          "EAST"
+        ],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "SOUTH",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 10,
+        "y": 2
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [],
+        "x": 10,
+        "y": 3
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "Gear",
+            "INSTANCE": {
+              "heading": "EAST"
+            }
+          }
+        ],
+        "x": 10,
+        "y": 4
+      },
+      {
+        "walls": [
+          "EAST"
+        ],
+        "actions": [],
+        "x": 10,
+        "y": 5
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "NORTH",
+              "color": "BLUE"
+            }
+          }
+        ],
+        "x": 11,
+        "y": 3
+      },
+      {
+        "walls": [],
+        "actions": [
+          {
+            "CLASSNAME": "ConveyorBelt",
+            "INSTANCE": {
+              "heading": "WEST",
+              "color": "GREEN"
+            }
+          }
+        ],
+        "x": 12,
+        "y": 4
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 13,
+        "y": 3
+      },
+      {
+        "walls": [
+          "SOUTH"
+        ],
+        "actions": [],
+        "x": 14,
+        "y": 3
+      }
+    ],
+    "boardName": "CheckpointChallenge"
+  },
+  "gameId": 2,
+  "players": [
+    {
+      "playerName": "Player 3",
+      "playerColor": "blue",
+      "checkPointTokenReached": 0,
+      "x": 4,
+      "y": 2,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "BACKWARD",
+          "visible": true
+        },
+        {
+          "command": "U_TURN",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_WEASEL_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
+          "visible": true
+        }
+      ],
+      "SPAMDamageCards": 0
+    },
+    {
+      "playerName": "Player 2",
+      "playerColor": "green",
+      "checkPointTokenReached": 0,
+      "x": 1,
+      "y": 1,
+      "heading": "SOUTH",
+      "program": [
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "command": "U_TURN",
+          "visible": true
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "SPEED_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "LEFT",
+          "visible": true
+        },
+        {
+          "command": "FORWARD",
+          "visible": true
+        },
+        {
+          "command": "BACKWARD",
+          "visible": true
+        }
+      ],
+      "SPAMDamageCards": 0
+    },
+    {
+      "playerName": "Player 1",
+      "playerColor": "red",
+      "checkPointTokenReached": 0,
+      "x": 0,
+      "y": 1,
+      "heading": "WEST",
+      "program": [
+        {
+          "command": "FORWARD",
+          "visible": true
+        },
+        {
+          "command": "OPTION_LEFT_RIGHT",
+          "visible": true
+        },
+        {
+          "command": "FAST_FORWARD",
+          "visible": true
+        },
+        {
+          "visible": false
+        },
+        {
+          "visible": false
+        }
+      ],
+      "cards": [
+        {
+          "visible": true
+        },
+        {
+          "command": "LEFT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        },
+        {
+          "command": "OPTION_WEASEL_ROUTINE",
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "visible": true
+        },
+        {
+          "command": "RIGHT",
+          "visible": true
+        },
+        {
+          "command": "OPTION_SANDBOX_ROUTINE",
+          "visible": true
+        }
+      ],
+      "SPAMDamageCards": 0
+    }
+  ],
+  "currentPlayerIndex": 2,
+  "phase": "ACTIVATION",
+  "step": 2
+}

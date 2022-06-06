@@ -260,12 +260,14 @@ public class GameController {
             // at the end of a register after all board elements have activated, check if any player gets a checkpoint token
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 if (board.getPlayer(i).getSpace().collectCheckpointToken()) {
-                    Alert a = new Alert(Alert.AlertType.NONE);
-                    a.setTitle("Checkpoint token collected!");
-                    a.setContentText("Player "+ (i+1) + " has collected a checkpoint token!");
-                    ButtonType type = new ButtonType("Ok");
-                    a.getDialogPane().getButtonTypes().add(type);
-                    a.show();
+                    if (board.getPlayer(i).getCheckPointReached() != CheckPoint.getHighestCheckPointNumber()) {
+                        Alert a = new Alert(Alert.AlertType.NONE);
+                        a.setTitle("Checkpoint token collected!");
+                        a.setContentText(board.getPlayer(i).getName() + " has collected a checkpoint token!");
+                        ButtonType type = new ButtonType("Ok");
+                        a.getDialogPane().getButtonTypes().add(type);
+                        a.show();
+                    }
                 }
             }
             // check if any player has won the game
