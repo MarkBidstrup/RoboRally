@@ -23,7 +23,7 @@ public class SavedGamesClient implements IGamesService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    public List<String> getListOfSavedGames() {
+    public List<String> getListOfSavedGames() { // Xiao Chen & Mark Bidstrup
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
@@ -34,6 +34,8 @@ public class SavedGamesClient implements IGamesService {
             CompletableFuture<HttpResponse<String>> response =
                     httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
             String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            result = result.replaceAll("]", "").replaceAll("\\[","").replaceAll("\"","");
+
             return new ArrayList<String>(Arrays.asList(result.split(",")));
         } catch (Exception e) {
             return null;
