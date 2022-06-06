@@ -6,10 +6,10 @@ title Play game
 
 loop until winner found
 alt programming phase
-Client -> Server: Patch (player mat)
-Client -> Server: Get game state
-Server --> Client: Return game state
-alt programming complete
+Client -> Server: Patch (player mat, ready)
+Client -> Server: Get allPlayersReady
+Server --> Client: Return allPlayersReady
+alt all players are ready
 Client -> Server: Patch (phase status)
 end
 end
