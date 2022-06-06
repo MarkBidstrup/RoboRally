@@ -344,8 +344,10 @@ public class GameController {
      * @param player the player whose robots should be moved forward.
      */
     public void fastForward(@NotNull Player player) { // @author Deniz Isikli
-        moveForward(player);
-        moveForward(player);
+        if (player != null && player.board == board) {
+            moveForward(player);
+            moveForward(player);
+        }
     }
 
     /**
