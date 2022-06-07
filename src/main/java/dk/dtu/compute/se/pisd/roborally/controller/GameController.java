@@ -157,10 +157,11 @@ public class GameController {
     /**
      * This methodes  executes the all programs card of all robots.
      */
-    public void executePrograms() {
-        board.setStepMode(false);
-        continuePrograms();
-    }
+    // disabled for web game as it is not user friendly to execute all programs at once
+//    public void executePrograms() {
+//        board.setStepMode(false);
+//        continuePrograms();
+//    }
 
     /**
      * This methode executes the current map of the current robot,
