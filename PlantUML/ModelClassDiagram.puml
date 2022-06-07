@@ -82,6 +82,8 @@ package "Views" #DDDDDD {
 
 package "Controllers" #DDDDDD {
 
+    () GameController
+
 }
 
 'Models
@@ -93,10 +95,13 @@ Player -- CommandCardField
 CommandCardField -- CommandCard
 
 'Views
-Board -- BoardView
-Board -- PlayersView
-CommandCardField -- CardFieldView
-Player -- PlayerView
-Space -- SpaceView
+Board --- BoardView
+Board --- PlayersView
+CommandCardField --- CardFieldView
+Player --- PlayerView
+Space --- SpaceView
+
+'Controllers
+Board -- GameController
 
 @enduml
