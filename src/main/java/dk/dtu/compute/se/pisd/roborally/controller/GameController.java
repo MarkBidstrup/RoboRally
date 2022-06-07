@@ -246,6 +246,7 @@ public class GameController {
             // board elements activate at the end of each register
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 Space space = board.getPlayer(i).getSpace();
+                robotLaser(board.getPlayer(i), space);
                 for(FieldAction action: space.getActions()){ action.doAction(this, space); }
             }
             // at the end of a register after all board elements have activated, check if any player gets a checkpoint token
@@ -344,7 +345,7 @@ public class GameController {
             player.setSpace(space);
     }
 
-    // @author Deniz Isikli
+    // @author Xiao Chen & Deniz Isikli
     public boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
         if (heading == Heading.SOUTH && space.y < player.getSpace().y)
             return true;
@@ -459,6 +460,26 @@ public class GameController {
             int step = board.getStep();
             CommandCard temp = generateRandomCommandCard();
             player.setProgram(step, temp);
+        }
+    }
+
+
+    // @author Xiao Chen & Deniz Isikli
+    public void robotLaser(@NotNull Player player, @NotNull Space space) {
+        Space firstTarget = board.getNeighbour(space, player.getHeading());
+
+        while(firstTarget != null && firstTarget != space && !fallOverEdge(player, firstTarget, player.getHeading())) {
+            if(firstTarget.getPlayer() != null && firstTarget.getPlayer() != player) {
+                firstTarget.getPlayer().incrementSPAMDamageCount();
+                Alert a = new Alert(Alert.AlertType.NONE);
+                a.setTitle("Player is hit by a laser!");
+                a.setContentText((firstTarget.getPlayer().getName()) + " has been hit by " + player.getName() + "'s robot laser!" );                ButtonType type = new ButtonType("Ok");
+                a.getDialogPane().getButtonTypes().add(type);
+                a.show();
+
+                return;
+            }
+            firstTarget = board.getNeighbour(firstTarget, player.getHeading());
         }
     }
 
