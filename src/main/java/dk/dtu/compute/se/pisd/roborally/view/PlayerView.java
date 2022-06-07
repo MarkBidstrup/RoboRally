@@ -53,6 +53,7 @@ public class PlayerView extends Tab implements ViewObserver {
 
     private VBox buttonPanel;
 
+    private Button refreshButton;
     private Button finishButton;
     private Button executeButton;
     private Button stepButton;
@@ -89,6 +90,9 @@ public class PlayerView extends Tab implements ViewObserver {
         //      players, but on the PlayersView (view for all players). This should be
         //      refactored.
 
+        refreshButton = new Button("Update Game");
+        refreshButton.setOnAction(e -> gameController.updateGameServerPull());
+
         finishButton = new Button("Finish Programming");
         finishButton.setOnAction(e -> gameController.playerFinishProgramming(player));
 
@@ -98,7 +102,7 @@ public class PlayerView extends Tab implements ViewObserver {
         stepButton = new Button("Execute Current Register");
         stepButton.setOnAction(e -> gameController.executeStep());
 
-        buttonPanel = new VBox(finishButton, executeButton, stepButton);
+        buttonPanel = new VBox(refreshButton, finishButton, executeButton, stepButton);
         buttonPanel.setAlignment(Pos.CENTER_LEFT);
         buttonPanel.setSpacing(3.0);
         // programPane.add(buttonPanel, Player.NO_REGISTERS, 0); done in update now
@@ -176,24 +180,28 @@ public class PlayerView extends Tab implements ViewObserver {
                         //     from the initialization phase to the programming phase somehow!
                         executeButton.setDisable(false);
                         stepButton.setDisable(true);
+                        refreshButton.setDisable(false);
                         break;
 
                     case PROGRAMMING:
                         finishButton.setDisable(false);
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
+                        refreshButton.setDisable(false);
                         break;
 
                     case ACTIVATION:
                         finishButton.setDisable(true);
                         executeButton.setDisable(false);
                         stepButton.setDisable(false);
+                        refreshButton.setDisable(false);
                         break;
 
                     default:
                         finishButton.setDisable(true);
                         executeButton.setDisable(true);
                         stepButton.setDisable(true);
+                        refreshButton.setDisable(false);
                 }
 
 
