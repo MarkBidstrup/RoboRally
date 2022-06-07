@@ -21,6 +21,9 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.GameStateTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -154,10 +157,11 @@ public class GameController {
     /**
      * This methodes  executes the all programs card of all robots.
      */
-    public void executePrograms() {
-        board.setStepMode(false);
-        continuePrograms();
-    }
+    // disabled for web game as it is not user friendly to execute all programs at once
+//    public void executePrograms() {
+//        board.setStepMode(false);
+//        continuePrograms();
+//    }
 
     /**
      * This methode executes the current map of the current robot,
@@ -246,6 +250,7 @@ public class GameController {
             // board elements activate at the end of each register
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 Space space = board.getPlayer(i).getSpace();
+                robotLaser(board.getPlayer(i), space);
                 for(FieldAction action: space.getActions()){ action.doAction(this, space); }
             }
             // at the end of a register after all board elements have activated, check if any player gets a checkpoint token
@@ -274,6 +279,7 @@ public class GameController {
                 startProgrammingPhase();
             }
         }
+        // TODO - update gamestate on server using "PUT"
     }
 
     private void executeCommand(@NotNull Player player, Command command) {
@@ -344,8 +350,8 @@ public class GameController {
             player.setSpace(space);
     }
 
-    // @author Deniz Isikli
-    public boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
+    // @author Xiao Chen & Deniz Isikli
+    private boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
         if (heading == Heading.SOUTH && space.y < player.getSpace().y)
             return true;
         else if (heading == Heading.NORTH && space.y > player.getSpace().y)
@@ -462,6 +468,25 @@ public class GameController {
         }
     }
 
+    // @author Xiao Chen & Deniz Isikli
+    private void robotLaser(@NotNull Player player, @NotNull Space space) {
+        Space firstTarget = board.getNeighbour(space, player.getHeading());
+
+        while(firstTarget != null && firstTarget != space && !fallOverEdge(player, firstTarget, player.getHeading())) {
+            if(firstTarget.getPlayer() != null && firstTarget.getPlayer() != player) {
+                firstTarget.getPlayer().incrementSPAMDamageCount();
+                Alert a = new Alert(Alert.AlertType.NONE);
+                a.setTitle("Player is hit by a laser!");
+                a.setContentText((firstTarget.getPlayer().getName()) + " has been hit by " + player.getName() + "'s robot laser!" );                ButtonType type = new ButtonType("Ok");
+                a.getDialogPane().getButtonTypes().add(type);
+                a.show();
+
+                return;
+            }
+            firstTarget = board.getNeighbour(firstTarget, player.getHeading());
+        }
+    }
+
     /**
      * This method allows moves the card between the commandCards fields
      * @param source the source where the card should be moved from.
@@ -480,16 +505,12 @@ public class GameController {
         }
     }
 
-    /**
-     * A method called when no corresponding controller operation is implemented yet. This
-     * should eventually be removed.
-     */
-    public void notImplemented() {
-        // XXX just for now to indicate that the actual method is not yet implemented
-        assert false;
+    // TODO - pull from gameStateServer
+    public void updateGameServerPull() {
+        //updateGameState();
     }
 
-    public void checkForWinner() { // @author Mark Bidstrup
+    private void checkForWinner() { // @author Mark Bidstrup
         // if a player has collected the last token, they have won
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             if (board.getPlayer(i).getCheckPointReached() != 0
@@ -502,8 +523,38 @@ public class GameController {
                 ButtonType type = new ButtonType("Ok");
                 a.getDialogPane().getButtonTypes().add(type);
                 a.show();
-
             }
         }
+    }
+
+    // following method only adds/updates game state information, but does not reload the board itself
+    private Board updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
+        // update the player information
+        List<Player> temp = new ArrayList<>();
+        for (PlayerTemplate playerTemplate: template.players) {
+            Player player = board.getPlayer(playerTemplate.playerName);
+            player.setCheckPointReached(playerTemplate.checkPointTokenReached);
+            player.setSpace(board.getSpace(playerTemplate.x, playerTemplate.y));
+            player.setHeading(playerTemplate.heading);
+            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            for (int i = 0; i < Player.NO_CARDS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            temp.add(player);
+        }
+        for (int i = 0; i < temp.size(); i++) // following loop puts the players in the correct order (according to loaded data)
+            board.replacePlayerAtPositionIndex(i, temp.get(i));
+        board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
+        board.setPhase(template.phase);
+        board.setStep(template.step);
+        return board;
     }
 }
