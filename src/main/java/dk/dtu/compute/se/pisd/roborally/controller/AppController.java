@@ -25,6 +25,7 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.OnlineGameClient;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.SavedGamesClient;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
 import dk.dtu.compute.se.pisd.roborally.model.*;
@@ -94,10 +95,10 @@ public class AppController implements Observer {
             }
 
 
-            boolean created= new SavedGamesClient().createLobby(boardname, String.valueOf(gameId), no);
+            boolean created= new OnlineGameClient().createLobby(boardname, String.valueOf(gameId), no);
             if(created == true) {
                 GameStateTemplate template= LoadBoard.createGameStateTemplate(board);
-                created= new SavedGamesClient().createGame(template);
+                created= new OnlineGameClient().createGame(template);
                 if(created==true){
                     showInfo("Info","Game created successfully.","BoardName: "+boardname+" - GameID: "+gameId);
                 }else {
@@ -128,8 +129,8 @@ public class AppController implements Observer {
     }
 
     public void joinGame(){
-        SavedGamesClient savedGamesClient = new SavedGamesClient();
-        List<String> lobbyGamesList = savedGamesClient.getListOfLobbyGames();
+        OnlineGameClient onlineGameClient = new OnlineGameClient();
+        List<String> lobbyGamesList = onlineGameClient.getListOfLobbyGames();
 
         ChoiceDialog<String> gameBoard = new ChoiceDialog<>(lobbyGamesList.get(0), lobbyGamesList);
         gameBoard.setTitle("Choose game");
@@ -141,15 +142,15 @@ public class AppController implements Observer {
         String[]choice = userChoice.split(" - ");
         String boardname=choice[0].replaceAll("Board: ","");
         String gameId=choice[1].replaceAll("GameID: ","");
-        boolean joined= savedGamesClient.joinLobbyGame(boardname, gameId);
+        boolean joined= onlineGameClient.joinLobbyGame(boardname, gameId);
         if(joined == true) {
 
             showInfo("Info","You joined the lobby.","Please wait for other players to join.");
-            int joinedplayers = SavedGamesClient.getNumberOfJoinedPlayers(boardname, gameId);
-            int totalNumber= SavedGamesClient.getMaxNumberOfPlayers(boardname, gameId);;
+            int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
+            int totalNumber= onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);;
             int count=0;
             while(joinedplayers != totalNumber && count <10){
-                joinedplayers= SavedGamesClient.getNumberOfJoinedPlayers(boardname, gameId);
+                joinedplayers= onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
                 count ++;
                 try {
                     Thread.sleep(1000);
@@ -159,7 +160,7 @@ public class AppController implements Observer {
             }
 
             if(joinedplayers == totalNumber) {
-                GameStateTemplate template= SavedGamesClient.getOnlineGame(boardname,gameId);
+                GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,gameId);
                 Board board= setupBoardFromState(template);
                 gameController = new GameController(board);
                 gameController.startProgrammingPhase();
