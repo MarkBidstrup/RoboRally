@@ -70,7 +70,11 @@ public class SpaceView extends StackPane implements ViewObserver {
 
         // makes empty spaces look like metal plates
         String path= Objects.requireNonNull(this.getClass().getResource("../../../../../../../image/")).toString();
-        String imgURL = path + "EmptySpace.png";
+        String imgURL;
+        if (space.x == 0 && space.y == 3)
+            imgURL = path + "reboot.png";
+        else
+            imgURL = path + "EmptySpace.png";
         this.setStyle("-fx-background-image: url("+imgURL+"); -fx-background-size: "+SPACE_HEIGHT+";");
 
 

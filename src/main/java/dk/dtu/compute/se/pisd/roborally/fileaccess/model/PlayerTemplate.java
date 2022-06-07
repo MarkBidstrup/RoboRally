@@ -16,4 +16,5 @@ public class PlayerTemplate { // @author Xiao Chen
 
     public List<CommandCardFieldTemplate> program = new ArrayList<>();
     public List<CommandCardFieldTemplate> cards = new ArrayList<>();
+    public int SPAMDamageCards;
 }

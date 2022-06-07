@@ -25,10 +25,9 @@ import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.CheckPoint;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.SavedGamesClient;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.*;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -50,6 +49,7 @@ public class AppController implements Observer {
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("EasyIntro","ConveyorBeltMayhem","CheckpointChallenge");
     private String boardname;
+    private String userChoice;
 
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
@@ -81,8 +81,10 @@ public class AppController implements Observer {
                 }
             }
 
-            // @author Xiao Chen
             Board board = LoadBoard.loadBoard(boardname);
+            int gameId = (int) (Math.random()*10);
+            // TODO - can make it so that gameId is a user choice
+            board.setGameId(gameId);
 
             gameController = new GameController(board);
             int no = result.get();
@@ -102,18 +104,20 @@ public class AppController implements Observer {
      * this methode should provide the player to save the game
      */
     public void saveGame() {
-        // use saveBoard() if only the board and not the game state is to be saved
-        LoadBoard.saveGame(gameController.board,gameController.board.boardName);
+        LoadBoard.saveGame(gameController.board);
     }
 
     /**
      * this methode should provide the player to load the game
      */
-    public void loadGame() {             // @author Xiao Chen
+    public void loadGame() {             // @author Xiao Chen & Mark Bidstrup
         // use loadBoard if only loading a board (no game state info) - otherwise use loadGame
-        gameBoardDialog();
+        loadGameDialog();
 
-        Board board = LoadBoard.loadGame(boardname);
+        SavedGamesClient client = new SavedGamesClient();
+        GameStateTemplate gameStateTemplate = client.getGameStateTemplate(userChoice);
+
+        Board board = setupBoardFromState(gameStateTemplate);
         if (board != null && board.getPlayersNumber() > 0) {
             List<Player> temp = new ArrayList<>();
             for (int i = 0; i < board.getPlayersNumber(); i++)
@@ -133,7 +137,6 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
             gameController = new GameController(board);
-            gameController.startProgrammingPhase();
             roboRally.createBoardView(gameController);
         }
     }
@@ -145,6 +148,62 @@ public class AppController implements Observer {
         Optional<String> gameBoardResult = gameBoard.showAndWait();
 
         gameBoardResult.ifPresent(s -> boardname = s);
+    }
+
+    private void loadGameDialog() {             // @author Mark Bidstrup
+        SavedGamesClient savedGamesClient = new SavedGamesClient();
+        List<String> savedGamesList = savedGamesClient.getListOfSavedGames();
+
+        ChoiceDialog<String> gameBoard = new ChoiceDialog<>(savedGamesList.get(0), savedGamesList);
+        gameBoard.setTitle("Choose game");
+        gameBoard.setHeaderText("Select a game to load");
+        Optional<String> gameBoardResult = gameBoard.showAndWait();
+
+        gameBoardResult.ifPresent(s -> userChoice = s);
+    }
+
+    private Board setupBoardFromState(GameStateTemplate template) { // @author Mark Bidstrup
+        Board result;
+        result = new Board(template.board.width, template.board.height, template.board.boardName);
+        result.setPriorityAntenna(template.board.antenna.x, template.board.antenna.y,template.board.antenna.heading);
+        CheckPoint.setHighestCheckPointNumber(0);
+        for (CheckPointTemplate checkPointTemplate: template.board.checkPoints) {
+            if (result.getSpace(checkPointTemplate.x, checkPointTemplate.y) != null)
+                result.setCheckpoint(checkPointTemplate.x, checkPointTemplate.y);
+        }
+        for (SpaceTemplate spaceTemplate: template.board.spaces) {
+            Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+            if (space != null) {
+                space.getActions().addAll(spaceTemplate.actions);
+                space.getWalls().addAll(spaceTemplate.walls);
+            }
+        }
+        if (template.gameId != null)
+            result.setGameId(template.gameId);
+        for (PlayerTemplate playerTemplate: template.players) {
+            Player player = new Player(result, playerTemplate.playerColor, playerTemplate.playerName);
+            player.setCheckPointReached(playerTemplate.checkPointTokenReached);
+            player.setSpace(result.getSpace(playerTemplate.x, playerTemplate.y));
+            player.setHeading(playerTemplate.heading);
+            player.setSPAMDamageCount(playerTemplate.SPAMDamageCards);
+            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            for (int i = 0; i < Player.NO_CARDS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            result.addPlayer(player);
+        }
+        result.setCurrentPlayer(result.getPlayer(template.currentPlayerIndex));
+        result.setPhase(template.phase);
+        result.setStep(template.step);
+        return result;
     }
 
     /**

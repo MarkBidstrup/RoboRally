@@ -30,50 +30,38 @@
   ],
   "spaces": [
     {
-      "walls": [
-        "NORTH",
-        "WEST"
-      ],
+      "walls": [],
       "actions": [],
       "x": 0,
       "y": 0
     },
     {
-      "walls": [
-        "WEST"
-      ],
+      "walls": [],
       "actions": [],
       "x": 0,
       "y": 1
     },
     {
-      "walls": [
-        "WEST"
-      ],
+      "walls": [],
       "actions": [],
       "x": 0,
       "y": 2
     },
     {
-      "walls": [
-        "WEST"
-      ],
+      "walls": [],
       "actions": [],
       "x": 0,
       "y": 3
     },
     {
-      "walls": [
-        "WEST"
-      ],
+      "walls": [],
       "actions": [],
       "x": 0,
       "y": 4
     },
     {
       "walls": [
-        "WEST",
-        "SOUTH"
+        "WEST"
       ],
       "actions": [],
       "x": 0,
@@ -81,37 +69,33 @@
     },
     {
       "walls": [
-        "NORTH"
+        "WEST"
       ],
       "actions": [],
-      "x": 1,
-      "y": 0
+      "x": 0,
+      "y": 3
     },
     {
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "EAST"
           }
         }
       ],
-      "x": 1,
+      "x": 3,
       "y": 3
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 1,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 2,
       "y": 0
@@ -120,7 +104,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST",
             "color": "BLUE"
@@ -131,24 +115,20 @@
       "y": 2
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 2,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 3,
       "y": 0
     },
     {
       "walls": [
-        "WEST"
+        "NORTH"
       ],
       "actions": [],
       "x": 3,
@@ -164,8 +144,7 @@
     },
     {
       "walls": [
-        "WEST",
-        "SOUTH"
+        "WEST"
       ],
       "actions": [],
       "x": 3,
@@ -173,17 +152,17 @@
     },
     {
       "walls": [
-        "NORTH"
+        "EAST"
       ],
       "actions": [],
       "x": 4,
-      "y": 0
+      "y": 2
     },
     {
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "EAST",
             "color": "GREEN"
@@ -194,17 +173,13 @@
       "y": 1
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 4,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 5,
       "y": 0
@@ -213,7 +188,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -226,7 +201,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST",
             "color": "BLUE"
@@ -237,17 +212,13 @@
       "y": 4
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 5,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 6,
       "y": 0
@@ -256,7 +227,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "WEST"
           }
@@ -266,27 +237,19 @@
       "y": 4
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 6,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 7,
       "y": 0
     },
     {
       "walls": [
-        "NORTH",
-        "SOUTH",
-        "EAST",
-        "WEST",
         "NORTH",
         "SOUTH",
         "EAST",
@@ -297,12 +260,10 @@
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
             "color": "BLUE"
@@ -316,7 +277,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST",
             "color": "GREEN"
@@ -327,32 +288,25 @@
       "y": 2
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 8,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 9,
       "y": 0
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 9,
       "y": 5
     },
     {
       "walls": [
-        "NORTH",
         "WEST"
       ],
       "actions": [],
@@ -373,7 +327,7 @@
       ],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "SOUTH",
             "color": "GREEN"
@@ -387,7 +341,7 @@
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.Gear",
+          "CLASSNAME": "Gear",
           "INSTANCE": {
             "heading": "EAST"
           }
@@ -397,42 +351,34 @@
       "y": 4
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 10,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 11,
       "y": 0
     },
     {
-      "walls": [
-        "SOUTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 11,
       "y": 5
     },
     {
-      "walls": [
-        "NORTH"
-      ],
+      "walls": [],
       "actions": [],
       "x": 12,
-      "y": 0
+      "y": 2
     },
     {
       "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "WEST",
             "color": "GREEN"
@@ -447,29 +393,27 @@
         "SOUTH"
       ],
       "actions": [],
-      "x": 12,
-      "y": 5
+      "x": 13,
+      "y": 3
     },
     {
       "walls": [
         "NORTH"
       ],
       "actions": [],
-      "x": 13,
-      "y": 0
+      "x": 4,
+      "y": 3
     },
     {
       "walls": [
         "SOUTH"
       ],
       "actions": [],
-      "x": 13,
-      "y": 5
+      "x": 14,
+      "y": 3
     },
     {
       "walls": [
-        "NORTH",
-        "EAST"
       ],
       "actions": [],
       "x": 14,
@@ -480,7 +424,7 @@
         "EAST"
       ],
       "actions": [],
-      "x": 14,
+      "x": 5,
       "y": 1
     },
     {
@@ -488,23 +432,21 @@
         "EAST"
       ],
       "actions": [],
-      "x": 14,
+      "x": 10,
       "y": 2
     },
     {
-      "walls": [
-        "EAST"
-      ],
+      "walls": [],
       "actions": [
         {
-          "CLASSNAME": "dk.dtu.compute.se.pisd.roborally.controller.ConveyorBelt",
+          "CLASSNAME": "ConveyorBelt",
           "INSTANCE": {
             "heading": "NORTH",
             "color": "BLUE"
           }
         }
       ],
-      "x": 14,
+      "x": 11,
       "y": 3
     },
     {
@@ -512,16 +454,15 @@
         "EAST"
       ],
       "actions": [],
-      "x": 14,
-      "y": 4
+      "x": 10,
+      "y": 3
     },
     {
       "walls": [
-        "EAST",
-        "SOUTH"
+        "EAST"
       ],
       "actions": [],
-      "x": 14,
+      "x": 10,
       "y": 5
     }
   ],

@@ -22,7 +22,6 @@
 package dk.dtu.compute.se.pisd.roborally.model;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
-import dk.dtu.compute.se.pisd.roborally.controller.FieldAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,12 +98,14 @@ public class Space extends Subject {
         this.checkPoint = checkPoint;
     }
 
-    // @author Xiao Chen
-    public void collectCheckpointToken() {
+    public boolean collectCheckpointToken() {     // @author Xiao Chen
         if (player != null && checkPoint != null) {
             if ((player.getCheckPointReached() > 0 && checkPoint.getCheckpointNumber() - player.getCheckPointReached() == 1)
-                    || (player.getCheckPointReached() == 0 && checkPoint.getCheckpointNumber() == 1))
+                    || (player.getCheckPointReached() == 0 && checkPoint.getCheckpointNumber() == 1)) {
                 player.setCheckPointReached(checkPoint.getCheckpointNumber());
+                return true;
+            }
         }
+        return false;
     }
 }

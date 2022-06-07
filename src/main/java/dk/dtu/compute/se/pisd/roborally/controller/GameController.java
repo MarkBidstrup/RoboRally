@@ -21,19 +21,13 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.RoboRally;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
-import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The GameController is responsible for handling the all
@@ -45,6 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GameController {
 
     final public Board board;
+    private List<Player> rebootedThisStep = new ArrayList<>();
 
     /**
      * This constructor takes a board as input.
@@ -77,7 +72,6 @@ public class GameController {
     /**
      * This methode allows the player to get some random cammand cards where players can program their robot with.
      */
-    // XXX: V2
     public void startProgrammingPhase() {
         board.setPhase(Phase.PROGRAMMING);
         board.setCurrentPlayer(board.getPlayer(0));
@@ -91,19 +85,23 @@ public class GameController {
                     field.setCard(null);
                     field.setVisible(true);
                 }
-                for (int j = 0; j < Player.NO_CARDS; j++) {
+                for (int j = player.getSPAMDamageCount() ; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
                     field.setCard(generateRandomCommandCard());
+                    field.setVisible(true);
+                }
+                for (int j = 0; j < player.getSPAMDamageCount(); j++) { // @author Deniz Isikli
+                    CommandCardField field = player.getCardField(j);
+                    field.setCard(new CommandCard(Command.SPAM_DAMAGE));
                     field.setVisible(true);
                 }
             }
         }
     }
 
-    // XXX: V2
     private CommandCard generateRandomCommandCard() {
         Command[] commands = Command.values();
-        int random = (int) (Math.random() * commands.length);
+        int random = (int) (Math.random() * (commands.length-1));
         return new CommandCard(commands[random]);
     }
 
@@ -111,7 +109,6 @@ public class GameController {
      * This method allows the players to finish the programing phase, and
      * activates the activation phase, "Execute Program" and "Execute Current Register" buttons
      */
-    // XXX: V2
     public void finishProgrammingPhase() {
         makeProgramFieldsInvisible();
         makeProgramFieldsVisible(0);
@@ -123,7 +120,17 @@ public class GameController {
         board.setStep(0);
     }
 
-    // XXX: V2
+    public void playerFinishProgramming(Player player) { // @author Deniz Isikli
+        // if the player programmed any SPAM damage cards, their SPAM-count is reduced
+        int count = 0;
+        for (int i = 0; i < Player.NO_REGISTERS; i++) {
+            if(player.getProgramField(i).getCard() != null && player.getProgramField(i).getCard().command == Command.SPAM_DAMAGE)
+                count++;
+        }
+        player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
+        finishProgrammingPhase(); // TODO - update this for web version - only switch phase after all players done
+    }
+
     private void makeProgramFieldsVisible(int register) {
         if (register >= 0 && register < Player.NO_REGISTERS) {
             for (int i = 0; i < board.getPlayersNumber(); i++) {
@@ -134,7 +141,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
     private void makeProgramFieldsInvisible() {
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             Player player = board.getPlayer(i);
@@ -148,7 +154,6 @@ public class GameController {
     /**
      * This methodes  executes the all programs card of all robots.
      */
-    // XXX: V2
     public void executePrograms() {
         board.setStepMode(false);
         continuePrograms();
@@ -158,20 +163,17 @@ public class GameController {
      * This methode executes the current map of the current robot,
      * so in this way the player click step by step throughout the program
      */
-    // XXX: V2
     public void executeStep() {
         board.setStepMode(true);
         continuePrograms();
     }
 
-    // XXX: V2
     private void continuePrograms() {
         do {
             executeNextStep();
         } while (board.getPhase() == Phase.ACTIVATION && !board.isStepMode());
     }
 
-    // XXX: V2
     public void executeNextStep() {
         Player currentPlayer = board.getCurrentPlayer();
         if (board.getPhase() == Phase.ACTIVATION && currentPlayer != null) {
@@ -185,6 +187,10 @@ public class GameController {
                         return;
                     } else {
                         executeCommand(currentPlayer, command);
+                        if (command == Command.SPAM_DAMAGE) {
+                            executeCommand(currentPlayer, command);
+                            return;
+                        }
                     }
                 }
                 switchTurnAndRegister(currentPlayer, step);
@@ -213,6 +219,26 @@ public class GameController {
     // @author Xiao Chen
     public void switchTurnAndRegister(Player currentPlayer, int step) {
         int nextPlayerNumber = board.getPlayerNumber(currentPlayer) + 1;
+        // put the rebooted robots on the reboot field
+        for (Player p : rebootedThisStep) {
+            while (board.getSpace(0,3).getPlayer() != null) {
+                try {
+                    moveToSpace(board.getSpace(0,3).getPlayer(),board.getNeighbour(board.getSpace(0,3),Heading.EAST),Heading.EAST);
+                } catch (ImpossibleMoveException e) {
+                    try {
+                        Heading[] headings = Heading.values();
+                        int random = (int) (Math.random() * (headings.length));
+                        Heading head = headings[random];
+                        moveToSpace(board.getSpace(0,3).getPlayer(),board.getNeighbour(board.getSpace(0,3),head),head);
+                    } catch (ImpossibleMoveException impossibleMoveException) {
+                        impossibleMoveException.printStackTrace();
+                    }
+                    e.printStackTrace(); }
+            }
+            p.setSpace(board.getSpace(0,3));
+            p.setHeading(Heading.EAST);
+        }
+        rebootedThisStep.clear();
         if (nextPlayerNumber < board.getPlayersNumber()) {
             board.setCurrentPlayer(board.getPlayer(nextPlayerNumber));
         } else {
@@ -220,11 +246,22 @@ public class GameController {
             // board elements activate at the end of each register
             for (int i = 0; i < board.getPlayersNumber(); i++) {
                 Space space = board.getPlayer(i).getSpace();
+                robotLaser(board.getPlayer(i), space);
                 for(FieldAction action: space.getActions()){ action.doAction(this, space); }
             }
             // at the end of a register after all board elements have activated, check if any player gets a checkpoint token
-            for (int i = 0; i < board.getPlayersNumber(); i++)
-                board.getPlayer(i).getSpace().collectCheckpointToken();
+            for (int i = 0; i < board.getPlayersNumber(); i++) {
+                if (board.getPlayer(i).getSpace().collectCheckpointToken()) {
+                    if (board.getPlayer(i).getCheckPointReached() != CheckPoint.getHighestCheckPointNumber()) {
+                        Alert a = new Alert(Alert.AlertType.NONE);
+                        a.setTitle("Checkpoint token collected!");
+                        a.setContentText(board.getPlayer(i).getName() + " has collected a checkpoint token!");
+                        ButtonType type = new ButtonType("Ok");
+                        a.getDialogPane().getButtonTypes().add(type);
+                        a.show();
+                    }
+                }
+            }
             // check if any player has won the game
             checkForWinner();
             step++;
@@ -240,7 +277,6 @@ public class GameController {
         }
     }
 
-    // XXX: V2
     private void executeCommand(@NotNull Player player, Command command) {
         if (player != null && player.board == board && command != null) {
             // XXX This is a very simplistic way of dealing with some basic cards and
@@ -269,12 +305,18 @@ public class GameController {
                 case BACKWARD:
                     this.moveBackward(player);
                     break;
+                case SPAM_DAMAGE:
+                    this.spamDamage(player);
+                    break;
                 default:
                     // DO NOTHING (for now)
             }
         }
     }
 
+    /**
+     * This methode moves the player's robot to the specified space
+     */
     public void moveToSpace(@NotNull Player player, @NotNull Space space, @NotNull Heading heading) throws ImpossibleMoveException {
         assert board.getNeighbour(player.getSpace(), heading) == space; // make sure the move to here is possible in principle
         Player other = space.getPlayer();
@@ -284,7 +326,10 @@ public class GameController {
                 // XXX Note that there might be additional problems with
                 //     infinite recursion here (in some special cases)!
                 //     We will come back to that!
-                moveToSpace(other, target, heading);
+                if (fallOverEdge(other, target, heading)) // checks if the pushed robot would fall over the edge
+                    rebootRobot(other);
+                else
+                    moveToSpace(other, target, heading);
 
                 // Note that we do NOT embed the above statement in a try catch block, since
                 // the thrown exception is supposed to be passed on to the caller
@@ -294,7 +339,30 @@ public class GameController {
                 throw new ImpossibleMoveException(player, space, heading);
             }
         }
-        player.setSpace(space);
+        if (fallOverEdge(player, space, heading)) // checks if the robot falls over the edge
+            rebootRobot(player);
+        else
+            player.setSpace(space);
+    }
+
+    // @author Xiao Chen & Deniz Isikli
+    public boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
+        if (heading == Heading.SOUTH && space.y < player.getSpace().y)
+            return true;
+        else if (heading == Heading.NORTH && space.y > player.getSpace().y)
+            return true;
+        else if (heading == Heading.WEST && space.x > player.getSpace().x)
+            return true;
+        else return heading == Heading.EAST && space.x < player.getSpace().x;
+    }
+
+    public void rebootRobot(@NotNull Player player) { // @author Deniz Isikli
+        rebootedThisStep.add(player);
+        player.incrementSPAMDamageCount();
+        player.incrementSPAMDamageCount();
+        // player loses their program and cannot move until the next round
+        for (int i = board.getStep() + 1; i < Player.NO_REGISTERS; i++)
+            player.setProgram(i, null);
     }
 
     class ImpossibleMoveException extends Exception {
@@ -336,7 +404,8 @@ public class GameController {
     public void moveBackward(@NotNull Player player) { // @author Deniz Isikli
         uTurn(player);
         moveForward(player);
-        uTurn(player);
+        if (!rebootedThisStep.contains(player))
+            uTurn(player);
     }
 
     /**
@@ -344,10 +413,9 @@ public class GameController {
      * @param player the player whose robots should be moved forward.
      */
     public void fastForward(@NotNull Player player) { // @author Deniz Isikli
-        if (player != null && player.board == board) {
+        moveForward(player);
+        if (!rebootedThisStep.contains(player))
             moveForward(player);
-            moveForward(player);
-        }
     }
 
     /**
@@ -380,8 +448,38 @@ public class GameController {
     public void speedRoutine(Player player) { // @author Deniz Isikli
         if(player != null && player.board == board) {
             moveForward(player);
-            moveForward(player);
-            moveForward(player);
+            if (!rebootedThisStep.contains(player)) // if a robot rebooted, it should not keep moving
+                moveForward(player);
+            if (!rebootedThisStep.contains(player))
+                moveForward(player);
+        }
+    }
+
+    public void spamDamage(Player player) { // @author Deniz Isikli
+        if(player != null && player.board == board) {
+            int step = board.getStep();
+            CommandCard temp = generateRandomCommandCard();
+            player.setProgram(step, temp);
+        }
+    }
+
+
+    // @author Xiao Chen & Deniz Isikli
+    public void robotLaser(@NotNull Player player, @NotNull Space space) {
+        Space firstTarget = board.getNeighbour(space, player.getHeading());
+
+        while(firstTarget != null && firstTarget != space && !fallOverEdge(player, firstTarget, player.getHeading())) {
+            if(firstTarget.getPlayer() != null && firstTarget.getPlayer() != player) {
+                firstTarget.getPlayer().incrementSPAMDamageCount();
+                Alert a = new Alert(Alert.AlertType.NONE);
+                a.setTitle("Player is hit by a laser!");
+                a.setContentText((firstTarget.getPlayer().getName()) + " has been hit by " + player.getName() + "'s robot laser!" );                ButtonType type = new ButtonType("Ok");
+                a.getDialogPane().getButtonTypes().add(type);
+                a.show();
+
+                return;
+            }
+            firstTarget = board.getNeighbour(firstTarget, player.getHeading());
         }
     }
 

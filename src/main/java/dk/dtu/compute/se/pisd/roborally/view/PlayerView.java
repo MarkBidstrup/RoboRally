@@ -90,7 +90,7 @@ public class PlayerView extends Tab implements ViewObserver {
         //      refactored.
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction(e -> gameController.finishProgrammingPhase());
+        finishButton.setOnAction(e -> gameController.playerFinishProgramming(player));
 
         executeButton = new Button("Execute Program");
         executeButton.setOnAction(e -> gameController.executePrograms());
@@ -115,8 +115,11 @@ public class PlayerView extends Tab implements ViewObserver {
         for (int i = 0; i < Player.NO_CARDS; i++) {
             CommandCardField cardField = player.getCardField(i);
             if (cardField != null) {
-                cardViews[i] = new CardFieldView(gameController, cardField);
-                cardsPane.add(cardViews[i], i, 0);
+                //TODO - replace getCurrentPlayer with connectedPlayer
+//                if (player == player.board.getCurrentPlayer()) {
+                    cardViews[i] = new CardFieldView(gameController, cardField);
+                    cardsPane.add(cardViews[i], i, 0);
+//                }
             }
         }
 
@@ -156,7 +159,11 @@ public class PlayerView extends Tab implements ViewObserver {
                     }
                 }
             }
-
+            //TODO - replace getCurrentPlayer with connectedPlayer
+//            if (player != player.board.getCurrentPlayer()) {
+//                programPane.getChildren().remove(buttonPanel);
+//                return;
+//            }
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
