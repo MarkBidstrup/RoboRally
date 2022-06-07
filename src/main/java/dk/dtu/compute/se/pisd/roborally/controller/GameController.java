@@ -21,6 +21,9 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.GameStateTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -347,7 +350,7 @@ public class GameController {
     }
 
     // @author Xiao Chen & Deniz Isikli
-    public boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
+    private boolean fallOverEdge(@NotNull Player player, Space space, Heading heading) {
         if (heading == Heading.SOUTH && space.y < player.getSpace().y)
             return true;
         else if (heading == Heading.NORTH && space.y > player.getSpace().y)
@@ -464,9 +467,8 @@ public class GameController {
         }
     }
 
-
     // @author Xiao Chen & Deniz Isikli
-    public void robotLaser(@NotNull Player player, @NotNull Space space) {
+    private void robotLaser(@NotNull Player player, @NotNull Space space) {
         Space firstTarget = board.getNeighbour(space, player.getHeading());
 
         while(firstTarget != null && firstTarget != space && !fallOverEdge(player, firstTarget, player.getHeading())) {
@@ -504,9 +506,10 @@ public class GameController {
 
     // TODO - pull from gameStateServer
     public void updateGameServerPull() {
+        //updateGameState();
     }
 
-    public void checkForWinner() { // @author Mark Bidstrup
+    private void checkForWinner() { // @author Mark Bidstrup
         // if a player has collected the last token, they have won
         for (int i = 0; i < board.getPlayersNumber(); i++) {
             if (board.getPlayer(i).getCheckPointReached() != 0
@@ -519,8 +522,38 @@ public class GameController {
                 ButtonType type = new ButtonType("Ok");
                 a.getDialogPane().getButtonTypes().add(type);
                 a.show();
-
             }
         }
+    }
+
+    // following method only adds/updates game state information, but does not reload the board itself
+    private Board updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
+        // update the player information
+        List<Player> temp = new ArrayList<>();
+        for (PlayerTemplate playerTemplate: template.players) {
+            Player player = board.getPlayer(playerTemplate.playerName);
+            player.setCheckPointReached(playerTemplate.checkPointTokenReached);
+            player.setSpace(board.getSpace(playerTemplate.x, playerTemplate.y));
+            player.setHeading(playerTemplate.heading);
+            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            for (int i = 0; i < Player.NO_CARDS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            temp.add(player);
+        }
+        for (int i = 0; i < temp.size(); i++) // following loop puts the players in the correct order (according to loaded data)
+            board.replacePlayerAtPositionIndex(i, temp.get(i));
+        board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
+        board.setPhase(template.phase);
+        board.setStep(template.step);
+        return board;
     }
 }
