@@ -94,12 +94,82 @@ public class AppController implements Observer {
             }
 
 
-            if(LoadBoard.createGame(board) == true) {
+            boolean created= new SavedGamesClient().createLobby(boardname, String.valueOf(gameId), no);
+            if(created == true) {
+                GameStateTemplate template= LoadBoard.createGameStateTemplate(board);
+                created= new SavedGamesClient().createGame(template);
+                if(created==true){
+                    showInfo("Info","Game created successfully.","BoardName: "+boardname+" - GameID: "+gameId);
+                }else {
+                    showInfo("Error","creation of game failed","Please try again!");
+                }
+                //gameController = new GameController(board);
+               // gameController.startProgrammingPhase();
+               // roboRally.createBoardView(gameController);
+            }
+        }
+    }
+
+    private void showInfo(String title,String header, String msg){
+        AlertType type;
+        if(title.equals("Info")){
+            type= AlertType.INFORMATION;
+        }else if(title.equals("Error")){
+            type= AlertType.ERROR;
+        }else{
+            type= AlertType.WARNING;
+        }
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(msg);
+
+        alert.showAndWait();
+    }
+
+    public void joinGame(){
+        SavedGamesClient savedGamesClient = new SavedGamesClient();
+        List<String> lobbyGamesList = savedGamesClient.getListOfLobbyGames();
+
+        ChoiceDialog<String> gameBoard = new ChoiceDialog<>(lobbyGamesList.get(0), lobbyGamesList);
+        gameBoard.setTitle("Choose game");
+        gameBoard.setHeaderText("Select a game to join");
+        Optional<String> gameBoardResult = gameBoard.showAndWait();
+
+        gameBoardResult.ifPresent(s -> userChoice = s);
+
+        String[]choice = userChoice.split(" - ");
+        String boardname=choice[0].replaceAll("Board: ","");
+        String gameId=choice[1].replaceAll("GameID: ","");
+        boolean joined= savedGamesClient.joinLobbyGame(boardname, gameId);
+        if(joined == true) {
+
+            showInfo("Info","You joined the lobby.","Please wait for other players to join.");
+            int joinedplayers = SavedGamesClient.getNumberOfJoinedPlayers(boardname, gameId);
+            int totalNumber= SavedGamesClient.getMaxNumberOfPlayers(boardname, gameId);;
+            int count=0;
+            while(joinedplayers != totalNumber && count <10){
+                joinedplayers= SavedGamesClient.getNumberOfJoinedPlayers(boardname, gameId);
+                count ++;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(joinedplayers == totalNumber) {
+                GameStateTemplate template= SavedGamesClient.getOnlineGame(boardname,gameId);
+                Board board= setupBoardFromState(template);
                 gameController = new GameController(board);
                 gameController.startProgrammingPhase();
                 roboRally.createBoardView(gameController);
+            }else{
+                showInfo("Warning","players did not join","Please try again later.");
             }
+
         }
+
     }
 
     /**

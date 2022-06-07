@@ -101,11 +101,6 @@ public class LoadBoard {
         return null;
     }
 
-    public static boolean createGame(Board board){
-        GameStateTemplate newGame= createGameStateTemplate(board);
-        SavedGamesClient client = new SavedGamesClient();
-        return client.createGame(newGame);
-    }
     // @author Xiao Chen
     public static void saveGame(Board board) {
         GameStateTemplate template = createGameStateTemplate(board);
@@ -115,7 +110,7 @@ public class LoadBoard {
     }
 
     // @author Xiao Chen
-    private static GameStateTemplate createGameStateTemplate(Board board) {
+    public static GameStateTemplate createGameStateTemplate(Board board) {
         GameStateTemplate template = new GameStateTemplate();
         template.board = createBoardTemplate(board, board.boardName);
         template.gameId = board.getGameId();
