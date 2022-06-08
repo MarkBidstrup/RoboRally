@@ -10,8 +10,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +25,7 @@ public class GameStateClient implements IGameState{
         try{
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create("http://"+Hostname.hostname+":8080/gameState/" + boardname_gameID))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/" + boardname_gameID))
                     .setHeader("User-Agent", "Game State Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -62,14 +60,14 @@ public class GameStateClient implements IGameState{
             if (getGameStateTemplate(boardname_ID) == null) {
                 request = HttpRequest.newBuilder()
                         .POST(HttpRequest.BodyPublishers.ofString(boardJSON))
-                        .uri(URI.create("http://"+Hostname.hostname+":8080/gameState/"))
+                        .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/"))
                         .setHeader("User-Agent", "Game State Client")
                         .header("Content-Type", "application/json")
                         .build();
             } else {
                 request = HttpRequest.newBuilder()
                         .PUT(HttpRequest.BodyPublishers.ofString(boardJSON))
-                        .uri(URI.create("http://"+Hostname.hostname+":8080/gameState/" + boardname_ID))
+                        .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/" + boardname_ID))
                         .setHeader("User-Agent", "Game State Client")
                         .header("Content-Type", "application/json")
                         .build();
@@ -89,7 +87,7 @@ public class GameStateClient implements IGameState{
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create("http://"+Hostname.hostname+":8080/gameState/"+gameID+"/programmingCounter"))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/"+gameID+"/programmingCounter"))
                     .setHeader("User-Agent", "Game State Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -109,7 +107,7 @@ public class GameStateClient implements IGameState{
         try{
             HttpRequest request = HttpRequest.newBuilder()
                     .PUT(HttpRequest.BodyPublishers.ofString(gameID))
-                    .uri(URI.create("http://"+Hostname.hostname+":8080/gameState/"+gameID+"/programmingCounter/increment"))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/"+gameID+"/programmingCounter/increment"))
                     .setHeader("User-Agent", "Game State Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -127,7 +125,7 @@ public class GameStateClient implements IGameState{
         try{
             HttpRequest request = HttpRequest.newBuilder()
                     .PUT(HttpRequest.BodyPublishers.ofString(value.toString()))
-                    .uri(URI.create("http://"+Hostname.hostname+":8080/gameState/"+gameID+"/programmingCounter/set"))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/"+gameID+"/programmingCounter/set"))
                     .setHeader("User-Agent", "Game State Client")
                     .header("Content-Type", "application/json")
                     .build();
