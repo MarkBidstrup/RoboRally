@@ -21,11 +21,35 @@ public class GameStateClient implements IGameState{
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
+    // @author Deniz Isikli, Xiao Chen
     @Override
     public GameStateTemplate getGameStateTemplate(String boardname_gameID) {
-        return null;
+        try{
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create("http://localhost:8080/gameState/" + boardname_gameID))
+                    .setHeader("User-Agent", "Game State Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+
+            if(result.equals("null")) {
+                return null;
+            } else {
+                GsonBuilder simpleBuilder = new GsonBuilder().
+                        registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+                Gson gson = simpleBuilder.create();
+                return gson.fromJson(result, GameStateTemplate.class);
+            }
+        } catch (Exception e){
+            return null;
+        }
     }
 
+    // @author Xiao Chen & Mark Bidstrup
     @Override
     public boolean updateGameStateTemplate(GameStateTemplate gameStateTemplate) {
         try{
@@ -59,6 +83,7 @@ public class GameStateClient implements IGameState{
         }
     }
 
+    // @author Xiao Chen & Mark Bidstrup
     @Override
     public Integer getProgrammingCounter(String gameID) {
         try {
@@ -78,6 +103,7 @@ public class GameStateClient implements IGameState{
         }
     }
 
+    // @author Xiao Chen & Mark Bidstrup
     @Override
     public void incrementProgrammingCounter(String gameID) {
         try{
@@ -95,6 +121,7 @@ public class GameStateClient implements IGameState{
         }
     }
 
+    // @author Xiao Chen & Mark Bidstrup
     @Override
     public void setProgrammingCounter(String gameID, Integer value) {
         try{
