@@ -177,7 +177,6 @@ public class AppController implements Observer {
         // use loadBoard if only loading a board (no game state info) - otherwise use loadGame
         loadGameDialog();
 
-        // TODO - below should only run after enough players have joined lobby
         SavedGamesClient client = new SavedGamesClient();
         GameStateTemplate gameStateTemplate = client.getGameStateTemplate(userChoice);
 
