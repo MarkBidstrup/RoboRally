@@ -89,7 +89,7 @@ public class GameStateClient implements IGameState{
     public void setProgrammingCounter(String gameID, Integer value) {
         try{
             HttpRequest request = HttpRequest.newBuilder()
-                    .PUT(HttpRequest.BodyPublishers.ofString(gameID))
+                    .PUT(HttpRequest.BodyPublishers.ofString(value.toString()))
                     .uri(URI.create("http://localhost:8080/gameState/"+gameID+"/programmingCounter/set"))
                     .setHeader("User-Agent", "Game State Client")
                     .header("Content-Type", "application/json")

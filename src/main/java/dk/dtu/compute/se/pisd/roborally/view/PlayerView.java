@@ -94,7 +94,7 @@ public class PlayerView extends Tab implements ViewObserver {
         refreshButton.setOnAction(e -> gameController.updateGameServerPull());
 
         finishButton = new Button("Finish Programming");
-        finishButton.setOnAction(e -> gameController.playerFinishProgramming(player));
+        finishButton.setOnAction(e -> finishButtonPressed());
 
 //        executeButton = new Button("Execute Program");
 //        executeButton.setOnAction(e -> gameController.executePrograms());
@@ -225,6 +225,11 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
         }
+    }
+
+    private void finishButtonPressed() {
+        finishButton.setDisable(true);
+        gameController.playerFinishProgramming(player);
     }
 
 }
