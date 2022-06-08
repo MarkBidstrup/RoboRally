@@ -45,7 +45,7 @@ public class GameController {
 
     final public Board board;
     private List<Player> rebootedThisStep = new ArrayList<>();
-    GameStateClient gameStateClient = new GameStateClient();
+    private GameStateClient gameStateClient = new GameStateClient();
 
     /**
      * This constructor takes a board as input.
@@ -135,6 +135,7 @@ public class GameController {
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
         String gameID = board.boardName+"_"+board.getGameId();
+        // TODO: send playermat to server
         gameStateClient.incrementProgrammingCounter(gameID);
         int playersFinished = gameStateClient.getProgrammingCounter(gameID);
 

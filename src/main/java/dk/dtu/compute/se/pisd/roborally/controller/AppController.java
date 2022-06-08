@@ -24,6 +24,7 @@ package dk.dtu.compute.se.pisd.roborally.controller;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Observer;
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
 import dk.dtu.compute.se.pisd.roborally.RoboRally;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.GameStateClient;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.OnlineGameClient;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.SavedGamesClient;
@@ -57,6 +58,7 @@ public class AppController implements Observer {
     final private RoboRally roboRally;
 
     private GameController gameController;
+    private GameStateClient gameStateClient = new GameStateClient();
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -193,7 +195,7 @@ public class AppController implements Observer {
 
         Board board = setupBoardFromState(gameStateTemplate);
         if (board != null && board.getPlayersNumber() > 0) {
-            //TODO - POST/save gamestate to server/currentGames
+            gameStateClient.updateGameStateTemplate(gameStateTemplate);
             List<Player> temp = new ArrayList<>();
             for (int i = 0; i < board.getPlayersNumber(); i++)
                 temp.add(board.getPlayer(i));
