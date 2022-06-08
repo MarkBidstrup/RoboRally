@@ -21,6 +21,8 @@
  */
 package dk.dtu.compute.se.pisd.roborally.controller;
 
+import dk.dtu.compute.se.pisd.roborally.fileaccess.GameStateClient;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.LoadBoard;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.CommandCardFieldTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.GameStateTemplate;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
@@ -43,6 +45,7 @@ public class GameController {
 
     final public Board board;
     private List<Player> rebootedThisStep = new ArrayList<>();
+    GameStateClient gameStateClient = new GameStateClient();
 
     /**
      * This constructor takes a board as input.
@@ -131,7 +134,15 @@ public class GameController {
                 count++;
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
-        finishProgrammingPhase(); // TODO - update this for web version - only switch phase after all players done
+        String gameID = board.boardName+"_"+board.getGameId();
+        gameStateClient.incrementProgrammingCounter(gameID);
+        int playersFinished = gameStateClient.getProgrammingCounter(gameID);
+
+        if (playersFinished == board.getPlayersNumber()) {
+            finishProgrammingPhase();
+            gameStateClient.updateGameStateTemplate(LoadBoard.createGameStateTemplate(board));
+            gameStateClient.setProgrammingCounter(gameID,0);
+        }
     }
 
     private void makeProgramFieldsVisible(int register) {

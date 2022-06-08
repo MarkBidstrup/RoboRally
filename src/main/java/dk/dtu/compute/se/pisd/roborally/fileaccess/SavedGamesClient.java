@@ -104,7 +104,6 @@ public class SavedGamesClient implements IGamesService {
             CompletableFuture<HttpResponse<String>> response =
                     httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
             String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
-            System.out.println(result);
             return result.equals("updated");
         } catch (Exception e) {
             return false;
