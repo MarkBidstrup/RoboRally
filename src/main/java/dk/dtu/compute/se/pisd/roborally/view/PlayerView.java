@@ -164,10 +164,10 @@ public class PlayerView extends Tab implements ViewObserver {
                 }
             }
             //TODO - replace getCurrentPlayer with connectedPlayer
-//            if (player != player.board.getCurrentPlayer()) {
-//                programPane.getChildren().remove(buttonPanel);
-//                return;
-//            }
+            if (player != player.board.getCurrentPlayer()) {
+                programPane.getChildren().remove(buttonPanel);
+                return;
+            }
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
                     programPane.getChildren().remove(playerInteractionPanel);
@@ -187,7 +187,7 @@ public class PlayerView extends Tab implements ViewObserver {
                         finishButton.setDisable(false);
 //                        executeButton.setDisable(true);
                         stepButton.setDisable(true);
-                        refreshButton.setDisable(false);
+                        refreshButton.setDisable(true);
                         break;
 
                     case ACTIVATION:
@@ -229,6 +229,7 @@ public class PlayerView extends Tab implements ViewObserver {
 
     private void finishButtonPressed() {
         finishButton.setDisable(true);
+        refreshButton.setDisable(false);
         gameController.playerFinishProgramming(player);
     }
 
