@@ -135,7 +135,8 @@ public class GameController {
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
         String gameID = board.boardName+"_"+board.getGameId();
-        // TODO send playermat to server
+        PlayerTemplate playerTemplate = LoadBoard.createPlayerTemplate(player);
+        gameStateClient.updatePlayerMat(playerTemplate, gameID);
         gameStateClient.incrementProgrammingCounter(gameID);
         int playersFinished = gameStateClient.getProgrammingCounter(gameID);
 

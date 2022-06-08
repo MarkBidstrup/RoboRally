@@ -119,36 +119,40 @@ public class LoadBoard {
         template.currentPlayerIndex = board.getPlayerIndex(board.getCurrentPlayer());
 
         for (int i = 0; i < board.getPlayersNumber(); i++) {
-            PlayerTemplate playerTemplate = new PlayerTemplate();
-            Player player = board.getPlayer(i);
-            playerTemplate.playerColor = player.getColor();
-            playerTemplate.playerName = player.getName();
-            playerTemplate.x = player.getSpace().x;
-            playerTemplate.y = player.getSpace().y;
-            playerTemplate.heading = player.getHeading();
-            playerTemplate.checkPointTokenReached = player.getCheckPointReached();
-            for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                CommandCardFieldTemplate commandCardFieldTemplate = new CommandCardFieldTemplate();
-                if (player.getProgramField(j).getCard() != null)
-                    commandCardFieldTemplate.command = player.getProgramField(j).getCard().command;
-                else
-                    commandCardFieldTemplate.command = null;
-                commandCardFieldTemplate.visible = player.getProgramField(j).isVisible();
-                playerTemplate.program.add(commandCardFieldTemplate);
-            }
-            for (int j = 0; j < Player.NO_CARDS; j++) {
-                CommandCardFieldTemplate commandCardFieldTemplate = new CommandCardFieldTemplate();
-                if (player.getCardField(j).getCard() != null)
-                    commandCardFieldTemplate.command = player.getCardField(j).getCard().command;
-                else
-                    commandCardFieldTemplate.command = null;
-                commandCardFieldTemplate.visible = player.getCardField(j).isVisible();
-                playerTemplate.cards.add(commandCardFieldTemplate);
-            }
-            playerTemplate.SPAMDamageCards = player.getSPAMDamageCount();
+            PlayerTemplate playerTemplate = createPlayerTemplate(board.getPlayer(i));
             template.players.add(playerTemplate);
         }
         return template;
+    }
+
+    public static PlayerTemplate createPlayerTemplate(Player player) {
+        PlayerTemplate playerTemplate = new PlayerTemplate();
+        playerTemplate.playerColor = player.getColor();
+        playerTemplate.playerName = player.getName();
+        playerTemplate.x = player.getSpace().x;
+        playerTemplate.y = player.getSpace().y;
+        playerTemplate.heading = player.getHeading();
+        playerTemplate.checkPointTokenReached = player.getCheckPointReached();
+        for (int j = 0; j < Player.NO_REGISTERS; j++) {
+            CommandCardFieldTemplate commandCardFieldTemplate = new CommandCardFieldTemplate();
+            if (player.getProgramField(j).getCard() != null)
+                commandCardFieldTemplate.command = player.getProgramField(j).getCard().command;
+            else
+                commandCardFieldTemplate.command = null;
+            commandCardFieldTemplate.visible = player.getProgramField(j).isVisible();
+            playerTemplate.program.add(commandCardFieldTemplate);
+        }
+        for (int j = 0; j < Player.NO_CARDS; j++) {
+            CommandCardFieldTemplate commandCardFieldTemplate = new CommandCardFieldTemplate();
+            if (player.getCardField(j).getCard() != null)
+                commandCardFieldTemplate.command = player.getCardField(j).getCard().command;
+            else
+                commandCardFieldTemplate.command = null;
+            commandCardFieldTemplate.visible = player.getCardField(j).isVisible();
+            playerTemplate.cards.add(commandCardFieldTemplate);
+        }
+        playerTemplate.SPAMDamageCards = player.getSPAMDamageCount();
+        return playerTemplate;
     }
 
     // @author Xiao Chen

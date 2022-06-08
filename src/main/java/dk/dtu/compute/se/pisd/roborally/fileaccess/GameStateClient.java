@@ -3,6 +3,7 @@ package dk.dtu.compute.se.pisd.roborally.fileaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dk.dtu.compute.se.pisd.roborally.fileaccess.model.GameStateTemplate;
+import dk.dtu.compute.se.pisd.roborally.fileaccess.model.PlayerTemplate;
 import dk.dtu.compute.se.pisd.roborally.model.FieldAction;
 
 import java.net.URI;
@@ -134,6 +135,30 @@ public class GameStateClient implements IGameState{
             String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
             System.out.println(e.getStackTrace());
+        }
+    }
+
+    // @author Xiao Chen & Mark Bidstrup
+    @Override
+    public boolean updatePlayerMat(PlayerTemplate playerTemplate, String boardNameID) {
+        try{
+            GsonBuilder simpleBuilder = new GsonBuilder().
+                    registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
+            Gson gson = simpleBuilder.create();
+            String boardJSON = gson.toJson(playerTemplate);
+            HttpRequest request;
+            request = HttpRequest.newBuilder()
+                    .PUT(HttpRequest.BodyPublishers.ofString(boardJSON))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/playerMat" + boardNameID))
+                    .setHeader("User-Agent", "Game State Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            return result.equals("updated");
+        } catch (Exception e) {
+            return false;
         }
     }
 
