@@ -127,7 +127,7 @@ public class AppController implements Observer {
         alert.showAndWait();
     }
 
-    private String joinDialoug(){
+    private void selectGameDialoug(){
         List<String> onLineGamesList = onlineGameClient.getOnlineGames();
 
         ChoiceDialog<String> gameBoard = new ChoiceDialog<>(onLineGamesList.get(0), onLineGamesList);
@@ -136,7 +136,9 @@ public class AppController implements Observer {
         Optional<String> gameBoardResult = gameBoard.showAndWait();
 
         gameBoardResult.ifPresent(s -> userChoice = s);
+    }
 
+    private String enterplayerNameDialoug(){
         TextInputDialog txt = new TextInputDialog();
         txt.setTitle("Text Input");
         txt.setHeaderText("Please Enter your Name: ");
@@ -144,7 +146,6 @@ public class AppController implements Observer {
 
         Optional<String> playerName= txt.showAndWait();
         return playerName.get();
-        //return Integer.parseInt(playerNr.get());
     }
 
     private boolean allplayersJoined(String boardname, String gameId){
@@ -166,7 +167,12 @@ public class AppController implements Observer {
     }
 
     public void joinGame(){
-        String playerName =joinDialoug();
+        selectGameDialoug();
+        String playerName="";
+        do {
+            playerName = enterplayerNameDialoug();
+        }while(playerName.isEmpty() || playerName.isBlank() || playerName.equals("null"));
+
         String[]choice = userChoice.split(" - ");
         String boardname=choice[0].replaceAll("Board: ","");
         String gameId=choice[1].replaceAll("GameID: ","");
