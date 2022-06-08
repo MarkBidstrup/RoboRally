@@ -86,7 +86,6 @@ public class AppController implements Observer {
 
             Board board = LoadBoard.loadBoard(boardname);
             int gameId = (int) (Math.random()*10);
-            // TODO - can make it so that gameId is a user choice
             board.setGameId(gameId);
 
             int no = result.get();
@@ -95,21 +94,10 @@ public class AppController implements Observer {
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
-
-
-            boolean created= new OnlineGameClient().createLobby(boardname, String.valueOf(gameId), no);
-            if(created == true) {
-                GameStateTemplate template= LoadBoard.createGameStateTemplate(board);
-                created= new OnlineGameClient().createGame(template);
-                if(created==true){
-                    showInfo("Info","Game created successfully.","BoardName: "+boardname+" - GameID: "+gameId);
-                }else {
-                    showInfo("Error","creation of game failed","Please try again!");
-                }
-                //gameController = new GameController(board);
-               // gameController.startProgrammingPhase();
-               // roboRally.createBoardView(gameController);
-            }
+            gameController = new GameController(board);
+            gameController.startProgrammingPhase();
+            roboRally.createBoardView(gameController);
+            gameStateClient.updateGameStateTemplate(LoadBoard.createGameStateTemplate(board));
         }
     }
 
