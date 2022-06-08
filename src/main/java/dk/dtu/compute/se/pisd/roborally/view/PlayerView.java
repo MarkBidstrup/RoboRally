@@ -177,15 +177,6 @@ public class PlayerView extends Tab implements ViewObserver {
                     programPane.add(buttonPanel, Player.NO_REGISTERS, 0);
                 }
                 switch (player.board.getPhase()) {
-                    case INITIALISATION:
-                        finishButton.setDisable(true);
-                        // XXX just to make sure that there is a way for the player to get
-                        //     from the initialization phase to the programming phase somehow!
-//                        executeButton.setDisable(false);
-                        stepButton.setDisable(true);
-                        refreshButton.setDisable(false);
-                        break;
-
                     case PROGRAMMING:
                         finishButton.setDisable(false);
 //                        executeButton.setDisable(true);
