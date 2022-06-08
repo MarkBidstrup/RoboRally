@@ -135,7 +135,7 @@ public class GameController {
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
         String gameID = board.boardName+"_"+board.getGameId();
-        // TODO: send playermat to server
+        // TODO send playermat to server
         gameStateClient.incrementProgrammingCounter(gameID);
         int playersFinished = gameStateClient.getProgrammingCounter(gameID);
 
@@ -171,10 +171,10 @@ public class GameController {
      * This methodes  executes the all programs card of all robots.
      */
     // disabled for web game as it is not user friendly to execute all programs at once
-//    public void executePrograms() {
-//        board.setStepMode(false);
-//        continuePrograms();
-//    }
+    //    public void executePrograms() {
+    //        board.setStepMode(false);
+    //        continuePrograms();
+    //    }
 
     /**
      * This methode executes the current map of the current robot,
@@ -292,7 +292,8 @@ public class GameController {
                 startProgrammingPhase();
             }
         }
-        // TODO - update gamestate on server using "PUT"
+        GameStateTemplate gameStateTemplate = LoadBoard.createGameStateTemplate(board);
+        gameStateClient.updateGameStateTemplate(gameStateTemplate);
     }
 
     private void executeCommand(@NotNull Player player, Command command) {
@@ -518,9 +519,10 @@ public class GameController {
         }
     }
 
-    // TODO - pull from gameStateServer
     public void updateGameServerPull() {
-        //updateGameState();
+        String gameID = board.boardName+"_"+board.getGameId();
+        GameStateTemplate gameStateTemplate = gameStateClient.getGameStateTemplate(gameID);
+        updateGameState(board, gameStateTemplate);
     }
 
     private void checkForWinner() { // @author Mark Bidstrup
