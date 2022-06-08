@@ -8,6 +8,7 @@ import java.util.List;
 public class PlayerTemplate { // @author Xiao Chen
     public String playerName;
     public String playerColor;
+    public boolean joined;
     public int checkPointTokenReached;
 
     public int x;

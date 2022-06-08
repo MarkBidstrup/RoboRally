@@ -35,6 +35,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -59,6 +60,7 @@ public class AppController implements Observer {
 
     private GameController gameController;
     private GameStateClient gameStateClient = new GameStateClient();
+    private OnlineGameClient onlineGameClient = new OnlineGameClient();
 
     public AppController(@NotNull RoboRally roboRally) {
         this.roboRally = roboRally;
@@ -96,20 +98,15 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
 
-
-            boolean created= new OnlineGameClient().createLobby(boardname, String.valueOf(gameId), no);
-            if(created == true) {
-                GameStateTemplate template= LoadBoard.createGameStateTemplate(board);
-                created= new OnlineGameClient().createGame(template);
-                if(created==true){
-                    showInfo("Info","Game created successfully.","BoardName: "+boardname+" - GameID: "+gameId);
-                }else {
-                    showInfo("Error","creation of game failed","Please try again!");
-                }
-                //gameController = new GameController(board);
-               // gameController.startProgrammingPhase();
-               // roboRally.createBoardView(gameController);
+            GameStateTemplate template= LoadBoard.createGameStateTemplate(board);
+            boolean created= onlineGameClient.createGame(template);
+            if(created==true){
+                showInfo("Info","Game created successfully.","BoardName: "+boardname+" - GameID: "+gameId);
+                joinGame();
+            }else {
+                showInfo("Error","creation of game failed","Please try again!");
             }
+
         }
     }
 
@@ -130,38 +127,52 @@ public class AppController implements Observer {
         alert.showAndWait();
     }
 
-    public void joinGame(){
-        OnlineGameClient onlineGameClient = new OnlineGameClient();
-        List<String> lobbyGamesList = onlineGameClient.getListOfLobbyGames();
+    private int joinDialoug(){
+        List<String> onLineGamesList = onlineGameClient.getOnlineGames();
 
-        ChoiceDialog<String> gameBoard = new ChoiceDialog<>(lobbyGamesList.get(0), lobbyGamesList);
+        ChoiceDialog<String> gameBoard = new ChoiceDialog<>(onLineGamesList.get(0), onLineGamesList);
         gameBoard.setTitle("Choose game");
         gameBoard.setHeaderText("Select a game to join");
         Optional<String> gameBoardResult = gameBoard.showAndWait();
 
         gameBoardResult.ifPresent(s -> userChoice = s);
 
+        TextInputDialog txt = new TextInputDialog();
+        txt.setTitle("Text Input");
+        txt.setHeaderText("Please Enter your Number: ");
+        txt.setContentText("Number: ");
+
+        Optional<String> playerNr= txt.showAndWait();
+        return Integer.parseInt(playerNr.get());
+    }
+
+    private boolean allplayersJoined(String boardname, String gameId){
+        int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
+        int totalNumber= onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);;
+        int count=0;
+        while(joinedplayers != totalNumber && count <10){
+            joinedplayers= onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
+            count ++;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(joinedplayers == totalNumber){ return true; }
+        else{return false;}
+    }
+
+    public void joinGame(){
+        int playerNr =joinDialoug();
         String[]choice = userChoice.split(" - ");
         String boardname=choice[0].replaceAll("Board: ","");
         String gameId=choice[1].replaceAll("GameID: ","");
-        boolean joined= onlineGameClient.joinLobbyGame(boardname, gameId);
+        boolean joined= onlineGameClient.joinOnlineGame(boardname, gameId,playerNr);
         if(joined == true) {
-
-            showInfo("Info","You joined the lobby.","Please wait for other players to join.");
-            int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
-            int totalNumber= onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);;
-            int count=0;
-            while(joinedplayers != totalNumber && count <10){
-                joinedplayers= onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
-                count ++;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if(joinedplayers == totalNumber) {
+            showInfo("Info","Please wait for other players to join.", "All players are not joined.");
+            if(allplayersJoined(boardname,gameId) == true) {
                 GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,gameId);
                 Board board= setupBoardFromState(template);
                 gameController = new GameController(board);
@@ -170,10 +181,10 @@ public class AppController implements Observer {
             }else{
                 showInfo("Warning","players did not join","Please try again later.");
             }
-
         }
 
     }
+
 
     /**
      * this methode should provide the player to save the game
