@@ -231,10 +231,11 @@ public class Board extends Subject {
         // status of the game
 
         int checkpoint = getCurrentPlayer().getCheckPointReached();
-        return "Phase: " + getPhase().name() +
-                ", Player = " + getCurrentPlayer().getName() +
-                ", Step: " + getStep() +
-                ", CheckPoints collected: " + checkpoint;
+        String str = "Phase: " + getPhase().name() +
+                ", Step: " + ( getStep() + 1 ) +
+                ", Current player = " + getCurrentPlayer().getName() +
+                " has collected " + checkpoint + " checkpoint token";
+        return (checkpoint == 1) ? str : str + "s";
     }
 
     public PriorityAntenna getAntenna() {
