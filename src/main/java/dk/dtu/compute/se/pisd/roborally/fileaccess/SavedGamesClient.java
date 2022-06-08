@@ -30,7 +30,7 @@ public class SavedGamesClient implements IGamesService {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create("http://localhost:8080/savedGames"))
+                    .uri(URI.create("http://"+Hostname.hostname+":8080/savedGames"))
                     .setHeader("User-Agent", "Games Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -49,7 +49,7 @@ public class SavedGamesClient implements IGamesService {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .GET()
-                    .uri(URI.create("http://localhost:8080/savedGames/"+ boardname_gameID))
+                    .uri(URI.create("http://"+Hostname.hostname+":8080/savedGames/"+ boardname_gameID))
                     .setHeader("User-Agent", "Games Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -74,7 +74,7 @@ public class SavedGamesClient implements IGamesService {
             String boardJSON = gson.toJson(p);
             HttpRequest request = HttpRequest.newBuilder()
                     .POST(HttpRequest.BodyPublishers.ofString(boardJSON))
-                    .uri(URI.create("http://localhost:8080/savedGames"))
+                    .uri(URI.create("http://"+Hostname.hostname+":8080/savedGames"))
                     .setHeader("User-Agent", "Games Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -97,7 +97,7 @@ public class SavedGamesClient implements IGamesService {
             String str = p.board.boardName + "_" + p.gameId;
             HttpRequest request = HttpRequest.newBuilder()
                     .PUT(HttpRequest.BodyPublishers.ofString(boardJSON))
-                    .uri(URI.create("http://localhost:8080/savedGames/" + str))
+                    .uri(URI.create("http://"+Hostname.hostname+":8080/savedGames/" + str))
                     .setHeader("User-Agent", "Games Client")
                     .header("Content-Type", "application/json")
                     .build();
@@ -114,7 +114,7 @@ public class SavedGamesClient implements IGamesService {
         try{
             HttpRequest request = HttpRequest.newBuilder()
                     .DELETE()
-                    .uri(URI.create("http://localhost:8080/savedGames/" + boardname_gameID))
+                    .uri(URI.create("http://"+Hostname.hostname+":8080/savedGames/" + boardname_gameID))
                     .setHeader("User-Agent", "Games Client")
                     .header("Content-Type", "application/json")
                     .build();

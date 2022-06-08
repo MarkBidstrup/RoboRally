@@ -32,7 +32,7 @@ public class OnlineGameClient implements IOnlineGameClient {
         String boardJSON = gson.toJson(template);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(boardJSON))
-                .uri(URI.create("http://localhost:8080/createGame/"))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/createGame/"))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -51,7 +51,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public boolean createLobby(String boardname, String gameId, int nrOfPlayers){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/createLobby/"+boardname+"/"+gameId + "/" +nrOfPlayers))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/createLobby/"+boardname+"/"+gameId + "/" +nrOfPlayers))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -70,7 +70,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public int getNumberOfJoinedPlayers(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/lobby/joinedPlayers/"+boardname+"/"+gameId))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/lobby/joinedPlayers/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -89,7 +89,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public int getMaxNumberOfPlayers(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/lobby/maxPlayers/"+boardname+"/"+gameId))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/lobby/maxPlayers/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -108,7 +108,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public List<String> getListOfLobbyGames() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/lobbyGames"))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/lobbyGames"))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
         try {
@@ -125,7 +125,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public boolean joinLobbyGame(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/joinLobby/"+boardname+"/"+gameId))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/joinLobby/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -144,7 +144,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public GameStateTemplate getOnlineGame(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/lobby/"+boardname+"/"+gameId))
+                .uri(URI.create("http://"+Hostname.hostname+":8080/lobby/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
