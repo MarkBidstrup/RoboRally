@@ -93,7 +93,7 @@ public class AppController implements Observer {
 
             int no = result.get();
             for (int i = 0; i < no; i++) {
-                Player player = new Player(board, PLAYER_COLORS.get(i), "Player " + (i + 1));
+                Player player = new Player(board, PLAYER_COLORS.get(i), "null");//"Player " + (i + 1)
                 board.addPlayer(player);
                 player.setSpace(board.getSpace(i % board.width, i));
             }
@@ -127,7 +127,7 @@ public class AppController implements Observer {
         alert.showAndWait();
     }
 
-    private int joinDialoug(){
+    private String joinDialoug(){
         List<String> onLineGamesList = onlineGameClient.getOnlineGames();
 
         ChoiceDialog<String> gameBoard = new ChoiceDialog<>(onLineGamesList.get(0), onLineGamesList);
@@ -139,11 +139,12 @@ public class AppController implements Observer {
 
         TextInputDialog txt = new TextInputDialog();
         txt.setTitle("Text Input");
-        txt.setHeaderText("Please Enter your Number: ");
-        txt.setContentText("Number: ");
+        txt.setHeaderText("Please Enter your Name: ");
+        txt.setContentText("Name: ");
 
-        Optional<String> playerNr= txt.showAndWait();
-        return Integer.parseInt(playerNr.get());
+        Optional<String> playerName= txt.showAndWait();
+        return playerName.get();
+        //return Integer.parseInt(playerNr.get());
     }
 
     private boolean allplayersJoined(String boardname, String gameId){
@@ -165,11 +166,11 @@ public class AppController implements Observer {
     }
 
     public void joinGame(){
-        int playerNr =joinDialoug();
+        String playerName =joinDialoug();
         String[]choice = userChoice.split(" - ");
         String boardname=choice[0].replaceAll("Board: ","");
         String gameId=choice[1].replaceAll("GameID: ","");
-        boolean joined= onlineGameClient.joinOnlineGame(boardname, gameId,playerNr);
+        boolean joined= onlineGameClient.joinOnlineGame(boardname, gameId,playerName);
         if(joined == true) {
             showInfo("Info","Please wait for other players to join.", "All players are not joined.");
             if(allplayersJoined(boardname,gameId) == true) {

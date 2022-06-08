@@ -9,4 +9,9 @@ class AppControllerTest {
     @Test
     void newGame() {
     }
+
+    @Test
+    void joinGame(){
+
+    }
 }

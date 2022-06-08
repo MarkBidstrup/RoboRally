@@ -104,10 +104,10 @@ public class OnlineGameClient implements IOnlineGameClient {
     }
 
     @Override
-    public boolean joinOnlineGame(String boardname, String gameId, int playerNr){
+    public boolean joinOnlineGame(String boardname, String gameId, String playerName){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://localhost:8080/joinOnlineGame/"+boardname+"/"+gameId+"/"+playerNr))
+                .uri(URI.create("http://localhost:8080/joinOnlineGame/"+boardname+"/"+gameId+"/"+playerName))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 

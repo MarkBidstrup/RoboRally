@@ -12,6 +12,6 @@ public interface IOnlineGameClient {
     int getNumberOfJoinedPlayers(String boardname, String gameId);
     int getMaxNumberOfPlayers(String boardname, String gameId);
     List<String> getOnlineGames();
-    boolean joinOnlineGame(String boardname, String gameId, int payerNr);
+    boolean joinOnlineGame(String boardname, String gameId, String payerName);
     GameStateTemplate getOnlineGame(String boardname, String gameId);
 }
