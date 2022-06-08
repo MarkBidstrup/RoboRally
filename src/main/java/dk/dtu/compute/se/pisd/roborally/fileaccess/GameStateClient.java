@@ -33,13 +33,23 @@ public class GameStateClient implements IGameState{
                     registerTypeAdapter(FieldAction.class, new Adapter<FieldAction>());
             Gson gson = simpleBuilder.create();
             String boardJSON = gson.toJson(gameStateTemplate);
-            String str = gameStateTemplate.board.boardName + "_" + gameStateTemplate.gameId;
-            HttpRequest request = HttpRequest.newBuilder()
-                    .POST(HttpRequest.BodyPublishers.ofString(boardJSON))
-                    .uri(URI.create("http://localhost:8080/gameState/"))
-                    .setHeader("User-Agent", "Game State Client")
-                    .header("Content-Type", "application/json")
-                    .build();
+            String boardname_ID = gameStateTemplate.board.boardName + "_" + gameStateTemplate.gameId;
+            HttpRequest request;
+            if (getGameStateTemplate(boardname_ID) == null) {
+                request = HttpRequest.newBuilder()
+                        .POST(HttpRequest.BodyPublishers.ofString(boardJSON))
+                        .uri(URI.create("http://localhost:8080/gameState/"))
+                        .setHeader("User-Agent", "Game State Client")
+                        .header("Content-Type", "application/json")
+                        .build();
+            } else {
+                request = HttpRequest.newBuilder()
+                        .PUT(HttpRequest.BodyPublishers.ofString(boardJSON))
+                        .uri(URI.create("http://localhost:8080/gameState/" + boardname_ID))
+                        .setHeader("User-Agent", "Game State Client")
+                        .header("Content-Type", "application/json")
+                        .build();
+            }
             CompletableFuture<HttpResponse<String>> response =
                     httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
             String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
