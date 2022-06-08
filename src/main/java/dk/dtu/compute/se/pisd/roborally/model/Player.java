@@ -151,12 +151,14 @@ public class Player extends Subject {
     }
     // author Deniz Isikli
     public void incrementSPAMDamageCount() {
-        damageCards++;
+        if (damageCards < Player.NO_CARDS)
+            damageCards++;
     }
     public int getSPAMDamageCount() {
         return damageCards;
     }
     public void setSPAMDamageCount(int count) {
-        damageCards = count;
+        if (count <= Player.NO_CARDS)
+            damageCards = count;
     }
 }
