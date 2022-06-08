@@ -149,7 +149,7 @@ public class GameStateClient implements IGameState{
             HttpRequest request;
             request = HttpRequest.newBuilder()
                     .PUT(HttpRequest.BodyPublishers.ofString(boardJSON))
-                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/playerMat" + boardNameID))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/gameState/" + boardNameID + "/playerMat"))
                     .setHeader("User-Agent", "Game State Client")
                     .header("Content-Type", "application/json")
                     .build();
