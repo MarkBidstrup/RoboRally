@@ -299,6 +299,9 @@ public class CardFieldView extends GridPane implements ViewObserver {
 
     }
 
+    public CommandCardField getField() {
+        return field;
+    }
 }
 
 
