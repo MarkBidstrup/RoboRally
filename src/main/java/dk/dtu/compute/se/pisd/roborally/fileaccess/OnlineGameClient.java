@@ -32,7 +32,7 @@ public class OnlineGameClient implements IOnlineGameClient {
         String boardJSON = gson.toJson(template);
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(boardJSON))
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/createGame/"))
+                .uri(URI.create("http://localhost:8080/createGame/"))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -47,30 +47,12 @@ public class OnlineGameClient implements IOnlineGameClient {
         return false;
     }
 
-    @Override
-    public boolean createLobby(String boardname, String gameId, int nrOfPlayers){
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/createLobby/"+boardname+"/"+gameId + "/" +nrOfPlayers))
-                .setHeader("User-Agent", "HttpClient Bot") // add request header
-                .build();
-
-        try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body().equals("created");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
 
     @Override
     public int getNumberOfJoinedPlayers(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/lobby/joinedPlayers/"+boardname+"/"+gameId))
+                .uri(URI.create("http://localhost:8080/joinedPlayers/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -89,7 +71,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public int getMaxNumberOfPlayers(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/lobby/maxPlayers/"+boardname+"/"+gameId))
+                .uri(URI.create("http://localhost:8080/maxPlayers/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -105,10 +87,10 @@ public class OnlineGameClient implements IOnlineGameClient {
     }
 
     @Override
-    public List<String> getListOfLobbyGames() {
+    public List<String> getOnlineGames() {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/lobbyGames"))
+                .uri(URI.create("http://localhost:8080/onlineGamesList"))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
         try {
@@ -122,10 +104,10 @@ public class OnlineGameClient implements IOnlineGameClient {
     }
 
     @Override
-    public boolean joinLobbyGame(String boardname, String gameId){
+    public boolean joinOnlineGame(String boardname, String gameId, int playerNr){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/joinLobby/"+boardname+"/"+gameId))
+                .uri(URI.create("http://localhost:8080/joinOnlineGame/"+boardname+"/"+gameId+"/"+playerNr))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
@@ -144,7 +126,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     public GameStateTemplate getOnlineGame(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/lobby/"+boardname+"/"+gameId))
+                .uri(URI.create("http://localhost:8080/onlineGame/"+boardname+"/"+gameId))
                 .setHeader("User-Agent", "HttpClient Bot") // add request header
                 .build();
 
