@@ -160,11 +160,16 @@ public class PlayerView extends Tab implements ViewObserver {
                     }
                 }
             }
-            if (player != player.board.getCurrentPlayer() && player.board.getPhase() != Phase.PROGRAMMING) {
+            if (player.board.getPhase() != Phase.PROGRAMMING) {
+                if (player != player.board.getCurrentPlayer()) {
                 programPane.getChildren().remove(buttonPanel);
                 for (CardFieldView card : cardViews)
                     card.getField().setVisible(false);
-                return;
+                return; }
+                else {
+                    for (CardFieldView card : cardViews)
+                        card.getField().setVisible(true);
+                }
             }
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
