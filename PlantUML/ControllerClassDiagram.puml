@@ -1,0 +1,94 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package Controllers {
+
+    class AppController{
+        PLAYER_NUMBER_OPTIONS
+        BOARD_OPTIONS
+        boardname
+        PLAYER_COLORS
+        roboRally
+        gameController
+
+        newGame()
+        saveGame()
+        loadGame()
+        gameBoardDialog()
+        stopGame()
+        exit()
+        isGameRunning()
+    }
+
+    class ConveyorBelt {
+        heading
+        color
+    }
+
+    abstract class FieldAction {
+        doAction
+    }
+
+    class GameController {
+        board
+
+        startProgrammingPhase()
+        generateRandomCommandCard()
+        finishProgrammingPhase()
+        makeProgramFieldsVisible()
+        makeProgramFieldsInvisible()
+        executePrograms()
+        executeStep()
+        continuePrograms()
+        executeNextStep()
+        executeCommandOptionAndContinue()
+        switchTurnAndRegister()
+        executeCommand()
+        moveToSpace()
+        moveForward()
+        moveBackward()
+        fastForward()
+        turnRight()
+        turnLeft()
+        uTurn()
+        speedRoutine()
+        moveCards()
+        checkForWinner()
+    }
+
+    class Gear {
+        heading
+    }
+
+}
+
+package "Models" #DDDDDD {
+
+    () Board
+
+}
+
+package "Views" #DDDDDD {
+
+    () CardFieldView
+    () PlayerView
+    () RoboRallyMenuBar
+
+}
+
+'Controllers
+AppController -- GameController
+ConveyorBelt -L|> FieldAction
+Gear -|> FieldAction
+
+'Views
+GameController -- CardFieldView
+GameController -- PlayerView
+AppController -- RoboRallyMenuBar
+
+'Models
+Board -- GameController
+
+
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+title Join game
+
+Client -> Server: Get game list
+Server --> Client: Return game list
+Client -> Server: Patch player into player list
+loop until game initialized
+Client -> Server: Get game state
+Server --> Client: Return
+end
+@enduml

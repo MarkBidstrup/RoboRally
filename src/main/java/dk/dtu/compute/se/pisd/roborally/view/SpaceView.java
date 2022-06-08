@@ -68,6 +68,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 //            this.setStyle("-fx-background-color: black;");
 //        }
 
+        // @author Mark Bidstrup
         // makes empty spaces look like metal plates
         String path= Objects.requireNonNull(this.getClass().getResource("../../../../../../../image/")).toString();
         String imgURL;
@@ -96,6 +97,7 @@ public class SpaceView extends StackPane implements ViewObserver {
 //                    10.0, 20.0,
 //                    20.0, 0.0 );
 
+            // @author Mark Bidstrup
             // makes the robots look like actual robots
             String path= Objects.requireNonNull(this.getClass().getResource("../../../../../../../image/")).toString();
             String imgURL = path + player.getColor() + "robot.png";

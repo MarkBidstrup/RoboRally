@@ -1,0 +1,107 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package Models {
+
+    class Player {
+            NO_REGISTERS
+            NO_CARDS
+            board
+            name
+            color
+            space
+            heading
+            program
+            cards
+            CheckPointTokenReached
+    }
+
+    class PriorityAntenna {
+        position
+        heading
+    }
+
+    class CheckPoint {
+        CHECKPOINTNUMBER
+        highestCheckpointNumber
+        position
+    }
+
+    class Board {
+        width
+        height
+        boardName
+        gameId
+        spaces
+        players
+        checkPoints
+        phase
+        stepMode
+
+        addPlayer()
+        calculateDistanceToPriorityAntenna()
+        sortPlayersAccordingToPriority()
+        sortPlayersAccordingToName()
+        replacePlayerAtPositionIndex()
+    }
+
+    class CommandCard {
+        command
+    }
+
+    class CommandCardField {
+        player
+        card
+        visible
+
+        isVisible()
+    }
+
+    class Space {
+        walls
+        actions
+        checkPoint
+        board
+        position
+        player
+
+        collectCheckpointToken()
+    }
+
+}
+
+package "Views" #DDDDDD {
+
+    () BoardView
+    () PlayersView
+    () CardFieldView
+    () PlayerView
+    () SpaceView
+
+}
+
+package "Controllers" #DDDDDD {
+
+    () GameController
+
+}
+
+'Models
+Board -- Space
+Space -- CheckPoint
+Space -- PriorityAntenna
+Player -- Space
+Player -- CommandCardField
+CommandCardField -- CommandCard
+
+'Views
+Board --- BoardView
+Board --- PlayersView
+CommandCardField --- CardFieldView
+Player --- PlayerView
+Space --- SpaceView
+
+'Controllers
+Board -- GameController
+
+@enduml
