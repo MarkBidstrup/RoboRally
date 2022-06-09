@@ -1,9 +1,6 @@
 package dk.dtu.compute.se.pisd.roborally.controller;
 
-import dk.dtu.compute.se.pisd.roborally.model.Board;
-import dk.dtu.compute.se.pisd.roborally.model.Heading;
-import dk.dtu.compute.se.pisd.roborally.model.Player;
-import dk.dtu.compute.se.pisd.roborally.model.Space;
+import dk.dtu.compute.se.pisd.roborally.model.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +41,102 @@ class GameControllerTest {
         Assertions.assertEquals(current, board.getSpace(0, 1).getPlayer(), "Player " + current.getName() + " should beSpace (0,1)!");
         Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
         Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 01
+    @Test
+    void moveBackward() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.uTurn(current);
+        gameController.moveBackward(current);
+
+        Assertions.assertEquals(current, board.getSpace(0,1).getPlayer(), "Player " + current.getName() + " should be on Space (0,1)!");
+        Assertions.assertEquals(Heading.NORTH, current.getHeading(), "Player should be heading NORTH!");
+        Assertions.assertNull(board.getSpace(0,0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 02
+    @Test
+    void moveUturn() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.uTurn(current);
+
+        Assertions.assertEquals(Heading.NORTH, current.getHeading(), "Player should be facing NORTH!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 03
+    @Test
+    void moveRight() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.uTurn(current);
+        gameController.turnRight(current);
+
+        Assertions.assertEquals(Heading.EAST, current.getHeading(), "Player should be facing EAST!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 04
+    @Test
+    void moveLeft() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.uTurn(current);
+        gameController.turnLeft(current);
+
+        Assertions.assertEquals(Heading.WEST, current.getHeading(), "Player should be facing WEST!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 05
+    @Test
+    void moveFastFoward() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.moveForward(current);
+        gameController.moveForward(current);
+
+        Assertions.assertEquals(current, board.getSpace(0, 2).getPlayer(), "Player " + current.getName() + " should on Space (0,1)!");
+        Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
+        Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 06
+    @Test
+    void moveSpeedRoutine() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        gameController.moveForward(current);
+        gameController.moveForward(current);
+        gameController.moveForward(current);
+
+        Assertions.assertEquals(current, board.getSpace(0, 3).getPlayer(), "Player " + current.getName() + " should on Space (0,1)!");
+        Assertions.assertEquals(Heading.SOUTH, current.getHeading(), "Player 0 should be heading SOUTH!");
+        Assertions.assertNull(board.getSpace(0, 0).getPlayer(), "Space (0,0) should be empty!");
+    }
+
+    // @author Deniz Isikli
+    // UTC 07
+    @Test
+    void checkForWinner() {
+        Board board = gameController.board;
+        Player current = board.getCurrentPlayer();
+
+        boolean winner = board.getCurrentPlayer().getCheckPointReached() == CheckPoint.getHighestCheckPointNumber();
+
+        Assertions.assertTrue(winner, current.getName() + " has won the game!");
     }
 
 }

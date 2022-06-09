@@ -20,15 +20,6 @@ package Controllers {
         isGameRunning()
     }
 
-    class ConveyorBelt {
-        heading
-        color
-    }
-
-    abstract class FieldAction {
-        doAction
-    }
-
     class GameController {
         board
 
@@ -56,10 +47,6 @@ package Controllers {
         checkForWinner()
     }
 
-    class Gear {
-        heading
-    }
-
 }
 
 package "Models" #DDDDDD {
@@ -78,8 +65,6 @@ package "Views" #DDDDDD {
 
 'Controllers
 AppController -- GameController
-ConveyorBelt -L|> FieldAction
-Gear -|> FieldAction
 
 'Views
 GameController -- CardFieldView
