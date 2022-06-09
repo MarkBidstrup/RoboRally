@@ -135,6 +135,8 @@ public class GameController {
                 count++;
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
+        for (int i = 0; i < Player.NO_REGISTERS; i++)
+            player.getCardField(i).setVisible(false);
         String gameID = board.boardName+"_"+board.getGameId();
         PlayerTemplate playerTemplate = LoadBoard.createPlayerTemplate(player);
         gameStateClient.updatePlayerMat(playerTemplate, gameID);
@@ -146,17 +148,6 @@ public class GameController {
             finishProgrammingPhase();
             gameStateClient.updateGameStateTemplate(LoadBoard.createGameStateTemplate(board));
             gameStateClient.setProgrammingCounter(gameID,0);
-        }
-        else {
-            for (int i = 0; i < board.getPlayersNumber(); i++) {
-                player = board.getPlayer(i);
-                if (!player.getName().equals(connectedAsPlayer)) {
-                for (int j = 0; j < Player.NO_REGISTERS; j++) {
-                    CommandCardField field = player.getProgramField(j);
-                    field.setVisible(false);
-                }
-                }
-            }
         }
     }
 
