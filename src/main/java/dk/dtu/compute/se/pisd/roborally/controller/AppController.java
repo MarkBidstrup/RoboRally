@@ -157,7 +157,7 @@ public class AppController implements Observer {
             joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
             count++;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -176,7 +176,7 @@ public class AppController implements Observer {
         while (!client.allPlayersJoined(gameId) && count < 10) {
             count++;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
