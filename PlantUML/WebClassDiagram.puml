@@ -13,20 +13,6 @@ package Client {
         updatePlayerMat()
     }
 
-    class LoadBoard {
-        BOARDSFOLDER
-        SAVEDGAMESFOLDER
-        DEFAULTBOARD
-        JSON_EXT
-
-        loadBoard()
-        saveGame()
-        createGameStateTemplate()
-        createPlayerTemplate()
-        createBoardTemplate()
-        setupBoardFromState()
-    }
-
     class OnlineGameClient {
         httpClient
 
