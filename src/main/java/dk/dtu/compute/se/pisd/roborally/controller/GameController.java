@@ -572,7 +572,14 @@ public class GameController {
                     player.getCardField(i).setCard(null);
             }
         }
-        board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
+        String currentPlayerName = "";
+        for (int i = 0; i < template.players.size(); i++) {
+            if (i == template.currentPlayerIndex) {
+                currentPlayerName = template.players.get(i).playerName;
+                break;
+            }
+        }
+        board.setCurrentPlayer(board.getPlayer(currentPlayerName));
         board.setPhase(template.phase);
         board.setStep(template.step);
     }
