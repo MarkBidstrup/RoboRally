@@ -136,7 +136,7 @@ public class GameController {
         }
         player.setSPAMDamageCount(player.getSPAMDamageCount() - count);
         for (int i = 0; i < Player.NO_REGISTERS; i++)
-            player.getCardField(i).setVisible(false);
+            player.getProgramField(i).setVisible(false);
         String gameID = board.boardName+"_"+board.getGameId();
         PlayerTemplate playerTemplate = LoadBoard.createPlayerTemplate(player);
         gameStateClient.updatePlayerMat(playerTemplate, gameID);
