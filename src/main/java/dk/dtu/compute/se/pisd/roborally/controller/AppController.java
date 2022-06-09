@@ -242,15 +242,14 @@ public class AppController implements Observer {
                 }
             }
             showInfo("Info", "All players joined.", "Your game will now be started.");
-            gameController.connectedAsPlayer = joinLoadedGameAsPlayer;
-            startLoadedGame(joinGameID);
+            startLoadedGame(joinGameID, joinLoadedGameAsPlayer);
             }
             else
                 showInfo("Error", "All players have been taken", "Please select another game");
         }
     }
 
-    private void startLoadedGame(String joinGameID) {
+    private void startLoadedGame(String joinGameID, String joinLoadedGameAsPlayer) {
         Board board = setupBoardFromState(gameStateClient.getGameStateTemplate(joinGameID));
         if (board != null && board.getPlayersNumber() > 0) {
             List<Player> temp = new ArrayList<>();
@@ -258,6 +257,7 @@ public class AppController implements Observer {
                 temp.add(board.getPlayer(i));
             board.sortPlayersAccordingToName(); // put the players in order 1,2,3,4 (as json saves players in order according to player-turn order)
             gameController = new GameController(board);
+            gameController.connectedAsPlayer = joinLoadedGameAsPlayer;
             roboRally.createBoardView(gameController);
             for (int i = 0; i < temp.size(); i++) // following loop puts the players back in the original order (according to their turns based on priority antenna distance)
                 board.replacePlayerAtPositionIndex(i, temp.get(i));
