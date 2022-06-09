@@ -46,12 +46,11 @@ import java.util.concurrent.TimeUnit;
  * about the App such as start,load,save,exit the gameApp.
  *
  * @author Ekkart Kindler, ekki@dtu.dk
- *
  */
 public class AppController implements Observer {
 
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
-    final private List<String> BOARD_OPTIONS = Arrays.asList("EasyIntro","ConveyorBeltMayhem","CheckpointChallenge");
+    final private List<String> BOARD_OPTIONS = Arrays.asList("EasyIntro", "ConveyorBeltMayhem", "CheckpointChallenge");
     private String boardname;
     private String userChoice, joinLoadedGameAsPlayer, joinGameID;
 
@@ -88,7 +87,7 @@ public class AppController implements Observer {
             }
 
             Board board = LoadBoard.loadBoard(boardname);
-            int gameId = (int) (Math.random()*10);
+            int gameId = (int) (Math.random() * 10);
             // TODO - can make it so that gameId is a user choice
             board.setGameId(gameId);
 
@@ -99,26 +98,26 @@ public class AppController implements Observer {
                 player.setSpace(board.getSpace(i % board.width, i));
             }
 
-            GameStateTemplate template= LoadBoard.createGameStateTemplate(board);
-            boolean created= onlineGameClient.createGame(template);
-            if(created==true){
-                showInfo("Info","Game created successfully.","BoardName: "+boardname+" - GameID: "+gameId);
+            GameStateTemplate template = LoadBoard.createGameStateTemplate(board);
+            boolean created = onlineGameClient.createGame(template);
+            if (created == true) {
+                showInfo("Info", "Game created successfully.", "BoardName: " + boardname + " - GameID: " + gameId);
                 joinGame();
-            }else {
-                showInfo("Error","creation of game failed","Please try again!");
+            } else {
+                showInfo("Error", "creation of game failed", "Please try again!");
             }
 
         }
     }
 
-    private void showInfo(String title,String header, String msg){
+    private void showInfo(String title, String header, String msg) {
         AlertType type;
-        if(title.equals("Info")){
-            type= AlertType.INFORMATION;
-        }else if(title.equals("Error")){
-            type= AlertType.ERROR;
-        }else{
-            type= AlertType.WARNING;
+        if (title.equals("Info")) {
+            type = AlertType.INFORMATION;
+        } else if (title.equals("Error")) {
+            type = AlertType.ERROR;
+        } else {
+            type = AlertType.WARNING;
         }
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -128,7 +127,7 @@ public class AppController implements Observer {
         alert.showAndWait();
     }
 
-    private void selectGameDialoug(){
+    private void selectGameDialoug() {
         List<String> onLineGamesList = onlineGameClient.getOnlineGames();
 
         ChoiceDialog<String> gameBoard = new ChoiceDialog<>(onLineGamesList.get(0), onLineGamesList);
@@ -139,23 +138,24 @@ public class AppController implements Observer {
         gameBoardResult.ifPresent(s -> userChoice = s);
     }
 
-    private String enterplayerNameDialoug(){
+    private String enterplayerNameDialoug() {
         TextInputDialog txt = new TextInputDialog();
         txt.setTitle("Text Input");
         txt.setHeaderText("Please Enter your Name: ");
         txt.setContentText("Name: ");
 
-        Optional<String> playerName= txt.showAndWait();
+        Optional<String> playerName = txt.showAndWait();
         return playerName.get();
     }
 
-    private boolean allplayersJoined(String boardname, String gameId){
+    private boolean allplayersJoined(String boardname, String gameId) {
         int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
-        int totalNumber= onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);;
-        int count=0;
-        while(joinedplayers != totalNumber && count <10){
-            joinedplayers= onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
-            count ++;
+        int totalNumber = onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);
+        ;
+        int count = 0;
+        while (joinedplayers != totalNumber && count < 10) {
+            joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
+            count++;
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -163,33 +163,36 @@ public class AppController implements Observer {
             }
         }
 
-        if(joinedplayers == totalNumber){ return true; }
-        else{return false;}
+        if (joinedplayers == totalNumber) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void joinGame(){
+    public void joinGame() {
         selectGameDialoug();
-        String playerName="";
+        String playerName = "";
         do {
             playerName = enterplayerNameDialoug();
-        }while(playerName.isEmpty() || playerName.isBlank() || playerName.equals("null"));
+        } while (playerName.isEmpty() || playerName.isBlank() || playerName.equals("null"));
 
-        String[]choice = userChoice.split(" - ");
-        String boardname=choice[0].replaceAll("Board: ","");
-        String gameId=choice[1].replaceAll("GameID: ","");
-        boolean joined= onlineGameClient.joinOnlineGame(boardname, gameId,playerName);
-        if(joined == true) {
-            showInfo("Info","Please wait for other players to join.", "All players are not joined.");
-            if(allplayersJoined(boardname,gameId) == true) {
-                GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,gameId);
+        String[] choice = userChoice.split(" - ");
+        String boardname = choice[0].replaceAll("Board: ", "");
+        String gameId = choice[1].replaceAll("GameID: ", "");
+        boolean joined = onlineGameClient.joinOnlineGame(boardname, gameId, playerName);
+        if (joined == true) {
+            showInfo("Info", "Please wait for other players to join.", "All players are not joined.");
+            if (allplayersJoined(boardname, gameId) == true) {
+                GameStateTemplate template = onlineGameClient.getOnlineGame(boardname, gameId);
                 gameStateClient.updateGameStateTemplate(template);
-                Board board= LoadBoard.setupBoardFromState(template);
+                Board board = LoadBoard.setupBoardFromState(template);
                 gameController = new GameController(board);
                 gameController.connectedAsPlayer = playerName;
                 gameController.startProgrammingPhase();
                 roboRally.createBoardView(gameController);
-            }else{
-                showInfo("Warning","players did not join","Please try again later.");
+            } else {
+                showInfo("Warning", "players did not join", "Please try again later.");
             }
         }
 
@@ -211,12 +214,12 @@ public class AppController implements Observer {
         SavedGamesClient client = new SavedGamesClient();
         if (loadGameDialog()) {
             if (client.addActiveGame(userChoice))
-                showInfo("Info","Game loaded successfully.","BoardName and GameID: "+userChoice);
+                showInfo("Info", "Game loaded successfully.", "BoardName and GameID: " + userChoice);
             else
-                showInfo("Info","Game has already been loaded "," Game already loaded - you can now join the game");
+                showInfo("Info", "Game has already been loaded ", " Game already loaded - you can now join the game");
             joinLoadedGame();
         }
-        }
+    }
 
     public void joinLoadedGame() {    // @author Xiao Chen & Mark Bidstrup
         SavedGamesClient client = new SavedGamesClient();
@@ -224,35 +227,33 @@ public class AppController implements Observer {
         if (joinedGame) {
             boolean selectedPlayer = joinLoadedGameAsPlayerDialog(joinGameID);
             if (selectedPlayer) {
-            boolean joined = client.joinLoadedGame(joinGameID, joinLoadedGameAsPlayer);
-            while (!joined && selectedPlayer) {
-                showInfo("Error", "Could not join as player", "Please select a player again");
-                selectedPlayer = joinLoadedGameAsPlayerDialog(joinGameID);
-            }
-            if (joined) {
-                showInfo("Info", "Joined successfully.", "Please wait until all players have joined");
-                if (client.allPlayersJoined(joinGameID)) {
-                    GameStateTemplate gameStateTemplate = client.getGameStateTemplate(joinGameID);
-                    gameStateClient.updateGameStateTemplate(gameStateTemplate);
+                boolean joined = client.joinLoadedGame(joinGameID, joinLoadedGameAsPlayer);
+                while (!joined && selectedPlayer) {
+                    showInfo("Error", "Could not join as player", "Please select a player again");
+                    selectedPlayer = joinLoadedGameAsPlayerDialog(joinGameID);
+                }
+                if (joined) {
+                    showInfo("Info", "Joined successfully.", "Please wait until all players have joined");
+                    if (client.allPlayersJoined(joinGameID)) {
+                        GameStateTemplate gameStateTemplate = client.getGameStateTemplate(joinGameID);
+                        gameStateClient.updateGameStateTemplate(gameStateTemplate);
+                    }
+                    while (!client.allPlayersJoined(joinGameID)) {
+                        try { //TODO - can use threads here
+                            TimeUnit.SECONDS.sleep(5);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    showInfo("Info", "All players joined.", "Your game will now be started.");
+                    startLoadedGame(joinGameID, joinLoadedGameAsPlayer);
                 }
             }
-            while (!client.allPlayersJoined(joinGameID)) {
-                try { //TODO - can use threads here
-                TimeUnit.SECONDS.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            showInfo("Info", "All players joined.", "Your game will now be started.");
-            startLoadedGame(joinGameID, joinLoadedGameAsPlayer);
-            }
-            else
-                showInfo("Error", "All players have been taken", "Please select another game");
         }
     }
 
     private void startLoadedGame(String joinGameID, String joinLoadedGameAsPlayer) {
-        Board board = LoadBoard. setupBoardFromState(gameStateClient.getGameStateTemplate(joinGameID));
+        Board board = LoadBoard.setupBoardFromState(gameStateClient.getGameStateTemplate(joinGameID));
         if (board != null && board.getPlayersNumber() > 0) {
             List<Player> temp = new ArrayList<>();
             for (int i = 0; i < board.getPlayersNumber(); i++)
@@ -263,8 +264,7 @@ public class AppController implements Observer {
             roboRally.createBoardView(gameController);
             for (int i = 0; i < temp.size(); i++) // following loop puts the players back in the original order (according to their turns based on priority antenna distance)
                 board.replacePlayerAtPositionIndex(i, temp.get(i));
-        }
-        else if (board == null) // this should not happen
+        } else if (board == null) // this should not happen
             newGame();
         else { // this should not happen in the gameflow - only happens if only a board without players is loaded (for testing)
             for (int i = 0; i < 4; i++) {
@@ -321,14 +321,18 @@ public class AppController implements Observer {
     private boolean joinLoadedGameAsPlayerDialog(String joinGameID) {
         SavedGamesClient savedGamesClient = new SavedGamesClient();
         List<String> players = savedGamesClient.getAvailablePlayers(joinGameID);
-        if (players.isEmpty() || players.get(0).equals(""))
+        if (players.isEmpty() || players.get(0).equals("")) {
+            showInfo("Error", "All players have been taken", "Please select another game");
             return false;
+        }
         ChoiceDialog<String> playerSelect = new ChoiceDialog<>(players.get(0), players);
         playerSelect.setTitle("Choose a player");
         playerSelect.setHeaderText("Select the player to join as");
         Optional<String> result2 = playerSelect.showAndWait();
         result2.ifPresent(s -> joinLoadedGameAsPlayer = s);
-        return true;
+        if (joinLoadedGameAsPlayer != null && !joinLoadedGameAsPlayer.equals(""))
+            return true;
+        else return false;
     }
 
     /**
@@ -351,7 +355,7 @@ public class AppController implements Observer {
         }
         if (joinLoadedGameAsPlayer != null) {
             SavedGamesClient client = new SavedGamesClient();
-            client.leaveJoinedGame(boardname+"_"+gameController.board.getGameId(),joinLoadedGameAsPlayer);
+            client.leaveJoinedGame(boardname + "_" + gameController.board.getGameId(), joinLoadedGameAsPlayer);
             joinLoadedGameAsPlayer = null;
         }
         return false;
@@ -369,11 +373,10 @@ public class AppController implements Observer {
 
             if (!result.isPresent() || result.get() != ButtonType.OK) {
                 return; // return without exiting the application
-            }
-            else {
+            } else {
                 if (joinLoadedGameAsPlayer != null) {
                     SavedGamesClient client = new SavedGamesClient();
-                    client.leaveJoinedGame(boardname+"_"+gameController.board.getGameId(),joinLoadedGameAsPlayer);
+                    client.leaveJoinedGame(boardname + "_" + gameController.board.getGameId(), joinLoadedGameAsPlayer);
                     joinLoadedGameAsPlayer = null;
                 }
             }
@@ -388,6 +391,7 @@ public class AppController implements Observer {
 
     /**
      * this methode checks if the game is running
+     *
      * @return the gameController of the running game ,otherwise return the false
      */
     public boolean isGameRunning() {
