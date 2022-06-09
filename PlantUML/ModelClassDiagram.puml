@@ -71,7 +71,7 @@ package Models {
     }
 
     abstract class FieldAction {
-        doAction
+        doAction()
     }
 
     class Gear {
