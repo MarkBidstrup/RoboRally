@@ -39,6 +39,7 @@ class OnlineGameClientTest {
     void tearDown() {
     }
 
+    // UTC 14
     @Test
     void createGame() {
         board = LoadBoard.loadBoard(boardname);
@@ -56,6 +57,7 @@ class OnlineGameClientTest {
         assertEquals(true, created);
     }
 
+    // UTC 15
     @Test
     void getOnlineGame() {
         //createGame();
@@ -63,24 +65,28 @@ class OnlineGameClientTest {
         assertEquals(1,list.size());
     }
 
+    // UTC 16
     @Test
     void getMaxNumberOfPlayers() {
         int maxNr = onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);
         assertEquals(2, maxNr);
     }
 
+    // UTC 17
     @Test
     void getNumberOfJoinedPlayers_1() {
         int joinedNr = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
         assertEquals(0, joinedNr);
     }
 
+    // UTC 18
     @Test
     void joinOnlineGame() {
         boolean joined = onlineGameClient.joinOnlineGame(boardname,gameId,"Golbas");
         assertEquals(true, joined);
     }
 
+    // UTC 19
     @Test
     void getNumberOfJoinedPlayers_2() {
         int joinedNr = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
