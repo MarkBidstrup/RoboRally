@@ -83,8 +83,10 @@ public class PlayerView extends Tab implements ViewObserver {
             CommandCardField cardField = player.getProgramField(i);
             if (cardField != null) {
                 programCardViews[i] = new CardFieldView(gameController, cardField);
-                if (player.getName().equals(gameController.connectedAsPlayer));
-                    programPane.add(programCardViews[i], i, 0);
+                if (player.getName().equals(gameController.connectedAsPlayer)) {
+                    cardViews[i] = new CardFieldView(gameController, cardField);
+                    cardsPane.add(cardViews[i], i, 0);
+                }
             }
         }
 
