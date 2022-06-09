@@ -182,6 +182,7 @@ public class AppController implements Observer {
             showInfo("Info","Please wait for other players to join.", "All players are not joined.");
             if(allplayersJoined(boardname,gameId) == true) {
                 GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,gameId);
+                gameStateClient.updateGameStateTemplate(template);
                 Board board= setupBoardFromState(template);
                 gameController = new GameController(board);
                 gameController.startProgrammingPhase();
