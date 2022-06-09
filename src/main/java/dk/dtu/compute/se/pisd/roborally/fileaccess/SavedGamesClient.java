@@ -123,4 +123,108 @@ public class SavedGamesClient implements IGamesService {
             return false;
         }
     }
+
+    @Override
+    public List<String> getAvailablePlayers(String boardname_gameID) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/savedGames/getAvailPlayers/" + boardname_gameID ))
+                    .setHeader("User-Agent", "Games Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            result = result.replaceAll("]", "").replaceAll("\\[","").replaceAll("\"","");
+            return new ArrayList<String>(Arrays.asList(result.split(",")));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean joinLoadedGame(String boardname_gameID, String playerName) {
+        try{
+            HttpRequest request = HttpRequest.newBuilder()
+                    .PUT(HttpRequest.BodyPublishers.ofString(playerName))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/savedGames/joinLoadedGame/" + boardname_gameID  ))
+                    .setHeader("User-Agent", "Games Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            return result.equals("Joined");
+        } catch (Exception e) {
+            return false;
+        }     }
+
+    @Override
+    public boolean allPlayersJoined(String boardname_gameID) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/savedGames/allJoinedStatus/" +boardname_gameID))
+                    .setHeader("User-Agent", "Games Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            return result.equals("Ready");
+        } catch (Exception e) {
+            return false;
+        }    }
+
+    @Override
+    public void leaveJoinedGame(String boardname_gameID, String playerName) {
+        try{
+            HttpRequest request = HttpRequest.newBuilder()
+                    .PUT(HttpRequest.BodyPublishers.ofString(playerName))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/savedGames/leaveJoinedGame/" + boardname_gameID  ))
+                    .setHeader("User-Agent", "Games Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public boolean addActiveGame(String boardname_gameID) {
+        try{
+            HttpRequest request = HttpRequest.newBuilder()
+                    .POST(HttpRequest.BodyPublishers.ofString(boardname_gameID))
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/savedGames/activeGames"))
+                    .setHeader("User-Agent", "Games Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            return result.equals("Added");
+        } catch (Exception e) {
+            return false;
+        }    }
+
+    @Override
+    public List<String> getActiveGames() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .GET()
+                    .uri(URI.create("http://"+Hostname.HOSTNAME +":8080/savedGames/activeGames"))
+                    .setHeader("User-Agent", "Games Client")
+                    .header("Content-Type", "application/json")
+                    .build();
+            CompletableFuture<HttpResponse<String>> response =
+                    httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            String result = response.thenApply((r)->r.body()).get(5, TimeUnit.SECONDS);
+            result = result.replaceAll("]", "").replaceAll("\\[","").replaceAll("\"","");
+            return new ArrayList<String>(Arrays.asList(result.split(",")));
+        } catch (Exception e) {
+            return null;
+        }    }
 }

@@ -46,6 +46,7 @@ public class GameController {
     final public Board board;
     private List<Player> rebootedThisStep = new ArrayList<>();
     private GameStateClient gameStateClient = new GameStateClient();
+    public String connectedAsPlayer;
 
     /**
      * This constructor takes a board as input.
@@ -94,12 +95,12 @@ public class GameController {
                 for (int j = player.getSPAMDamageCount() ; j < Player.NO_CARDS; j++) {
                     CommandCardField field = player.getCardField(j);
                     field.setCard(generateRandomCommandCard());
-                    field.setVisible(true);
+                    field.setVisible(player.getName().equals(connectedAsPlayer));
                 }
                 for (int j = 0; j < player.getSPAMDamageCount(); j++) { // @author Deniz Isikli
                     CommandCardField field = player.getCardField(j);
                     field.setCard(new CommandCard(Command.SPAM_DAMAGE));
-                    field.setVisible(true);
+                    field.setVisible(player.getName().equals(connectedAsPlayer));
                 }
             }
         }
@@ -544,9 +545,8 @@ public class GameController {
     }
 
     // following method only adds/updates game state information, but does not reload the board itself
-    private Board updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
+    private void updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
         // update the player information
-        List<Player> temp = new ArrayList<>();
         for (PlayerTemplate playerTemplate: template.players) {
             Player player = board.getPlayer(playerTemplate.playerName);
             player.setCheckPointReached(playerTemplate.checkPointTokenReached);
@@ -556,21 +556,24 @@ public class GameController {
                 CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
                 if (commandCardFieldTemplate.command != null)
                     player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                else
+                    player.getProgramField(i).setCard(null);
                 player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
             }
             for (int i = 0; i < Player.NO_CARDS; i++) {
                 CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
+                if (player.getName().equals(connectedAsPlayer))
+                    player.getCardField(i).setVisible(true);
+                else
+                    player.getCardField(i).setVisible(false);
                 if (commandCardFieldTemplate.command != null)
                     player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
-                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+                else
+                    player.getCardField(i).setCard(null);
             }
-            temp.add(player);
         }
-        for (int i = 0; i < temp.size(); i++) // following loop puts the players in the correct order (according to loaded data)
-            board.replacePlayerAtPositionIndex(i, temp.get(i));
         board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
         board.setPhase(template.phase);
         board.setStep(template.step);
-        return board;
     }
 }

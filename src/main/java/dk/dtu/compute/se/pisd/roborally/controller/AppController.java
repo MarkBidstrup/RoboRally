@@ -39,6 +39,7 @@ import javafx.scene.control.TextInputDialog;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The AppController is responsible for handling  implementation logic
@@ -52,7 +53,7 @@ public class AppController implements Observer {
     final private List<Integer> PLAYER_NUMBER_OPTIONS = Arrays.asList(2, 3, 4, 5, 6);
     final private List<String> BOARD_OPTIONS = Arrays.asList("EasyIntro","ConveyorBeltMayhem","CheckpointChallenge");
     private String boardname;
-    private String userChoice;
+    private String userChoice, joinLoadedGameAsPlayer, joinGameID;
 
     final private List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
 
@@ -148,7 +149,7 @@ public class AppController implements Observer {
         return playerName.get();
     }
 
-    private boolean allplayersJoined(String boardname, int gameId){
+    private boolean allplayersJoined(String boardname, String gameId){
         int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
         int totalNumber= onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);;
         int count=0;
@@ -176,13 +177,15 @@ public class AppController implements Observer {
         String[]choice = userChoice.split(" - ");
         String boardname=choice[0].replaceAll("Board: ","");
         String gameId=choice[1].replaceAll("GameID: ","");
-        boolean joined= onlineGameClient.joinOnlineGame(boardname,Integer.parseInt(gameId),playerName);
+        boolean joined= onlineGameClient.joinOnlineGame(boardname, gameId,playerName);
         if(joined == true) {
             showInfo("Info","Please wait for other players to join.", "All players are not joined.");
-            if(allplayersJoined(boardname,Integer.parseInt(gameId)) == true) {
-                GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,Integer.parseInt(gameId));
-                Board board= setupBoardFromState(template);
+            if(allplayersJoined(boardname,gameId) == true) {
+                GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,gameId);
+                gameStateClient.updateGameStateTemplate(template);
+                Board board= LoadBoard.setupBoardFromState(template);
                 gameController = new GameController(board);
+                gameController.connectedAsPlayer = playerName;
                 gameController.startProgrammingPhase();
                 roboRally.createBoardView(gameController);
             }else{
@@ -205,20 +208,58 @@ public class AppController implements Observer {
      */
     public void loadGame() {             // @author Xiao Chen & Mark Bidstrup
         // use loadBoard if only loading a board (no game state info) - otherwise use loadGame
-        loadGameDialog();
-
-        // TODO - below should only run after enough players have joined lobby
         SavedGamesClient client = new SavedGamesClient();
-        GameStateTemplate gameStateTemplate = client.getGameStateTemplate(userChoice);
+        if (loadGameDialog()) {
+            if (client.addActiveGame(userChoice))
+                showInfo("Info","Game loaded successfully.","BoardName and GameID: "+userChoice);
+            else
+                showInfo("Info","Game has already been loaded "," Game already loaded - you can now join the game");
+            joinLoadedGame();
+        }
+        }
 
-        Board board = setupBoardFromState(gameStateTemplate);
+    public void joinLoadedGame() {    // @author Xiao Chen & Mark Bidstrup
+        SavedGamesClient client = new SavedGamesClient();
+        boolean joinedGame = joinLoadedGameDialog();
+        if (joinedGame) {
+            boolean selectedPlayer = joinLoadedGameAsPlayerDialog(joinGameID);
+            if (selectedPlayer) {
+            boolean joined = client.joinLoadedGame(joinGameID, joinLoadedGameAsPlayer);
+            while (!joined && selectedPlayer) {
+                showInfo("Error", "Could not join as player", "Please select a player again");
+                selectedPlayer = joinLoadedGameAsPlayerDialog(joinGameID);
+            }
+            if (joined) {
+                showInfo("Info", "Joined successfully.", "Please wait until all players have joined");
+                if (client.allPlayersJoined(joinGameID)) {
+                    GameStateTemplate gameStateTemplate = client.getGameStateTemplate(joinGameID);
+                    gameStateClient.updateGameStateTemplate(gameStateTemplate);
+                }
+            }
+            while (!client.allPlayersJoined(joinGameID)) {
+                try { //TODO - can use threads here
+                TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            showInfo("Info", "All players joined.", "Your game will now be started.");
+            startLoadedGame(joinGameID, joinLoadedGameAsPlayer);
+            }
+            else
+                showInfo("Error", "All players have been taken", "Please select another game");
+        }
+    }
+
+    private void startLoadedGame(String joinGameID, String joinLoadedGameAsPlayer) {
+        Board board = LoadBoard. setupBoardFromState(gameStateClient.getGameStateTemplate(joinGameID));
         if (board != null && board.getPlayersNumber() > 0) {
-            gameStateClient.updateGameStateTemplate(gameStateTemplate);
             List<Player> temp = new ArrayList<>();
             for (int i = 0; i < board.getPlayersNumber(); i++)
                 temp.add(board.getPlayer(i));
             board.sortPlayersAccordingToName(); // put the players in order 1,2,3,4 (as json saves players in order according to player-turn order)
             gameController = new GameController(board);
+            gameController.connectedAsPlayer = joinLoadedGameAsPlayer;
             roboRally.createBoardView(gameController);
             for (int i = 0; i < temp.size(); i++) // following loop puts the players back in the original order (according to their turns based on priority antenna distance)
                 board.replacePlayerAtPositionIndex(i, temp.get(i));
@@ -245,7 +286,7 @@ public class AppController implements Observer {
         gameBoardResult.ifPresent(s -> boardname = s);
     }
 
-    private void loadGameDialog() {             // @author Mark Bidstrup
+    private boolean loadGameDialog() {             // @author Mark Bidstrup
         SavedGamesClient savedGamesClient = new SavedGamesClient();
         List<String> savedGamesList = savedGamesClient.getListOfSavedGames();
 
@@ -255,50 +296,39 @@ public class AppController implements Observer {
         Optional<String> gameBoardResult = gameBoard.showAndWait();
 
         gameBoardResult.ifPresent(s -> userChoice = s);
+        if (userChoice != null && !userChoice.equals(""))
+            return true;
+        else return false;
     }
 
-    private Board setupBoardFromState(GameStateTemplate template) { // @author Mark Bidstrup
-        Board result;
-        result = new Board(template.board.width, template.board.height, template.board.boardName);
-        result.setPriorityAntenna(template.board.antenna.x, template.board.antenna.y,template.board.antenna.heading);
-        CheckPoint.setHighestCheckPointNumber(0);
-        for (CheckPointTemplate checkPointTemplate: template.board.checkPoints) {
-            if (result.getSpace(checkPointTemplate.x, checkPointTemplate.y) != null)
-                result.setCheckpoint(checkPointTemplate.x, checkPointTemplate.y);
+    private boolean joinLoadedGameDialog() {             // @author Mark Bidstrup
+        SavedGamesClient savedGamesClient = new SavedGamesClient();
+        List<String> activeGames = savedGamesClient.getActiveGames();
+        if (activeGames.isEmpty() || activeGames.get(0).equals("")) {
+            showInfo("Error", "No loaded games available for joining", "Please load a game first");
+            return false;
         }
-        for (SpaceTemplate spaceTemplate: template.board.spaces) {
-            Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
-            if (space != null) {
-                space.getActions().addAll(spaceTemplate.actions);
-                space.getWalls().addAll(spaceTemplate.walls);
-            }
-        }
-        if (template.gameId != null)
-            result.setGameId(template.gameId);
-        for (PlayerTemplate playerTemplate: template.players) {
-            Player player = new Player(result, playerTemplate.playerColor, playerTemplate.playerName);
-            player.setCheckPointReached(playerTemplate.checkPointTokenReached);
-            player.setSpace(result.getSpace(playerTemplate.x, playerTemplate.y));
-            player.setHeading(playerTemplate.heading);
-            player.setSPAMDamageCount(playerTemplate.SPAMDamageCards);
-            for (int i = 0; i < Player.NO_REGISTERS; i++) {
-                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
-                if (commandCardFieldTemplate.command != null)
-                    player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
-                player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
-            }
-            for (int i = 0; i < Player.NO_CARDS; i++) {
-                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
-                if (commandCardFieldTemplate.command != null)
-                    player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
-                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
-            }
-            result.addPlayer(player);
-        }
-        result.setCurrentPlayer(result.getPlayer(template.currentPlayerIndex));
-        result.setPhase(template.phase);
-        result.setStep(template.step);
-        return result;
+        ChoiceDialog<String> gameSelect = new ChoiceDialog<>(activeGames.get(0), activeGames);
+        gameSelect.setTitle("Choose a game");
+        gameSelect.setHeaderText("Select the game to join");
+        Optional<String> result = gameSelect.showAndWait();
+        result.ifPresent(s -> joinGameID = s);
+        if (joinGameID != null && !joinGameID.equals(""))
+            return true;
+        else return false;
+    }
+
+    private boolean joinLoadedGameAsPlayerDialog(String joinGameID) {
+        SavedGamesClient savedGamesClient = new SavedGamesClient();
+        List<String> players = savedGamesClient.getAvailablePlayers(joinGameID);
+        if (players.isEmpty() || players.get(0).equals(""))
+            return false;
+        ChoiceDialog<String> playerSelect = new ChoiceDialog<>(players.get(0), players);
+        playerSelect.setTitle("Choose a player");
+        playerSelect.setHeaderText("Select the player to join as");
+        Optional<String> result2 = playerSelect.showAndWait();
+        result2.ifPresent(s -> joinLoadedGameAsPlayer = s);
+        return true;
     }
 
     /**
@@ -319,6 +349,11 @@ public class AppController implements Observer {
             roboRally.createBoardView(null);
             return true;
         }
+        if (joinLoadedGameAsPlayer != null) {
+            SavedGamesClient client = new SavedGamesClient();
+            client.leaveJoinedGame(boardname+"_"+gameController.board.getGameId(),joinLoadedGameAsPlayer);
+            joinLoadedGameAsPlayer = null;
+        }
         return false;
     }
 
@@ -334,6 +369,13 @@ public class AppController implements Observer {
 
             if (!result.isPresent() || result.get() != ButtonType.OK) {
                 return; // return without exiting the application
+            }
+            else {
+                if (joinLoadedGameAsPlayer != null) {
+                    SavedGamesClient client = new SavedGamesClient();
+                    client.leaveJoinedGame(boardname+"_"+gameController.board.getGameId(),joinLoadedGameAsPlayer);
+                    joinLoadedGameAsPlayer = null;
+                }
             }
         }
 
