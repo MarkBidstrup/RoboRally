@@ -44,6 +44,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 01
     @Test
     void moveBackward() {
         Board board = gameController.board;
@@ -58,6 +59,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 02
     @Test
     void moveUturn() {
         Board board = gameController.board;
@@ -69,6 +71,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 03
     @Test
     void moveRight() {
         Board board = gameController.board;
@@ -81,6 +84,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 04
     @Test
     void moveLeft() {
         Board board = gameController.board;
@@ -93,6 +97,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 05
     @Test
     void moveFastFoward() {
         Board board = gameController.board;
@@ -107,6 +112,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 06
     @Test
     void moveSpeedRoutine() {
         Board board = gameController.board;
@@ -122,6 +128,7 @@ class GameControllerTest {
     }
 
     // @author Deniz Isikli
+    // UTC 07
     @Test
     void checkForWinner() {
         Board board = gameController.board;

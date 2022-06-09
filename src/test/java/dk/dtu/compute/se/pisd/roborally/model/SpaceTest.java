@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// @author Golbas Haidari
 class SpaceTest {
 
     private GameController gameController;
@@ -18,12 +19,14 @@ class SpaceTest {
         board.getSpace(1,1).setWalls(Heading.EAST);
     }
 
+    // UTC 12
     @Test
     void getWalls() {
         Board board= gameController.board;
         Assertions.assertEquals( true, board.getSpace(1, 1).getWalls().contains(Heading.EAST),"should return true\"");
     }
 
+    // UTC 13
     @Test
     void playerCannotGoThroughWall(){
         Board board= gameController.board;

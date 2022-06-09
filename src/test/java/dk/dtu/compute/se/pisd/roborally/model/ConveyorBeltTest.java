@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+// @author Golbas Haidari
 class ConveyorBeltTest {
     private GameController gameController;
 
@@ -29,6 +29,7 @@ class ConveyorBeltTest {
         board.setCurrentPlayer(board.getPlayer(0));
     }
 
+    // UTC 09
     @Test
     void doActionTest() {
         Board board = gameController.board;
