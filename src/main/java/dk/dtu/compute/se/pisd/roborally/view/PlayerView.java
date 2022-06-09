@@ -230,4 +230,7 @@ public class PlayerView extends Tab implements ViewObserver {
         gameController.playerFinishProgramming(player);
     }
 
+    public Player getPlayer() {
+        return player;
+    }
 }
