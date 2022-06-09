@@ -207,7 +207,7 @@ public class GameController {
                     } else {
                         executeCommand(currentPlayer, command);
                         if (command == Command.SPAM_DAMAGE) {
-                            executeCommand(currentPlayer, command);
+                            executeNextStep();
                             return;
                         }
                     }
