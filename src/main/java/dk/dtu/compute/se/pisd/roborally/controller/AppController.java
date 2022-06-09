@@ -148,7 +148,7 @@ public class AppController implements Observer {
         return playerName.get();
     }
 
-    private boolean allplayersJoined(String boardname, String gameId){
+    private boolean allplayersJoined(String boardname, int gameId){
         int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
         int totalNumber= onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);;
         int count=0;
@@ -176,11 +176,11 @@ public class AppController implements Observer {
         String[]choice = userChoice.split(" - ");
         String boardname=choice[0].replaceAll("Board: ","");
         String gameId=choice[1].replaceAll("GameID: ","");
-        boolean joined= onlineGameClient.joinOnlineGame(boardname, gameId,playerName);
+        boolean joined= onlineGameClient.joinOnlineGame(boardname,Integer.parseInt(gameId),playerName);
         if(joined == true) {
             showInfo("Info","Please wait for other players to join.", "All players are not joined.");
-            if(allplayersJoined(boardname,gameId) == true) {
-                GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,gameId);
+            if(allplayersJoined(boardname,Integer.parseInt(gameId)) == true) {
+                GameStateTemplate template= onlineGameClient.getOnlineGame(boardname,Integer.parseInt(gameId));
                 Board board= setupBoardFromState(template);
                 gameController = new GameController(board);
                 gameController.startProgrammingPhase();
