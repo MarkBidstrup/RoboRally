@@ -545,7 +545,7 @@ public class GameController {
     }
 
     // following method only adds/updates game state information, but does not reload the board itself
-    private Board updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
+    private void updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
         // update the player information
         List<Player> temp = new ArrayList<>();
         for (PlayerTemplate playerTemplate: template.players) {
@@ -572,6 +572,5 @@ public class GameController {
         board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
         board.setPhase(template.phase);
         board.setStep(template.step);
-        return board;
     }
 }

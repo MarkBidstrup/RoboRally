@@ -192,4 +192,47 @@ public class LoadBoard {
         return template;
     }
 
+    public static Board setupBoardFromState(GameStateTemplate template) { // @author Mark Bidstrup
+        Board result;
+        result = new Board(template.board.width, template.board.height, template.board.boardName);
+        result.setPriorityAntenna(template.board.antenna.x, template.board.antenna.y,template.board.antenna.heading);
+        CheckPoint.setHighestCheckPointNumber(0);
+        for (CheckPointTemplate checkPointTemplate: template.board.checkPoints) {
+            if (result.getSpace(checkPointTemplate.x, checkPointTemplate.y) != null)
+                result.setCheckpoint(checkPointTemplate.x, checkPointTemplate.y);
+        }
+        for (SpaceTemplate spaceTemplate: template.board.spaces) {
+            Space space = result.getSpace(spaceTemplate.x, spaceTemplate.y);
+            if (space != null) {
+                space.getActions().addAll(spaceTemplate.actions);
+                space.getWalls().addAll(spaceTemplate.walls);
+            }
+        }
+        if (template.gameId != null)
+            result.setGameId(template.gameId);
+        for (PlayerTemplate playerTemplate: template.players) {
+            Player player = new Player(result, playerTemplate.playerColor, playerTemplate.playerName);
+            player.setCheckPointReached(playerTemplate.checkPointTokenReached);
+            player.setSpace(result.getSpace(playerTemplate.x, playerTemplate.y));
+            player.setHeading(playerTemplate.heading);
+            player.setSPAMDamageCount(playerTemplate.SPAMDamageCards);
+            for (int i = 0; i < Player.NO_REGISTERS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            for (int i = 0; i < Player.NO_CARDS; i++) {
+                CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
+                if (commandCardFieldTemplate.command != null)
+                    player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+            }
+            result.addPlayer(player);
+        }
+        result.setCurrentPlayer(result.getPlayer(template.currentPlayerIndex));
+        result.setPhase(template.phase);
+        result.setStep(template.step);
+        return result;
+    }
 }
