@@ -49,7 +49,7 @@ public class OnlineGameClient implements IOnlineGameClient {
 
 
     @Override
-    public int getNumberOfJoinedPlayers(String boardname, int gameId){
+    public int getNumberOfJoinedPlayers(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://"+Hostname.HOSTNAME+":8080/joinedPlayers/"+boardname+"/"+ gameId))
@@ -68,7 +68,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     }
 
     @Override
-    public int getMaxNumberOfPlayers(String boardname, int gameId){
+    public int getMaxNumberOfPlayers(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://"+Hostname.HOSTNAME+":8080/maxPlayers/"+boardname+"/"+gameId))
@@ -104,7 +104,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     }
 
     @Override
-    public boolean joinOnlineGame(String boardname, int gameId, String playerName){
+    public boolean joinOnlineGame(String boardname, String gameId, String playerName){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://"+Hostname.HOSTNAME+":8080/joinOnlineGame/"+boardname+"/"+gameId+"/"+playerName))
@@ -123,7 +123,7 @@ public class OnlineGameClient implements IOnlineGameClient {
     }
 
     @Override
-    public GameStateTemplate getOnlineGame(String boardname, int gameId){
+    public GameStateTemplate getOnlineGame(String boardname, String gameId){
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("http://"+Hostname.HOSTNAME+":8080/onlineGame/"+boardname+"/"+gameId))

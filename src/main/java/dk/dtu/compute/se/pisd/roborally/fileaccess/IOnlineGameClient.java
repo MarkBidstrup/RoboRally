@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface IOnlineGameClient {
     boolean createGame(GameStateTemplate template);
-    int getNumberOfJoinedPlayers(String boardname, int gameId);
-    int getMaxNumberOfPlayers(String boardname, int gameId);
+    int getNumberOfJoinedPlayers(String boardname, String gameId);
+    int getMaxNumberOfPlayers(String boardname, String gameId);
     List<String> getOnlineGames();
-    boolean joinOnlineGame(String boardname, int gameId, String payerName);
-    GameStateTemplate getOnlineGame(String boardname, int gameId);
+    boolean joinOnlineGame(String boardname, String gameId, String payerName);
+    GameStateTemplate getOnlineGame(String boardname, String gameId);
 }

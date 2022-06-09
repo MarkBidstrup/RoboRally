@@ -24,7 +24,7 @@ class OnlineGameClientTest {
     GameStateTemplate template;
     List<String> PLAYER_COLORS = Arrays.asList("red", "green", "blue", "orange", "grey", "magenta");
     String boardname;
-    int gameId;
+    String gameId;
 
     @BeforeEach
     void setUp() {
@@ -32,7 +32,7 @@ class OnlineGameClientTest {
         roboRally= new RoboRally();
         appController = new AppController(roboRally);
         boardname= "EasyIntro";
-        gameId=1;
+        gameId="1";
     }
 
     @AfterEach
@@ -42,7 +42,7 @@ class OnlineGameClientTest {
     @Test
     void createGame() {
         board = LoadBoard.loadBoard(boardname);
-        board.setGameId(gameId);
+        board.setGameId(Integer.parseInt(gameId));
 
         for(int i=0; i<2; i++){
             player= new Player(board, PLAYER_COLORS.get(i),"null");
@@ -86,9 +86,5 @@ class OnlineGameClientTest {
         int joinedNr = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
         assertEquals(1, joinedNr);
     }
-
-
-
-
 
 }
