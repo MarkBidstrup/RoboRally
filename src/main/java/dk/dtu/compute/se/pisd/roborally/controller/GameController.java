@@ -557,13 +557,16 @@ public class GameController {
                 CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.program.get(i);
                 if (commandCardFieldTemplate.command != null)
                     player.getProgramField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
+                else
+                    player.getProgramField(i).setCard(null);
                 player.getProgramField(i).setVisible(commandCardFieldTemplate.visible);
             }
             for (int i = 0; i < Player.NO_CARDS; i++) {
                 CommandCardFieldTemplate commandCardFieldTemplate = playerTemplate.cards.get(i);
                 if (commandCardFieldTemplate.command != null)
                     player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
-                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+                else
+                    player.getCardField(i).setCard(null);
             }
             temp.add(player);
         }
