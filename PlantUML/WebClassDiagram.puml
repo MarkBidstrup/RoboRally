@@ -1,0 +1,203 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+package Client {
+    class GameStateClient {
+        httpClient
+
+        getGameStateTemplate()
+        updateGameStateTemplate()
+        getProgrammingCounter()
+        incrementProgrammingCounter()
+        setProgrammingCounter()
+        updatePlayerMat()
+    }
+
+    class LoadBoard {
+        BOARDSFOLDER
+        SAVEDGAMESFOLDER
+        DEFAULTBOARD
+        JSON_EXT
+
+        loadBoard()
+        saveGame()
+        createGameStateTemplate()
+        createPlayerTemplate()
+        createBoardTemplate()
+        setupBoardFromState()
+    }
+
+    class OnlineGameClient {
+        httpClient
+
+        createGame()
+        getNumberOfJoinedPlayers()
+        getMaxNumberOfPlayers()
+        getOnlineGames()
+        joinOnlineGame()
+        getOnlineGame()
+    }
+
+    class SavedGamesClient {
+        httpClient
+
+        getListOfSavedGames()
+        getGameStateTemplate()
+        addGameStateTemplate()
+        updateGameStateTemplate()
+        deleteGameStateTemplate()
+        getAvailablePlayers()
+        joinLoadedGame()
+        allPlayersJoined()
+        leaveJoinedGame()
+    }
+
+    interface IGameState {
+        getGameStateTemplate()
+        updateGameStateTemplate()
+        getProgrammingCounter()
+        incrementProgrammingCounter()
+        setProgrammingCounter()
+        updatePlayerMat()
+    }
+
+    interface IGamesService {
+        getGameStateTemplate()
+        addGameStateTemplate()
+        updateGameStateTemplate()
+        deleteGameStateTemplate()
+        getAvailablePlayers()
+        joinLoadedGame()
+        allPlayersJoined()
+        leaveJoinedGame()
+        addActiveGame()
+        getActiveGames()
+    }
+
+    interface IOnlineGameClient {
+        createGame()
+        getNumberOfJoinedPlayers()
+        getMaxNumberOfPlayers()
+        getOnlineGames()
+        joinOnlineGame()
+        getOnlineGame()
+    }
+}
+
+package Server {
+    class GameStateController {
+        gamesService
+
+        getGameStateTemplate()
+        addGameStateTemplate()
+        updateGameStateTemplate()
+        getProgrammingCounter()
+        setProgrammingCounter()
+        incrementProgrammingCounter()
+    }
+
+    class GameStateService {
+        currentGames
+        programmingCounter
+
+        getGameStateTemplate()
+        updateGameStateTemplate()
+        getProgrammingCounter()
+        incrementProgrammingCounter()
+        setProgrammingCounter()
+        addNewProgrammingCounter()
+    }
+
+    class OnlineGameController {
+        services
+
+        createGame()
+        createLobby()
+        getNumberOfJoinedPlayers()
+        joinLobby()
+        getMaxNumberOfPlayers()
+        getLobbyGame()
+        getListOfLobbyGames
+    }
+
+    class OnlineGameServices {
+        onlineGames
+        getLobbies
+
+        createGame()
+        createLobby()
+        getNumberOfJoinedPlayers()
+        getMaxNumberOfPlayers()
+        getLobbies()
+        getLobbyGame()
+        joinLobby()
+    }
+
+    class RoboRallyServerApplication {
+        main()
+    }
+
+    class SavedGamesController {
+        gamesService
+
+        getGameStateTemplate()
+        addGameStateTemplate()
+        updateGameStateTemplate()
+        deleteGame()
+    }
+
+    class SavedGamesService {
+        savedGames
+
+        findAll()
+        getGameStateTemplate()
+        addGameStateTemplate()
+        updateGameStateTemplate()
+        deleteGameStateTemplate()
+        loadGame()
+    }
+
+    interface "IGameState" as ServerIGameState
+    interface "IGamesService" as ServerIGamesService
+
+    interface ServerIGamesService {
+        getGameStateTemplate()
+        addGameStateTemplate()
+        updateGameStateTemplate()
+        deleteGameStateTemplate()
+    }
+
+    interface ServerIGameState {
+        getGameStateTemplate()
+        updateGameStateTemplate()
+        getProgrammingCounter()
+        incrementProgrammingCounter()
+        setProgrammingCounter()
+        addNewProgrammingCounter()
+    }
+
+    interface IOnlineGameServices {
+        createGame()
+        createLobby()
+        getNumberOfJoinedPlayers()
+        getMaxNumberOfPlayers()
+        getLobbyGame()
+        getLobbies()
+        joinLobby()
+    }
+}
+
+/' Client connections '/
+GameStateClient ..|> IGameState
+OnlineGameClient ..|> IOnlineGameClient
+SavedGamesClient ..|> IGamesService
+
+/' Server connections '/
+GameStateService ..|> ServerIGameState
+OnlineGameServices ..|> IOnlineGameServices
+SavedGamesService ..|> ServerIGamesService
+
+/' General connections '/
+Client -- Server
+
+@enduml
