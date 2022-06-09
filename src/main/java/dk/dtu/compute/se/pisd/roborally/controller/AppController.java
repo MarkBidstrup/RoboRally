@@ -185,6 +185,7 @@ public class AppController implements Observer {
                 gameStateClient.updateGameStateTemplate(template);
                 Board board= setupBoardFromState(template);
                 gameController = new GameController(board);
+                gameController.connectedAsPlayer = playerName;
                 gameController.startProgrammingPhase();
                 roboRally.createBoardView(gameController);
             }else{
