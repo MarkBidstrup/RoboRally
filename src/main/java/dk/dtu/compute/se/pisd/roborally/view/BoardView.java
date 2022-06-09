@@ -122,9 +122,9 @@ public class BoardView extends VBox implements ViewObserver {
         if(space.getWalls().contains(Heading.EAST)) { right= BorderStrokeStyle.SOLID;}
         if(space.getWalls().contains(Heading.WEST)) { left=BorderStrokeStyle.SOLID;  }
 
-        spaceView.setBorder(new Border(new BorderStroke(Color.YELLOW, Color.YELLOW, Color.YELLOW, Color.YELLOW,
+        spaceView.setBorder(new Border(new BorderStroke(Color.DARKRED, Color.DARKRED, Color.DARKRED, Color.DARKRED,
                                                         top, right, down, left,
-                                                        CornerRadii.EMPTY, new BorderWidths(7), Insets.EMPTY)));
+                                                        CornerRadii.EMPTY, new BorderWidths(5), Insets.EMPTY)));
     }
 
     // @author Golbas Haidari & Mark Bidstrup
@@ -132,7 +132,7 @@ public class BoardView extends VBox implements ViewObserver {
         int x= board.getAntenna().getPriorityAntenna_xcoord();
         int y= board.getAntenna().getPriorityAntenna_ycoord();
         String path=  this.getClass().getResource("../../../../../../../image/").toString()+ "antenna.png";
-        spaces[x][y].setStyle("-fx-background-image: url("+path+"); -fx-background-repeat: no-repeat; -fx-background-size: "+SpaceView.SPACE_HEIGHT*0.70+" ; -fx-background-position:center center;");
+        spaces[x][y].setStyle("-fx-background-image: url("+path+"); -fx-background-repeat: no-repeat; -fx-background-size: "+SpaceView.SPACE_HEIGHT+" ; -fx-background-position:center center;");
     }
 
     // @author Golbas Haidari & Mark Bidstrup
