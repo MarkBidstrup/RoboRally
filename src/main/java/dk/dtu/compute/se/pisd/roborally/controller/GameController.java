@@ -147,6 +147,17 @@ public class GameController {
             gameStateClient.updateGameStateTemplate(LoadBoard.createGameStateTemplate(board));
             gameStateClient.setProgrammingCounter(gameID,0);
         }
+        else {
+            for (int i = 0; i < board.getPlayersNumber(); i++) {
+                player = board.getPlayer(i);
+                if (!player.getName().equals(connectedAsPlayer)) {
+                for (int j = 0; j < Player.NO_REGISTERS; j++) {
+                    CommandCardField field = player.getProgramField(j);
+                    field.setVisible(false);
+                }
+                }
+            }
+        }
     }
 
     private void makeProgramFieldsVisible(int register) {
