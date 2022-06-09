@@ -22,6 +22,7 @@
 package dk.dtu.compute.se.pisd.roborally.view;
 
 import dk.dtu.compute.se.pisd.designpatterns.observer.Subject;
+import dk.dtu.compute.se.pisd.roborally.controller.AppController;
 import dk.dtu.compute.se.pisd.roborally.controller.GameController;
 import dk.dtu.compute.se.pisd.roborally.model.*;
 import javafx.geometry.Pos;
@@ -160,18 +161,15 @@ public class PlayerView extends Tab implements ViewObserver {
                     }
                 }
             }
-            //TODO - replace getCurrentPlayer with connectedPlayer and remove outer if
-            if (player.board.getPhase() != Phase.PROGRAMMING) {
-                if (player != player.board.getCurrentPlayer()){
-                programPane.getChildren().remove(buttonPanel);
+            if (!player.getName().equals(gameController.connectedAsPlayer)){
+            programPane.getChildren().remove(buttonPanel);
+            for (CardFieldView card : cardViews)
+                card.getField().setVisible(false);
+            return;
+            }
+            else {
                 for (CardFieldView card : cardViews)
-                    card.getField().setVisible(false);
-                return;
-                }
-                else {
-                    for (CardFieldView card : cardViews)
-                        card.getField().setVisible(true);
-                }
+                    card.getField().setVisible(true);
             }
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {

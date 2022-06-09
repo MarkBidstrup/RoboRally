@@ -46,6 +46,7 @@ public class GameController {
     final public Board board;
     private List<Player> rebootedThisStep = new ArrayList<>();
     private GameStateClient gameStateClient = new GameStateClient();
+    public String connectedAsPlayer;
 
     /**
      * This constructor takes a board as input.
