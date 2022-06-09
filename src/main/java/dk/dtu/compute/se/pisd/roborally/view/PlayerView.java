@@ -166,13 +166,7 @@ public class PlayerView extends Tab implements ViewObserver {
             }
             if (!player.getName().equals(gameController.connectedAsPlayer)){
             programPane.getChildren().remove(buttonPanel);
-            for (CardFieldView card : cardViews)
-                card.getField().setVisible(false);
             return;
-            }
-            else {
-                for (CardFieldView card : cardViews)
-                    card.getField().setVisible(true);
             }
             if (player.board.getPhase() != Phase.PLAYER_INTERACTION) {
                 if (!programPane.getChildren().contains(buttonPanel)) {
