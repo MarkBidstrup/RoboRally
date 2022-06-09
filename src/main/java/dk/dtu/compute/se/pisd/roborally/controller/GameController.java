@@ -567,7 +567,10 @@ public class GameController {
                     player.getCardField(i).setCard(new CommandCard(commandCardFieldTemplate.command));
                 else
                     player.getCardField(i).setCard(null);
-                player.getCardField(i).setVisible(commandCardFieldTemplate.visible);
+                if (player.getName().equals(connectedAsPlayer))
+                    player.getCardField(i).setVisible(true);
+                else
+                    player.getCardField(i).setVisible(false);
             }
             temp.add(player);
         }
