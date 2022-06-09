@@ -142,6 +142,7 @@ public class GameController {
 
 
         if (playersFinished == board.getPlayersNumber()) {
+            updateGameServerPull();
             finishProgrammingPhase();
             gameStateClient.updateGameStateTemplate(LoadBoard.createGameStateTemplate(board));
             gameStateClient.setProgrammingCounter(gameID,0);
