@@ -545,8 +545,9 @@ public class GameController {
     }
 
     // following method only adds/updates game state information, but does not reload the board itself
-    private void updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
+        private Board updateGameState(@NotNull Board board, @NotNull GameStateTemplate template) { // @author Xiao Chen
         // update the player information
+        List<Player> temp = new ArrayList<>();
         for (PlayerTemplate playerTemplate: template.players) {
             Player player = board.getPlayer(playerTemplate.playerName);
             player.setCheckPointReached(playerTemplate.checkPointTokenReached);
@@ -571,16 +572,13 @@ public class GameController {
                 else
                     player.getCardField(i).setCard(null);
             }
+            temp.add(player);
         }
-        String currentPlayerName = "";
-        for (int i = 0; i < template.players.size(); i++) {
-            if (i == template.currentPlayerIndex) {
-                currentPlayerName = template.players.get(i).playerName;
-                break;
-            }
-        }
-        board.setCurrentPlayer(board.getPlayer(currentPlayerName));
+        for (int i = 0; i < temp.size(); i++) // following loop puts the players in the correct order (according to loaded data)
+            board.replacePlayerAtPositionIndex(i, temp.get(i));
+        board.setCurrentPlayer(board.getPlayer(template.currentPlayerIndex));
         board.setPhase(template.phase);
         board.setStep(template.step);
+        return board;
     }
 }
