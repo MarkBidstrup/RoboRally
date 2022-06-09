@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// @author Xiao Chen
 class CheckPointTest {
     private GameController gameController;
 
@@ -25,6 +26,7 @@ class CheckPointTest {
         board.setCurrentPlayer(board.getPlayer(0));
     }
 
+    // UTC 08
     @Test
     void doActionTest() {
         Board board = gameController.board;

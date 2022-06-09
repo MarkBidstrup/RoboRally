@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// @author Xiao Chen
 class PriorityAntennaTest {
     private GameController gameController;
 
@@ -23,6 +24,7 @@ class PriorityAntennaTest {
         board.setCurrentPlayer(board.getPlayer(0));
     }
 
+    // UTC 11
     @Test
     void doActionTest() {
         Board board = gameController.board;
