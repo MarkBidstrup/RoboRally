@@ -46,7 +46,6 @@ package Controllers {
         moveCards()
         checkForWinner()
     }
-
 }
 
 package "Models" #DDDDDD {
@@ -63,6 +62,21 @@ package "Views" #DDDDDD {
 
 }
 
+package "Util" {
+    class LoadBoard {
+        BOARDSFOLDER
+        SAVEDGAMESFOLDER
+        DEFAULTBOARD
+        JSON_EXT
+
+        loadBoard()
+        saveGame()
+        createGameStateTemplate()
+        createPlayerTemplate()
+        createBoardTemplate()
+        setupBoardFromState()
+    }
+}
 'Controllers
 AppController -- GameController
 
@@ -74,6 +88,9 @@ AppController -- RoboRallyMenuBar
 'Models
 Board -- GameController
 
+'Util
+GameController - Util
+AppController - Util
 
 
 @enduml
