@@ -36,6 +36,8 @@ package Client <<Rectangle>>{
         joinLoadedGame()
         allPlayersJoined()
         leaveJoinedGame()
+        addActiveGame()
+        getActiveGames()
     }
 
     interface IGameState {
@@ -80,6 +82,7 @@ package Server <<Rectangle>>{
         getProgrammingCounter()
         setProgrammingCounter()
         incrementProgrammingCounter()
+        updatePlayerMat()
     }
 
     class GameStateService {
@@ -92,31 +95,29 @@ package Server <<Rectangle>>{
         incrementProgrammingCounter()
         setProgrammingCounter()
         addNewProgrammingCounter()
+        updatePlayerMat()
     }
 
     class OnlineGameController {
         services
 
         createGame()
-        createLobby()
         getNumberOfJoinedPlayers()
-        joinLobby()
+        joinOnlineGame()
         getMaxNumberOfPlayers()
-        getLobbyGame()
-        getListOfLobbyGames
+        getOnlineGame()
+        getOnlineGames()
     }
 
     class OnlineGameServices {
         onlineGames
-        getLobbies
 
         createGame()
-        createLobby()
         getNumberOfJoinedPlayers()
         getMaxNumberOfPlayers()
-        getLobbies()
-        getLobbyGame()
-        joinLobby()
+        getOnlineGames()
+        getOnlineGame()
+        joinOnlineGame()
     }
 
     class RoboRallyServerApplication {
@@ -126,20 +127,35 @@ package Server <<Rectangle>>{
     class SavedGamesController {
         gamesService
 
+        getListOfGames()
         getGameStateTemplate()
         addGameStateTemplate()
         updateGameStateTemplate()
         deleteGame()
+        leaveJoinedGame()
+        getAvailablePlayers()
+        joinLoadedGame()
+        allPlayersJoined()
+        getActiveGames()
+        addActiveGame()
     }
 
     class SavedGamesService {
         savedGames
+        activeGames
+        playersJoined
 
         findAll()
         getGameStateTemplate()
         addGameStateTemplate()
         updateGameStateTemplate()
         deleteGameStateTemplate()
+        getAvailablePlayers()
+        joinLoadedGame()
+        allPlayersJoined()
+        leaveJoinedGame()
+        addActiveGame()
+        getActiveGames()
         loadGame()
     }
 
@@ -147,10 +163,18 @@ package Server <<Rectangle>>{
     interface "ISavedGamesService" as ServerISavedGamesService
 
     interface ServerISavedGamesService {
+        findAll
+
         getGameStateTemplate()
         addGameStateTemplate()
         updateGameStateTemplate()
         deleteGameStateTemplate()
+        getAvailablePlayers()
+        joinLoadedGame()
+        allPlayersJoined()
+        leaveJoinedGame()
+        addActiveGame()
+        getActiveGames()
     }
 
     interface ServerIGameState {
@@ -160,16 +184,16 @@ package Server <<Rectangle>>{
         incrementProgrammingCounter()
         setProgrammingCounter()
         addNewProgrammingCounter()
+        updatePlayerMat()
     }
 
     interface IOnlineGameServices {
         createGame()
-        createLobby()
         getNumberOfJoinedPlayers()
         getMaxNumberOfPlayers()
-        getLobbyGame()
-        getLobbies()
-        joinLobby()
+        getOnlineGame()
+        getOnlineGames()
+        joinOnlineGame()
     }
 }
 
