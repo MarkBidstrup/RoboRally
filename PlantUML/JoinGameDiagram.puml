@@ -7,14 +7,14 @@ title Join game
 
 Client -> Server: join game(boardname, gameId, playerName)
 Client <-- Server: response
-alt response == joined
+alt response == "joined"
     loop wait until all players join
         Client -> Server: getNumberOfJoinedPlayers
         Client <-- Server: joinedNr
     end
     Client->Server: Get game state;
     Client <-- Server: Return
-else not all players joined
+else response == "not joined"
     Client->Client: Show error message
 end
 @enduml

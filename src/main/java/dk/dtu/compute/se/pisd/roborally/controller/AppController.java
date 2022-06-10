@@ -201,6 +201,8 @@ public class AppController implements Observer {
             } else {
                 showInfo("Warning", "players did not join", "Please try again later.");
             }
+        }else{
+            showInfo("Error","you have not joined the game.","Please try again");
         }
 
     }
