@@ -2,6 +2,7 @@
 'https://plantuml.com/class-diagram
 
 object Player {
+    Name
     CheckPointToken
 }
 
@@ -14,12 +15,12 @@ object Register {
 }
 
 object Robot {
-
+    Color
 }
 
 object Board {
-    RacingCourse
-    Phase (programming or activasion)
+    RacingCourse / Type
+    Phase (programming or activation)
 }
 
 object Programming_Card {
@@ -27,6 +28,10 @@ object Programming_Card {
 }
 
 object Special_Programming_Card {
+
+}
+
+object Damage_Card {
 
 }
 
@@ -44,8 +49,9 @@ Player"1" -L- "1"Robot : has
 Player_Mat"1" -L- "1"Player : has
 Board"1" - "1..*"Card : has
 Board"1" -- "2..6"Player_Mat : has
-Card <|-- Programming_Card
+Card <|--- Programming_Card
 Card <|-R- Special_Programming_Card
+Card <|-- Damage_Card
 Card"0..1" -- "1"Register : has
 Player_Mat"1" - "5"Register : has
 
