@@ -1,7 +1,7 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-package Client {
+package Client <<Rectangle>>{
     class GameStateClient {
         httpClient
 
@@ -70,7 +70,7 @@ package Client {
     }
 }
 
-package Server {
+package Server <<Rectangle>>{
     class GameStateController {
         gamesService
 
