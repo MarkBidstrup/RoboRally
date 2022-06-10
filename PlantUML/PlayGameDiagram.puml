@@ -19,9 +19,4 @@ Client -> Server: Put (game state)
 end
 end
 
-note left
-Client sends a get request
-to refresh game state
-based on a timed interval
-end note
 @enduml
