@@ -1,14 +1,20 @@
 @startuml
 'https://plantuml.com/sequence-diagram
+hide footbox
 
 autonumber
 title Join game
 
-Client -> Server: Get game list
-Server --> Client: Return game list
-Client -> Server: Patch player into player list
-loop until game initialized
-Client -> Server: Get game state
-Server --> Client: Return
+Client -> Server: join game(boardname, gameId, playerName)
+Client <-- Server: response
+alt response == joined
+    loop wait until all players join
+        Client -> Server: getNumberOfJoinedPlayers
+        Client <-- Server: joinedNr
+    end
+    Client->Server: Get game state;
+    Client <-- Server: Return
+else not all players joined
+    Client->Client: Show error message
 end
 @enduml
