@@ -78,7 +78,7 @@ package Views {
        update()
     }
 
-note left of ViewObserver
+note right of ViewObserver
     All classes except RoboRallyMenuBar
     implements ViewObserver
 end note
