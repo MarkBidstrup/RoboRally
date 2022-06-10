@@ -87,8 +87,7 @@ public class AppController implements Observer {
             }
 
             Board board = LoadBoard.loadBoard(boardname);
-            int gameId = (int) (Math.random() * 10);
-            // TODO - can make it so that gameId is a user choice
+            int gameId = (int) (Math.random() * 100);
             board.setGameId(gameId);
 
             int no = result.get();
@@ -151,7 +150,6 @@ public class AppController implements Observer {
     private boolean allplayersJoined(String boardname, String gameId) {
         int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
         int totalNumber = onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);
-        ;
         int count = 0;
         while (joinedplayers != totalNumber && count < 10) {
             joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
@@ -162,12 +160,7 @@ public class AppController implements Observer {
                 e.printStackTrace();
             }
         }
-
-        if (joinedplayers == totalNumber) {
-            return true;
-        } else {
-            return false;
-        }
+        return joinedplayers == totalNumber;
     }
 
     private boolean loadedGameReady(String gameId) {
@@ -181,11 +174,7 @@ public class AppController implements Observer {
                 e.printStackTrace();
             }
         }
-        if (client.allPlayersJoined(gameId))
-            return true;
-        else {
-            return false;
-        }
+        return client.allPlayersJoined(gameId);
     }
 
     public void joinGame() {
@@ -254,6 +243,8 @@ public class AppController implements Observer {
             while (!joined && selectedPlayer) {
                 showInfo("Error", "Could not join as the player you selected", "Please try again");
                 selectedPlayer = joinLoadedGameAsPlayerDialog(joinGameID);
+                if (selectedPlayer)
+                    joined = client.joinLoadedGame(joinGameID, joinLoadedGameAsPlayer);
             }
             if (joined) {
                 if (client.allPlayersJoined(joinGameID)) {
@@ -344,6 +335,7 @@ public class AppController implements Observer {
         ChoiceDialog<String> playerSelect = new ChoiceDialog<>(players.get(0), players);
         playerSelect.setTitle("Joining the game:  " + joinGameID );
         playerSelect.setHeaderText("Select which player to join the game as");
+        joinLoadedGameAsPlayer = null;
         Optional<String> result2 = playerSelect.showAndWait();
         result2.ifPresent(s -> joinLoadedGameAsPlayer = s);
         if (joinLoadedGameAsPlayer != null && !joinLoadedGameAsPlayer.equals(""))
