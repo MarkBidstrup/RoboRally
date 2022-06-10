@@ -1,175 +1,203 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 
-package Client {
-    class GameStateClient {
-        httpClient
+package Client <<Rectangle>>{
+    package fileaccess {
+        class GameStateClient {
+            httpClient
 
-        getGameStateTemplate()
-        updateGameStateTemplate()
-        getProgrammingCounter()
-        incrementProgrammingCounter()
-        setProgrammingCounter()
-        updatePlayerMat()
-    }
+            getGameStateTemplate()
+            updateGameStateTemplate()
+            getProgrammingCounter()
+            incrementProgrammingCounter()
+            setProgrammingCounter()
+            updatePlayerMat()
+        }
 
-    class OnlineGameClient {
-        httpClient
+        class OnlineGameClient {
+            httpClient
 
-        createGame()
-        getNumberOfJoinedPlayers()
-        getMaxNumberOfPlayers()
-        getOnlineGames()
-        joinOnlineGame()
-        getOnlineGame()
-    }
+            createGame()
+            getNumberOfJoinedPlayers()
+            getMaxNumberOfPlayers()
+            getOnlineGames()
+            joinOnlineGame()
+            getOnlineGame()
+        }
 
-    class SavedGamesClient {
-        httpClient
+        class SavedGamesClient {
+            httpClient
 
-        getListOfSavedGames()
-        getGameStateTemplate()
-        addGameStateTemplate()
-        updateGameStateTemplate()
-        deleteGameStateTemplate()
-        getAvailablePlayers()
-        joinLoadedGame()
-        allPlayersJoined()
-        leaveJoinedGame()
-    }
+            getListOfSavedGames()
+            getGameStateTemplate()
+            addGameStateTemplate()
+            updateGameStateTemplate()
+            deleteGameStateTemplate()
+            getAvailablePlayers()
+            joinLoadedGame()
+            allPlayersJoined()
+            leaveJoinedGame()
+            addActiveGame()
+            getActiveGames()
+        }
 
-    interface IGameState {
-        getGameStateTemplate()
-        updateGameStateTemplate()
-        getProgrammingCounter()
-        incrementProgrammingCounter()
-        setProgrammingCounter()
-        updatePlayerMat()
-    }
+        interface IGameState {
+            getGameStateTemplate()
+            updateGameStateTemplate()
+            getProgrammingCounter()
+            incrementProgrammingCounter()
+            setProgrammingCounter()
+            updatePlayerMat()
+        }
 
-    interface IGamesService {
-        getGameStateTemplate()
-        addGameStateTemplate()
-        updateGameStateTemplate()
-        deleteGameStateTemplate()
-        getAvailablePlayers()
-        joinLoadedGame()
-        allPlayersJoined()
-        leaveJoinedGame()
-        addActiveGame()
-        getActiveGames()
-    }
+        interface IGamesService {
+            getGameStateTemplate()
+            addGameStateTemplate()
+            updateGameStateTemplate()
+            deleteGameStateTemplate()
+            getAvailablePlayers()
+            joinLoadedGame()
+            allPlayersJoined()
+            leaveJoinedGame()
+            addActiveGame()
+            getActiveGames()
+        }
 
-    interface IOnlineGameClient {
-        createGame()
-        getNumberOfJoinedPlayers()
-        getMaxNumberOfPlayers()
-        getOnlineGames()
-        joinOnlineGame()
-        getOnlineGame()
+        interface IOnlineGameClient {
+            createGame()
+            getNumberOfJoinedPlayers()
+            getMaxNumberOfPlayers()
+            getOnlineGames()
+            joinOnlineGame()
+            getOnlineGame()
+        }
     }
 }
 
-package Server {
-    class GameStateController {
-        gamesService
+package Server <<Rectangle>>{
+    package RoboRallyServer {
+        class GameStateController {
+            gamesService
 
-        getGameStateTemplate()
-        addGameStateTemplate()
-        updateGameStateTemplate()
-        getProgrammingCounter()
-        setProgrammingCounter()
-        incrementProgrammingCounter()
-    }
+            getGameStateTemplate()
+            addGameStateTemplate()
+            updateGameStateTemplate()
+            getProgrammingCounter()
+            setProgrammingCounter()
+            incrementProgrammingCounter()
+            updatePlayerMat()
+        }
 
-    class GameStateService {
-        currentGames
-        programmingCounter
+        class GameStateService {
+            currentGames
+            programmingCounter
 
-        getGameStateTemplate()
-        updateGameStateTemplate()
-        getProgrammingCounter()
-        incrementProgrammingCounter()
-        setProgrammingCounter()
-        addNewProgrammingCounter()
-    }
+            getGameStateTemplate()
+            updateGameStateTemplate()
+            getProgrammingCounter()
+            incrementProgrammingCounter()
+            setProgrammingCounter()
+            addNewProgrammingCounter()
+            updatePlayerMat()
+        }
 
-    class OnlineGameController {
-        services
+        class OnlineGameController {
+            services
 
-        createGame()
-        createLobby()
-        getNumberOfJoinedPlayers()
-        joinLobby()
-        getMaxNumberOfPlayers()
-        getLobbyGame()
-        getListOfLobbyGames
-    }
+            createGame()
+            getNumberOfJoinedPlayers()
+            joinOnlineGame()
+            getMaxNumberOfPlayers()
+            getOnlineGame()
+            getOnlineGames()
+        }
 
-    class OnlineGameServices {
-        onlineGames
-        getLobbies
+        class OnlineGameServices {
+            onlineGames
 
-        createGame()
-        createLobby()
-        getNumberOfJoinedPlayers()
-        getMaxNumberOfPlayers()
-        getLobbies()
-        getLobbyGame()
-        joinLobby()
-    }
+            createGame()
+            getNumberOfJoinedPlayers()
+            getMaxNumberOfPlayers()
+            getOnlineGames()
+            getOnlineGame()
+            joinOnlineGame()
+        }
 
-    class RoboRallyServerApplication {
-        main()
-    }
+        class RoboRallyServerApplication {
+            main()
+        }
 
-    class SavedGamesController {
-        gamesService
+        class SavedGamesController {
+            gamesService
 
-        getGameStateTemplate()
-        addGameStateTemplate()
-        updateGameStateTemplate()
-        deleteGame()
-    }
+            getListOfGames()
+            getGameStateTemplate()
+            addGameStateTemplate()
+            updateGameStateTemplate()
+            deleteGame()
+            leaveJoinedGame()
+            getAvailablePlayers()
+            joinLoadedGame()
+            allPlayersJoined()
+            getActiveGames()
+            addActiveGame()
+        }
 
-    class SavedGamesService {
-        savedGames
+        class SavedGamesService {
+            savedGames
+            activeGames
+            playersJoined
 
-        findAll()
-        getGameStateTemplate()
-        addGameStateTemplate()
-        updateGameStateTemplate()
-        deleteGameStateTemplate()
-        loadGame()
-    }
+            findAll()
+            getGameStateTemplate()
+            addGameStateTemplate()
+            updateGameStateTemplate()
+            deleteGameStateTemplate()
+            getAvailablePlayers()
+            joinLoadedGame()
+            allPlayersJoined()
+            leaveJoinedGame()
+            addActiveGame()
+            getActiveGames()
+            loadGame()
+        }
 
-    interface "IGameState" as ServerIGameState
-    interface "IGamesService" as ServerIGamesService
+        interface "IGameState" as ServerIGameState
+        interface "ISavedGamesService" as ServerISavedGamesService
 
-    interface ServerIGamesService {
-        getGameStateTemplate()
-        addGameStateTemplate()
-        updateGameStateTemplate()
-        deleteGameStateTemplate()
-    }
+        interface ServerISavedGamesService {
+            findAll
 
-    interface ServerIGameState {
-        getGameStateTemplate()
-        updateGameStateTemplate()
-        getProgrammingCounter()
-        incrementProgrammingCounter()
-        setProgrammingCounter()
-        addNewProgrammingCounter()
-    }
+            getGameStateTemplate()
+            addGameStateTemplate()
+            updateGameStateTemplate()
+            deleteGameStateTemplate()
+            getAvailablePlayers()
+            joinLoadedGame()
+            allPlayersJoined()
+            leaveJoinedGame()
+            addActiveGame()
+            getActiveGames()
+        }
 
-    interface IOnlineGameServices {
-        createGame()
-        createLobby()
-        getNumberOfJoinedPlayers()
-        getMaxNumberOfPlayers()
-        getLobbyGame()
-        getLobbies()
-        joinLobby()
+        interface ServerIGameState {
+            getGameStateTemplate()
+            updateGameStateTemplate()
+            getProgrammingCounter()
+            incrementProgrammingCounter()
+            setProgrammingCounter()
+            addNewProgrammingCounter()
+            updatePlayerMat()
+        }
+
+        interface IOnlineGameServices {
+            createGame()
+            getNumberOfJoinedPlayers()
+            getMaxNumberOfPlayers()
+            getOnlineGame()
+            getOnlineGames()
+            joinOnlineGame()
+        }
     }
 }
 
@@ -181,7 +209,10 @@ SavedGamesClient ..|> IGamesService
 /' Server connections '/
 GameStateService ..|> ServerIGameState
 OnlineGameServices ..|> IOnlineGameServices
-SavedGamesService ..|> ServerIGamesService
+SavedGamesService ..|> ServerISavedGamesService
+GameStateController -- ServerIGameState
+SavedGamesController -- ServerISavedGamesService
+OnlineGameController -- IOnlineGameServices
 
 /' General connections '/
 Client -- Server
