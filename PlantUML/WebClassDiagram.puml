@@ -144,9 +144,9 @@ package Server <<Rectangle>>{
     }
 
     interface "IGameState" as ServerIGameState
-    interface "IGamesService" as ServerIGamesService
+    interface "ISavedGamesService" as ServerISavedGamesService
 
-    interface ServerIGamesService {
+    interface ServerISavedGamesService {
         getGameStateTemplate()
         addGameStateTemplate()
         updateGameStateTemplate()
@@ -181,7 +181,10 @@ SavedGamesClient ..|> IGamesService
 /' Server connections '/
 GameStateService ..|> ServerIGameState
 OnlineGameServices ..|> IOnlineGameServices
-SavedGamesService ..|> ServerIGamesService
+SavedGamesService ..|> ServerISavedGamesService
+GameStateController -- ServerIGameState
+SavedGamesController -- ServerISavedGamesService
+OnlineGameController -- IOnlineGameServices
 
 /' General connections '/
 Client -- Server
