@@ -537,8 +537,8 @@ public class GameController {
                 board.setPhase(Phase.INITIALISATION);
 
                 Alert a = new Alert(Alert.AlertType.NONE);
-                a.setTitle("Player " + (i+1) + " wins!");
-                a.setContentText("Player "+ (i+1) + " has won the game!");
+                a.setTitle(board.getPlayer(i).getName() + " wins!");
+                a.setContentText(board.getPlayer(i).getName() + " has won the game!");
                 ButtonType type = new ButtonType("Ok");
                 a.getDialogPane().getButtonTypes().add(type);
                 a.show();
