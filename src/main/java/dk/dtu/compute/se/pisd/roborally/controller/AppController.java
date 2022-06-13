@@ -151,13 +151,16 @@ public class AppController implements Observer {
         int joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
         int totalNumber = onlineGameClient.getMaxNumberOfPlayers(boardname, gameId);
         int count = 0;
-        while (joinedplayers != totalNumber && count < 10) {
-            joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
-            count++;
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        if(joinedplayers != totalNumber) {
+            showInfo("Info", "Please wait for other players to join.", "All players are not joined.");
+            while (joinedplayers != totalNumber && count < 10) {
+                joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
+                count++;
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return joinedplayers == totalNumber;
@@ -189,7 +192,6 @@ public class AppController implements Observer {
         String gameId = choice[1].replaceAll("GameID: ", "");
         boolean joined = onlineGameClient.joinOnlineGame(boardname, gameId, playerName);
         if (joined == true) {
-            showInfo("Info", "Please wait for other players to join.", "All players are not joined.");
             if (allplayersJoined(boardname, gameId) == true) {
                 GameStateTemplate template = onlineGameClient.getOnlineGame(boardname, gameId);
                 gameStateClient.updateGameStateTemplate(template);
@@ -201,6 +203,8 @@ public class AppController implements Observer {
             } else {
                 showInfo("Warning", "players did not join", "Please try again later.");
             }
+        }else{
+            showInfo("Error","you have not joined the game.","Please try again");
         }
 
     }
