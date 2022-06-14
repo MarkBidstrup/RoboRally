@@ -153,7 +153,7 @@ public class AppController implements Observer {
         int count = 0;
         if(joinedplayers != totalNumber) {
             showInfo("Info", "Please wait for other players to join.", "All players are not joined.");
-            while (joinedplayers != totalNumber && count < 10) {
+            while (joinedplayers != totalNumber && count < 100) {
                 joinedplayers = onlineGameClient.getNumberOfJoinedPlayers(boardname, gameId);
                 count++;
                 try {
